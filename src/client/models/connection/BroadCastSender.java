@@ -18,6 +18,8 @@ public class BroadCastSender implements Runnable{
     private ArrayList<String> arrayListIP = new ArrayList<>(10);
     private boolean done = false;
 
+    private static final Object lock = new Object();
+
 
     /**
      * Constructor for the BroadCastSender object
@@ -82,8 +84,12 @@ public class BroadCastSender implements Runnable{
         /*
         While loop that waits until timeout failure is achieved
          */
-        while (!this.done){
-            System.out.print("");
+        while (true){
+            synchronized (lock) {
+                if(this.done) {
+                    break;
+                }
+            }
         }
 
         return this.arrayListIP;
