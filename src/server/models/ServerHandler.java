@@ -2,7 +2,7 @@ package server.models;
 
 import shared.ConnectionBuilder;
 import shared.JsonParser;
-import shared.Message;
+import shared.models.Message;
 
 import java.io.*;
 import java.net.Socket;

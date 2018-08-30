@@ -1,9 +1,9 @@
 package client.models.connection;
 
-import shared.BasicFileData;
+import shared.models.BasicFileData;
 import shared.ConnectionBuilder;
 import shared.JsonParser;
-import shared.Message;
+import shared.models.Message;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

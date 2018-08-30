@@ -3,6 +3,7 @@ package client.models.connection;
 
 import client.models.EstimationViewUpdater;
 import shared.*;
+import shared.models.Message;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

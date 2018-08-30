@@ -2,7 +2,7 @@ package client.models;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import shared.BasicFileData;
+import shared.models.BasicFileData;
 import shared.Constants;
 import shared.Methods;
 

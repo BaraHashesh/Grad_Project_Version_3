@@ -1,5 +1,7 @@
 package shared;
 
+import shared.models.BasicFileData;
+
 import java.io.File;
 
 /**

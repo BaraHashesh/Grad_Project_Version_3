@@ -1,6 +1,6 @@
 package server.models;
 
-import shared.BasicFileData;
+import shared.models.BasicFileData;
 import shared.FileTransfer;
 import shared.Methods;
 import shared.ObjectParser;

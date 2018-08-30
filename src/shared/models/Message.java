@@ -1,4 +1,6 @@
-package shared;
+package shared.models;
+
+import shared.Constants;
 
 /**
  * Message object is used to exchange simple messages between server and client

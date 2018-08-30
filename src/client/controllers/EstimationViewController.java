@@ -26,7 +26,7 @@ public class EstimationViewController implements Runnable {
     private Scene scene;
 
     @FXML
-    private Label labelProgress, labelRemaining,
+    public Label labelProgress, labelRemaining,
             infoSize, infoProgress, infoRemaining, infoSpeed, infoTime;
 
 

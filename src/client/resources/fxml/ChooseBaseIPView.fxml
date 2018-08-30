@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane prefHeight="216.0" prefWidth="444.0" stylesheets="@../css/ChooseBaseIPView.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.ChooseBaseIPController">
+   <children>
+      <Label alignment="CENTER" layoutX="13.0" layoutY="32.0" prefHeight="21.0" prefWidth="413.0" text="Please Enter The Base IP For The Network" />
+      <JFXTextField fx:id="IP" layoutX="25.0" layoutY="77.0" maxWidth="396.0" minWidth="396.0" prefHeight="31.0" prefWidth="396.0" promptText="BASE IP ADDRESS" />
+      <JFXButton fx:id="search" layoutX="243.0" layoutY="126.0" onAction="#onSearchButtonClicked" prefHeight="52.0" prefWidth="119.0" styleClass="searchButton" text="Search" />
+      <JFXButton fx:id="cancel" layoutX="95.0" layoutY="126.0" onAction="#onCancelButtonClicked" prefHeight="52.0" prefWidth="119.0" styleClass="cancelButton" text="Cancel" />
+   </children>
+</AnchorPane>
