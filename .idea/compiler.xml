@@ -2,7 +2,7 @@
 <project version="4">
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="Grad_Project_Version_3" options="--add-modules=javafx.graphics,javafx.controls,javafx.base,javafx.fxml,javafx.swing" />
+      <module name="Grad_Project_Version_3" options="--add-modules=javafx.graphics,javafx.controls,javafx.base,javafx.fxml,javafx.swing,javafx.web" />
     </option>
   </component>
 </project>

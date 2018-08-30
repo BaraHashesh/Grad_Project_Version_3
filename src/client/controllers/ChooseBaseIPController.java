@@ -37,7 +37,7 @@ public class ChooseBaseIPController {
             this.stage = new Stage();
             this.stage.setScene(scene);
 
-            return stage;
+            return this.stage;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
