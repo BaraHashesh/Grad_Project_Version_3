@@ -134,7 +134,7 @@ public class EstimationViewController implements Runnable {
                 /*
                 update the infoTime label
                  */
-                double remainingTime = (double) remaining / speed;
+                double remainingTime = (double) remaining / speed; //Time in seconds
 
                 this.infoTime.setText(Methods.getInstance().reduceTime((long) (remainingTime * 1000)));
 

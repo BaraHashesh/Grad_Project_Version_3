@@ -106,7 +106,7 @@ public class Methods {
          */
         if (size >= 1024.0) {
             size = size / 1024.0;
-            sizeOrder = "Kilo-Bytes";
+            sizeOrder = "Kilo-Byte";
         }
 
         /*
@@ -114,7 +114,7 @@ public class Methods {
          */
         if (size >= 1024.0) {
             size = size / 1024.0;
-            sizeOrder = "Mega-Bytes";
+            sizeOrder = "Mega-Byte";
         }
 
         return new Object[]{size, sizeOrder};
@@ -137,7 +137,7 @@ public class Methods {
      * Method used to reduce a given time
      *
      * @param milliSecond Is the time in milli seconds
-     * @return A list containing the reduced size in first element and the order (KB/MB...) in the second
+     * @return A string representing the time in HH:mm:SS format
      */
     public String reduceTime(long milliSecond) {
         return String.format("%02d hours & %02d minutes & %02d seconds",

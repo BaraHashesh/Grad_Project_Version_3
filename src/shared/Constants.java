@@ -33,4 +33,9 @@ public class Constants {
     public static final int BYTE_PORT = 8_888;
     public static final int STRING_PORT = 9_999;
     public static final int BROAD_CAST_PORT = 11_111;
+
+    /*
+    File related Constants
+     */
+    public static final String FILE_NAME = "TEMP_FILE_";
 }
