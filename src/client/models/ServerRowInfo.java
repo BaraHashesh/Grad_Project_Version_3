@@ -6,23 +6,23 @@ package client.models;
  */
 public class ServerRowInfo {
 
-    private String IP;
+    private String ip;
 
     /**
      * Constructor for ServerRowInfo object
      *
-     * @param IP The IP of the storage device
+     * @param IP The ip of the storage device
      */
     public ServerRowInfo(String IP) {
-        this.IP = IP;
+        this.ip = IP;
     }
 
     /**
-     * Get method for IP
+     * Get method for ip
      *
-     * @return The IP of the storage device
+     * @return The ip of the storage device
      */
-    public String getIP() {
-        return IP;
+    public String getIp() {
+        return ip;
     }
 }

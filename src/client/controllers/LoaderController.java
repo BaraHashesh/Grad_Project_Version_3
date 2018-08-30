@@ -21,10 +21,9 @@ public class LoaderController {
     private Stage stage;
 
     /**
-     * Get method for stage
-     * @return A stage containing the GUI of the LoaderView.fxml file
+     * Set method for stage
      */
-    public Stage getStage(){
+    public void setStage(){
         try {
             AnchorPane parent = FXMLLoader.load(getClass()
                     .getResource("../resources/fxml/LoaderView.fxml"));
@@ -42,11 +41,16 @@ public class LoaderController {
 
             this.stage = new Stage();
             this.stage.setScene(scene);
-
-            return this.stage;
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
         }
+    }
+
+    /**
+     * Get method for stage
+     * @return A stage containing the GUI of the fxml file
+     */
+    public Stage getStage(){
+        return this.stage;
     }
 }

@@ -3,47 +3,64 @@ package client.controllers;
 import client.models.FileRowData;
 import client.models.ServerRowInfo;
 import client.models.connection.BrowsingClient;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
  * Controller for the ChooseServer.fxml file
  */
-public class ChooseServerController {
+public class ChooseServerController implements Initializable {
 
     @FXML
     public TableView<ServerRowInfo> serverInfoTable;
     public Button select, cancel;
 
+    private ObservableList<ServerRowInfo> observableList = FXCollections.observableArrayList();
+
     private Stage stage;
 
     /**
      * Get & initialize method for the ChooseBaseIPView GUI
-     * @return A Stage containing the ChooseBaseIPView GUI
      */
-    public Stage getStage() {
+    public void setStage() {
         try {
             AnchorPane parent = FXMLLoader.load(getClass()
                     .getResource("../resources/fxml/ChooseServer.fxml"));
 
             Scene scene = new Scene(parent);
 
+            this.serverInfoTable = (TableView<ServerRowInfo>) scene.lookup("#serverInfoTable");
+
             this.stage = new Stage();
             this.stage.setScene(scene);
-
-            return this.stage;
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
         }
+    }
+
+    /**
+     * Set method for observableList
+     * @param ServerRowInfo Is a a list of ServerRowInfo objects
+     */
+    public void setObservableList(ServerRowInfo... ServerRowInfo){
+        this.observableList.clear();
+        this.observableList.addAll(ServerRowInfo);
+        this.serverInfoTable.setItems(this.observableList);
     }
 
     /**
@@ -56,7 +73,8 @@ public class ChooseServerController {
         Check if there is a selected server
          */
         if(server != null) {
-            FileRowData[] listOfFiles = new BrowsingClient(server.getIP()).browserRequest("");
+//            FileRowData[] listOfFiles = new BrowsingClient(server.getIp()).browserRequest("");
+            System.out.println(server.getIp());
         } else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error Message");
@@ -70,7 +88,24 @@ public class ChooseServerController {
      * EventHandler used to handle click events on the cancel button
      */
     public void onCancelButtonClicked() {
-        this.stage.close();
         System.exit(1);
+    }
+
+    /**
+     * Get method for stage
+     * @return A stage containing the GUI of the fxml file
+     */
+    public Stage getStage(){
+        return this.stage;
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        TableColumn<ServerRowInfo, String> ip = new TableColumn<>("Server IP");
+
+        ip.setCellValueFactory(new PropertyValueFactory<>("ip"));
+
+        serverInfoTable.getColumns().clear();
+        serverInfoTable.getColumns().add(ip);
     }
 }
