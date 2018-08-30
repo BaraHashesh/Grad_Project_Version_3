@@ -1,25 +1,27 @@
 package client.controllers;
 
+import client.models.FileRowData;
+import client.models.ServerRowInfo;
+import client.models.connection.BrowsingClient;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import shared.Constants;
 
 import java.io.IOException;
 
 /**
- * Controller for the ChooseBaseIP.fxml file
+ * Controller for the ChooseServer.fxml file
  */
-public class ChooseBaseIPController {
+public class ChooseServerController {
 
     @FXML
-    public TextField IP;
-    public Button search, cancel;
+    public TableView<ServerRowInfo> serverInfoTable;
+    public Button select, cancel;
 
     private Stage stage;
 
@@ -30,7 +32,7 @@ public class ChooseBaseIPController {
     public Stage getStage() {
         try {
             AnchorPane parent = FXMLLoader.load(getClass()
-                    .getResource("../resources/fxml/ChooseBaseIPView.fxml"));
+                    .getResource("../resources/fxml/ChooseServer.fxml"));
 
             Scene scene = new Scene(parent);
 
@@ -45,22 +47,22 @@ public class ChooseBaseIPController {
     }
 
     /**
-     * EventHandler used to handle click events on the search button
+     * EventHandler used to handle click events on the select button
      */
-    public void onSearchButtonClicked() {
-        String serverIP = this.IP.getText();
+    public void onSelectButtonClicked() {
+        ServerRowInfo server = serverInfoTable.getSelectionModel().getSelectedItem();
 
         /*
-        Check if entered IP is a valid IP
+        Check if there is a selected server
          */
-        if (!Constants.IPV4_REGEX.matcher(serverIP).matches()){
+        if(server != null) {
+            FileRowData[] listOfFiles = new BrowsingClient(server.getIP()).browserRequest("");
+        } else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error Message");
             alert.setHeaderText(null);
-            alert.setContentText("Please Enter a valid IP (IPv4)");
+            alert.setContentText("Please select a server");
             alert.showAndWait();
-        } else {
-            System.out.println(serverIP);
         }
     }
 
@@ -71,5 +73,4 @@ public class ChooseBaseIPController {
         this.stage.close();
         System.exit(1);
     }
-
 }

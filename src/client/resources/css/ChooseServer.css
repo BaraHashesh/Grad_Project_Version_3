@@ -1,0 +1,19 @@
+.searchButton {
+    -fx-background-color: rgb(80, 80, 200);
+    -fx-font-size: 18px;
+    -fx-text-fill: white;
+}
+
+.cancelButton {
+    -fx-background-color: rgb(200, 200, 200);
+    -fx-font-size: 18px;
+    -fx-text-fill: white;
+}
+
+.cancelButton:hover {
+    -fx-background-color: rgb(160, 160, 160);
+}
+
+.searchButton:hover {
+    -fx-background-color: rgb(40, 40, 160);
+}

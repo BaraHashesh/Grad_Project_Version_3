@@ -10,6 +10,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * LoaderController is the controller class for the Loader.fxml file
+ */
 public class LoaderController {
 
     @FXML
@@ -17,6 +20,10 @@ public class LoaderController {
 
     private Stage stage;
 
+    /**
+     * Get method for stage
+     * @return A stage containing the GUI of the LoaderView.fxml file
+     */
     public Stage getStage(){
         try {
             AnchorPane parent = FXMLLoader.load(getClass()

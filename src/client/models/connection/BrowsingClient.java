@@ -1,5 +1,6 @@
 package client.models.connection;
 
+import client.models.FileRowData;
 import shared.ConnectionBuilder;
 import shared.JsonParser;
 import shared.models.BasicFileData;
@@ -30,7 +31,7 @@ public class BrowsingClient {
      * @param path Is the path to the directory
      * @return Information about the files in the directory if it exists
      */
-    public BasicFileData[] browserRequest(String path) {
+    public FileRowData[] browserRequest(String path) {
         Message request, response;
         try {
             Socket clientStringsSocket = ConnectionBuilder.getInstance().buildClientStringSocket(this.IP);
@@ -60,7 +61,7 @@ public class BrowsingClient {
              Check if operation was a success
               */
             if (response.isSuccessMessage()) {
-                return JsonParser.getInstance().fromJson(response.getMessageInfo(), BasicFileData[].class);
+                return JsonParser.getInstance().fromJson(response.getMessageInfo(), FileRowData[].class);
             } else {
                 /*
                  * Handle error here

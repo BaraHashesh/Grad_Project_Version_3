@@ -1,37 +1,37 @@
 package client.models;
 
-import client.controllers.EstimationViewController;
+import client.controllers.EstimationController;
 import shared.Constants;
 import shared.FileTransfer;
 
 import java.net.Socket;
 
 /**
- * EstimationViewUpdater class is used to update the EstimationView FXML file
+ * EstimationUpdater class is used to update the EstimationView FXML file
  * by using the estimationViewController class
  */
-public class EstimationViewUpdater implements Runnable {
+public class EstimationUpdater implements Runnable {
 
-    private EstimationViewController estimationViewController;
+    private EstimationController estimationViewController;
     private long totalFileSize;
     private FileTransfer fileTransfer;
     private Thread thread;
 
     /**
-     * Constructor for the EstimationViewUpdater object
+     * Constructor for the EstimationUpdater object
      *
      * @param fileTransfer  Is the FileTransfer object responsible for the current file/folder
      * @param totalFileSize Is the size of the current file/folder in bytes
      * @param stringSocket  Is the stream socket responsible for the JSON strings for the current file/folder
      * @param byteSocket    Is the stream socket responsible for the pure bytes for the current file/folder
      */
-    public EstimationViewUpdater(FileTransfer fileTransfer, long totalFileSize,
-                                 Socket stringSocket, Socket byteSocket) {
+    public EstimationUpdater(FileTransfer fileTransfer, long totalFileSize,
+                             Socket stringSocket, Socket byteSocket) {
 
         this.totalFileSize = totalFileSize;
         this.fileTransfer = fileTransfer;
 
-        estimationViewController = new EstimationViewController();
+        estimationViewController = new EstimationController();
 
         estimationViewController.initializeVariables(totalFileSize,
                 stringSocket, byteSocket);
@@ -41,7 +41,7 @@ public class EstimationViewUpdater implements Runnable {
     }
 
     /**
-     * Start method for the EstimationViewUpdater Thread
+     * Start method for the EstimationUpdater Thread
      */
     public void start() {
         /*
@@ -54,7 +54,7 @@ public class EstimationViewUpdater implements Runnable {
     }
 
     /**
-     * Run method for the EstimationViewUpdater class
+     * Run method for the EstimationUpdater class
      * used to update the EstimationView FXML
      */
     @Override
@@ -75,7 +75,7 @@ public class EstimationViewUpdater implements Runnable {
     }
 
     /**
-     * Method used to send last update to the EstimationViewController class
+     * Method used to send last update to the EstimationController class
      */
     public void finalUpdate() {
         this.estimationViewController.update(this.totalFileSize);

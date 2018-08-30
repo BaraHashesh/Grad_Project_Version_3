@@ -3,8 +3,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="181.0" prefWidth="612.0" styleClass="body"
-            stylesheets="@../css/EstimationView.css" xmlns="http://javafx.com/javafx/8"
-            fx:controller="client.controllers.EstimationViewController">
+            stylesheets="@../css/Estimation.css" xmlns="http://javafx.com/javafx/8"
+            fx:controller="client.controllers.EstimationController">
 
     <children>
         <VBox layoutX="85.0" layoutY="316.0" prefHeight="178.0" prefWidth="600.0" styleClass="vBox"

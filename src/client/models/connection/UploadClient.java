@@ -1,7 +1,7 @@
 package client.models.connection;
 
 
-import client.models.EstimationViewUpdater;
+import client.models.EstimationUpdater;
 import shared.ConnectionBuilder;
 import shared.FileTransfer;
 import shared.JsonParser;
@@ -93,7 +93,7 @@ public class UploadClient implements Runnable {
 
                 FileTransfer fileTransfer = new FileTransfer();
 
-                EstimationViewUpdater updater = new EstimationViewUpdater(fileTransfer,
+                EstimationUpdater updater = new EstimationUpdater(fileTransfer,
                         Methods.getInstance().calculateSize(this.file), stringSocket, byteSocket);
 
                 updater.start();

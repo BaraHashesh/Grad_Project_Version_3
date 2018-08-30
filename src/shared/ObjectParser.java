@@ -1,8 +1,10 @@
 package shared;
 
+import client.models.ServerRowInfo;
 import shared.models.BasicFileData;
 
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * ObjectParser class is used to cast objects, that have no direct relationship between them
@@ -43,4 +45,25 @@ public class ObjectParser {
 
         return newList;
     }
+
+    /**
+     * Method used to convert an ArrayList object that contains
+     * servers IPs into an array of ServerInfo Objects
+     *
+     * @param primitiveServerInfo An ArrayList of strings strings that contains the IPs of ther servers
+     * @return An array of ServerRowInfo Objects
+     */
+    public ServerRowInfo[] constructServerInfo(ArrayList<String> primitiveServerInfo) {
+        ServerRowInfo[] serverInfos = new ServerRowInfo[primitiveServerInfo.size()];
+
+        /*
+        For loop to iterate over ArrayList
+         */
+        for (int i = 0; i < primitiveServerInfo.size(); i++) {
+            serverInfos[i] = new ServerRowInfo(primitiveServerInfo.get(i));
+        }
+
+        return serverInfos;
+    }
+
 }

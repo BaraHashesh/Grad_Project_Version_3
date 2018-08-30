@@ -1,19 +1,19 @@
 package client.models;
 
 /**
- * ServerInfoRow object is used by the GUI to display information
+ * ServerRowInfo object is used by the GUI to display information
  * about the servers (storage devices available for the user)
  */
-public class ServerInfoRow {
+public class ServerRowInfo {
 
     private String IP;
 
     /**
-     * Constructor for ServerInfoRow object
+     * Constructor for ServerRowInfo object
      *
      * @param IP The IP of the storage device
      */
-    public ServerInfoRow(String IP) {
+    public ServerRowInfo(String IP) {
         this.IP = IP;
     }
 

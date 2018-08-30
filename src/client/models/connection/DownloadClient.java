@@ -1,7 +1,7 @@
 package client.models.connection;
 
 
-import client.models.EstimationViewUpdater;
+import client.models.EstimationUpdater;
 import shared.ConnectionBuilder;
 import shared.FileTransfer;
 import shared.JsonParser;
@@ -92,7 +92,7 @@ public class DownloadClient implements Runnable {
 
                 long size = Long.parseLong(response.getMessageInfo());
 
-                EstimationViewUpdater updater = new EstimationViewUpdater(fileTransfer,
+                EstimationUpdater updater = new EstimationUpdater(fileTransfer,
                         size, stringSocket, byteSocket);
 
                 updater.start();

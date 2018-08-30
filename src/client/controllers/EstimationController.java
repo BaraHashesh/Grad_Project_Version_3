@@ -14,9 +14,9 @@ import java.io.IOException;
 import java.net.Socket;
 
 /**
- * Controller for the EstimationView.fxml file
+ * Controller for the Estimation.fxml file
  */
-public class EstimationViewController implements Runnable {
+public class EstimationController implements Runnable {
 
     @FXML
     public Label labelProgress, labelRemaining,
@@ -28,7 +28,7 @@ public class EstimationViewController implements Runnable {
     private Scene scene;
 
     /**
-     * Initializer for the EstimationViewController
+     * Initializer for the EstimationController
      *
      * @param totalFileSize Is the size of the current file/folder in bytes
      * @param stringSocket  Is the stream socket responsible for the JSON strings for the current file/folder
