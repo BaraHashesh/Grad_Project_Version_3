@@ -12,9 +12,6 @@ import java.nio.charset.StandardCharsets;
  * and is used to build input and output streams for both strings and bytes
  */
 public class ConnectionBuilder {
-    private static final int BYTE_PORT = 8_888;
-    private static final int STRING_PORT = 9_999;
-    public static final int BROAD_CAST_PORT = 11_111;
     private static ConnectionBuilder instance = new ConnectionBuilder();
 
     /**
@@ -40,7 +37,7 @@ public class ConnectionBuilder {
      * @throws IOException Unable to connect to server
      */
     public Socket buildClientStringSocket(String IP) throws IOException {
-        return new Socket(IP, STRING_PORT);
+        return new Socket(IP, Constants.STRING_PORT);
     }
 
     /**
@@ -51,7 +48,7 @@ public class ConnectionBuilder {
      * @throws IOException Unable to connect to server
      */
     public Socket buildClientByteSocket(String IP) throws IOException {
-        return new Socket(IP, BYTE_PORT);
+        return new Socket(IP, Constants.BYTE_PORT);
     }
 
     /**
@@ -61,7 +58,7 @@ public class ConnectionBuilder {
      * @throws IOException Port is busy
      */
     public ServerSocket buildServerStringSocket() throws IOException {
-        return new ServerSocket(STRING_PORT);
+        return new ServerSocket(Constants.STRING_PORT);
     }
 
     /**
@@ -71,7 +68,7 @@ public class ConnectionBuilder {
      * @throws IOException Port is busy
      */
     public ServerSocket buildServerByteSocket() throws IOException {
-        return new ServerSocket(BYTE_PORT);
+        return new ServerSocket(Constants.BYTE_PORT);
     }
 
     /**
