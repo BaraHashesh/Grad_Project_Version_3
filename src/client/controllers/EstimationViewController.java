@@ -18,17 +18,14 @@ import java.net.Socket;
  */
 public class EstimationViewController implements Runnable {
 
-    private long totalFileSize, progress, previousValue;
-    private Socket stringSocket, byteSocket;
-    private Boolean initialized = false;
-
-    private Stage stage;
-    private Scene scene;
-
     @FXML
     public Label labelProgress, labelRemaining,
             infoSize, infoProgress, infoRemaining, infoSpeed, infoTime;
-
+    private long totalFileSize, progress, previousValue;
+    private Socket stringSocket, byteSocket;
+    private Boolean initialized = false;
+    private Stage stage;
+    private Scene scene;
 
     /**
      * Constructor for EstimationViewController

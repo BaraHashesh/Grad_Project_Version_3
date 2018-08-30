@@ -14,7 +14,7 @@ public class ChooseBaseIPController {
     public JFXButton search, cancel;
 
 
-    public void onSearchButtonClicked(){
+    public void onSearchButtonClicked() {
 
     }
 

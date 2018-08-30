@@ -1,9 +1,9 @@
 package server.models;
 
-import shared.models.BasicFileData;
 import shared.FileTransfer;
 import shared.Methods;
 import shared.ObjectParser;
+import shared.models.BasicFileData;
 
 import java.io.*;
 

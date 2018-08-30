@@ -2,7 +2,10 @@ package client.models.connection;
 
 
 import client.models.EstimationViewUpdater;
-import shared.*;
+import shared.ConnectionBuilder;
+import shared.FileTransfer;
+import shared.JsonParser;
+import shared.Methods;
 import shared.models.Message;
 
 import java.io.BufferedReader;

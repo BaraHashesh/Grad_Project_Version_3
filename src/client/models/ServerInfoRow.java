@@ -10,6 +10,7 @@ public class ServerInfoRow {
 
     /**
      * Constructor for ServerInfoRow object
+     *
      * @param IP The IP of the storage device
      */
     public ServerInfoRow(String IP) {
@@ -18,6 +19,7 @@ public class ServerInfoRow {
 
     /**
      * Get method for IP
+     *
      * @return The IP of the storage device
      */
     public String getIP() {

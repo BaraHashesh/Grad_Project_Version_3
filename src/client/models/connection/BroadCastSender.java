@@ -1,6 +1,5 @@
 package client.models.connection;
 
-import shared.ConnectionBuilder;
 import shared.Constants;
 
 import java.net.DatagramPacket;
@@ -11,35 +10,32 @@ import java.util.ArrayList;
 /**
  * BroadCastSender class is used by clients to discover storage devices
  */
-public class BroadCastSender implements Runnable{
-
-    private String broadcastIP;
-
-    private ArrayList<String> arrayListIP = new ArrayList<>(10);
-    private boolean done = false;
+public class BroadCastSender implements Runnable {
 
     private static final Object lock = new Object();
-
+    private String broadcastIP;
+    private ArrayList<String> arrayListIP = new ArrayList<>(10);
+    private boolean done = false;
+    private Thread thread = null;
 
     /**
      * Constructor for the BroadCastSender object
+     *
      * @param baseIP is the base IP of the network
      */
-    public BroadCastSender(String baseIP){
+    public BroadCastSender(String baseIP) {
         String[] temp = baseIP.split("\\.");
-        this.broadcastIP = temp[0] + "." + temp[1] + "." + temp[2] + ".255" ;
+        this.broadcastIP = temp[0] + "." + temp[1] + "." + temp[2] + ".255";
     }
-
-    private Thread thread = null;
 
     /**
      * Method used to start the thread for the discovery operations
      */
-    public void start(){
+    public void start() {
         /*
         Check if the thread is running
          */
-        if (thread == null){
+        if (thread == null) {
             thread = new Thread(this);
             thread.start();
         }
@@ -48,7 +44,7 @@ public class BroadCastSender implements Runnable{
     /**
      * Run method used to discover storage devices
      */
-    public void run(){
+    public void run() {
         try {
             DatagramSocket socket = new DatagramSocket();
             socket.setBroadcast(true);
@@ -59,7 +55,7 @@ public class BroadCastSender implements Runnable{
                     InetAddress.getByName(this.broadcastIP), Constants.BROAD_CAST_PORT);
 
             socket.send(packet); // send a broadcast message for all devices
-            socket.setSoTimeout((int) (Constants.WAIT_PERIOD*1000) );
+            socket.setSoTimeout((int) (Constants.WAIT_PERIOD * 1000));
 
             /*
             Infinite loop to receive response from all possible devices
@@ -73,8 +69,7 @@ public class BroadCastSender implements Runnable{
                 InetAddress address = packet.getAddress(); // get the IP of the replaying device
                 arrayListIP.add(address.toString().substring(1));
             }
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             this.done = true;
             System.out.println("BroadCastSender - time Out");
         }
@@ -84,9 +79,9 @@ public class BroadCastSender implements Runnable{
         /*
         While loop that waits until timeout failure is achieved
          */
-        while (true){
+        while (true) {
             synchronized (lock) {
-                if(this.done) {
+                if (this.done) {
                     break;
                 }
             }

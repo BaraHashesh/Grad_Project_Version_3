@@ -1,6 +1,5 @@
 package server.models;
 
-import shared.ConnectionBuilder;
 import shared.Constants;
 
 import java.net.DatagramPacket;
