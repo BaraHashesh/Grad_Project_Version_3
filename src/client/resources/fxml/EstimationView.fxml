@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="181.0" prefWidth="612.0" styleClass="body"
+            stylesheets="@../css/EstimationView.css" xmlns="http://javafx.com/javafx/8"
+            fx:controller="client.controllers.EstimationViewController">
+
+    <children>
+        <VBox layoutX="85.0" layoutY="316.0" prefHeight="178.0" prefWidth="600.0" styleClass="vBox"
+              AnchorPane.bottomAnchor="222.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+              AnchorPane.topAnchor="0.0">
+            <children>
+
+                <HBox prefHeight="13.0" prefWidth="600.0" styleClass="hBox">
+                    <children>
+                        <Label styleClass="label" text="File Size:"/>
+                        <Label fx:id="infoSize" prefHeight="21.0" prefWidth="509.0" styleClass="label"/>
+                    </children>
+                </HBox>
+                <HBox prefHeight="18.0" prefWidth="600.0" styleClass="hBox">
+                    <children>
+                        <Label styleClass="label" text="Progress:"/>
+                        <Label fx:id="infoProgress" prefHeight="21.0" prefWidth="504.0" styleClass="label"/>
+                    </children>
+                </HBox>
+
+                <HBox prefHeight="22.0" prefWidth="589.0" styleClass="hBox">
+                    <children>
+                        <Label styleClass="label" text="Remaining:"/>
+                        <Label fx:id="infoRemaining" prefHeight="21.0" prefWidth="485.0" styleClass="label"/>
+                    </children>
+                </HBox>
+                <HBox prefHeight="20.0" prefWidth="600.0" styleClass="hBox">
+                    <children>
+                        <Label styleClass="label" text="Speed:"/>
+                        <Label fx:id="infoSpeed" prefHeight="21.0" prefWidth="527.0" styleClass="label"/>
+                    </children>
+                </HBox>
+                <HBox prefHeight="18.0" prefWidth="600.0" styleClass="hBox">
+                    <children>
+                        <Label styleClass="label" text="Time Estimation: "/>
+                        <Label fx:id="infoTime" prefHeight="21.0" prefWidth="431.0" styleClass="label"/>
+                    </children>
+                </HBox>
+
+                <HBox prefHeight="14.0" prefWidth="600.0">
+                    <children>
+                        <Label fx:id="labelProgress" prefHeight="15.0" prefWidth="71.0" style="-fx-pref-width: 0;"
+                               styleClass="label-progress"/>
+                        <Label fx:id="labelRemaining" prefHeight="15.0" prefWidth="52.0" style="-fx-pref-width: 0;"
+                               styleClass="label"/>
+                    </children>
+                </HBox>
+
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
