@@ -1,5 +1,6 @@
 package client.main;
 
+import client.controllers.ChooseBaseIPController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -16,6 +17,7 @@ public class Client extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
+        ChooseBaseIPController chooseBaseIPController = new ChooseBaseIPController();
+        chooseBaseIPController.getStage().show();
     }
 }

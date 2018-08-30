@@ -1,5 +1,7 @@
 package shared;
 
+import java.util.regex.Pattern;
+
 /**
  * Constants is used to store some constant values
  */
@@ -38,4 +40,11 @@ public class Constants {
     File related Constants
      */
     public static final String FILE_NAME = "TEMP_FILE_";
+
+    /*
+    Regex expressions
+     */
+    public final static Pattern IPV4_REGEX = Pattern.compile(
+            "^(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])$"
+    );
 }

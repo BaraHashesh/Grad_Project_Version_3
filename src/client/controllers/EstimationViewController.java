@@ -28,7 +28,7 @@ public class EstimationViewController implements Runnable {
     private Scene scene;
 
     /**
-     * Constructor for EstimationViewController
+     * Initializer for the EstimationViewController
      *
      * @param totalFileSize Is the size of the current file/folder in bytes
      * @param stringSocket  Is the stream socket responsible for the JSON strings for the current file/folder
