@@ -2,29 +2,31 @@ package client.models.connection;
 
 
 import client.models.EstimationViewUpdater;
-import shared.*;
+import shared.ConnectionBuilder;
+import shared.FileTransfer;
+import shared.JsonParser;
+import shared.Message;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.DataOutputStream;
-import java.io.File;
+import java.io.DataInputStream;
 import java.net.Socket;
 
 /**
- * UploadClient class is used to upload files to storage device on a separate thread
+ * DownloadClient class is used to download files from server on a separate thread
  */
-public class UploadClient implements Runnable {
-    private File file;
+public class DownloadClient implements Runnable {
+    private String path;
     private String locationToSave;
     private String IP;
     private Thread thread;
 
     /**
-     * Constructor for the UploadClient object for a specific storage device
+     * Constructor for the DownloadClient object for a specific storage device
      *
      * @param hostIP Is the IP of the storage device
      */
-    public UploadClient(String hostIP) {
+    public DownloadClient(String hostIP) {
         this.IP = hostIP;
     }
 
@@ -32,11 +34,11 @@ public class UploadClient implements Runnable {
      * Initialize method for the variables
      * also start thread operations
      *
-     * @param file           Is file to be uploaded
-     * @param locationToSave Is the location to save file under within the storage device
+     * @param path           Is the path of the file to be downloaded
+     * @param locationToSave is the location to save file under within the user device
      */
-    public void start(File file, String locationToSave) {
-        this.file = file;
+    public void start(String path, String locationToSave) {
+        this.path = path;
         this.locationToSave = locationToSave;
 
         /*
@@ -49,27 +51,27 @@ public class UploadClient implements Runnable {
     }
 
     /**
-     * Upload operations are done here
+     * Download operations are done here
      */
     @Override
     public void run() {
         Message request, response;
         try {
-
             Socket stringSocket = ConnectionBuilder.getInstance().buildClientStringSocket(this.IP);
             Socket byteSocket = ConnectionBuilder.getInstance().buildClientByteSocket(this.IP);
 
             BufferedWriter stringOutputStream = ConnectionBuilder.getInstance()
                     .buildStringOutputStream(stringSocket);
 
-            DataOutputStream byteOutputStream = ConnectionBuilder.getInstance()
-                    .buildByteOutputStream(byteSocket);
+            DataInputStream byteInputStream = ConnectionBuilder.getInstance()
+                    .buildByteInputStream(byteSocket);
 
             BufferedReader stringInputStream = ConnectionBuilder.getInstance()
                     .buildStringInputStream(stringSocket);
 
+
             request = new Message();
-            request.createUploadMessage(locationToSave);
+            request.createDownloadMessage(path);
 
             stringOutputStream.write(JsonParser.getInstance().toJson(request));
             stringOutputStream.write('\n');
@@ -78,30 +80,31 @@ public class UploadClient implements Runnable {
             response = JsonParser.getInstance().fromJson(stringInputStream.readLine(), Message.class);
 
             /*
-            Check if operation was possible
-             */
+             Check if operation was possible
+              */
             if (response.isErrorMessage()) {
                 /*
                  * Handle Error Here
                  */
             } else {
-                String parent = this.file.getParent();
 
                 FileTransfer fileTransfer = new FileTransfer();
 
+                long size = Long.parseLong(response.getMessageInfo());
+
                 EstimationViewUpdater updater = new EstimationViewUpdater(fileTransfer,
-                        Methods.getInstance().calculateSize(this.file), stringSocket, byteSocket);
+                        size, stringSocket, byteSocket);
 
                 updater.start();
 
-                fileTransfer.sendFiles(stringOutputStream, byteOutputStream, this.file, parent);
+                fileTransfer.receiveFiles(byteInputStream, stringInputStream, locationToSave);
 
                 updater.finalUpdate();
             }
 
             stringInputStream.close();
+            byteInputStream.close();
             stringOutputStream.close();
-            byteOutputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

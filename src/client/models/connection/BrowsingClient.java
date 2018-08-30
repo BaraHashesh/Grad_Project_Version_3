@@ -16,12 +16,12 @@ public class BrowsingClient {
     private String IP;
 
     /**
-     * Constructor for a specific server
+     * Constructor for the BrowsingClient object for a specific storage device
      *
-     * @param clientIP Is the IP of the server
+     * @param hostIP Is the IP of the storage device
      */
-    public BrowsingClient(String clientIP) {
-        this.IP = clientIP;
+    public BrowsingClient(String hostIP) {
+        this.IP = hostIP;
     }
 
     /**

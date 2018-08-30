@@ -1,5 +1,7 @@
 package server.models;
 
+import shared.ConnectionBuilder;
+
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -27,9 +29,8 @@ public class BroadCastReceiver implements Runnable {
      */
     @Override
     public void run() {
-        DatagramSocket socket;
         try {
-            socket = new DatagramSocket(10000);
+            DatagramSocket socket = new DatagramSocket(ConnectionBuilder.BROAD_CAST_PORT);
 
             /*
             Infinite while loop to receive all discover messages

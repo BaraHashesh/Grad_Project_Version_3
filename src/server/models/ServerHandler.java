@@ -4,10 +4,7 @@ import shared.ConnectionBuilder;
 import shared.JsonParser;
 import shared.Message;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import java.io.*;
 import java.net.Socket;
 
 
@@ -134,12 +131,7 @@ public class ServerHandler implements Runnable {
 
                     StorageHandler.getInstance().uploadFile(stringOutputStream, byteOutputStream, path);
                 } else {
-                    serverResponse = new Message();
-                    serverResponse.createErrorMessage(conflict);
-
-                    stringOutputStream.write(JsonParser.getInstance().toJson(serverResponse));
-                    stringOutputStream.write('\n');
-                    stringOutputStream.flush();
+                    this.handleConflict(stringOutputStream, conflict);
                 }
             }
 
@@ -163,12 +155,7 @@ public class ServerHandler implements Runnable {
 
                     StorageHandler.getInstance().downloadFile(byteInputStream, stringInputStream, path);
                 } else {
-                    serverResponse = new Message();
-                    serverResponse.createErrorMessage(conflict);
-
-                    stringOutputStream.write(JsonParser.getInstance().toJson(serverResponse));
-                    stringOutputStream.write('\n');
-                    stringOutputStream.flush();
+                    this.handleConflict(stringOutputStream, conflict);
                 }
             }
 
@@ -193,6 +180,20 @@ public class ServerHandler implements Runnable {
      */
     public String checkForConflict(String filePath) {
         return null;
+    }
+
+    /**
+     * Method used to handle conflicts in Upload & Download requests
+     * @param stringOutputStream Is the output stream for JSON data
+     * @throws IOException Output stream is not available
+     */
+    private void handleConflict(BufferedWriter stringOutputStream, String conflict) throws IOException {
+        Message serverResponse = new Message();
+        serverResponse.createErrorMessage(conflict);
+
+        stringOutputStream.write(JsonParser.getInstance().toJson(serverResponse));
+        stringOutputStream.write('\n');
+        stringOutputStream.flush();
     }
 
 }
