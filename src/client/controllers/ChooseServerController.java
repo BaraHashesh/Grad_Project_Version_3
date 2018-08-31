@@ -1,6 +1,9 @@
 package client.controllers;
 
+import client.main.Client;
+import client.models.FileRowData;
 import client.models.ServerRowInfo;
+import client.models.connection.BrowsingClient;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -47,7 +50,7 @@ public class ChooseServerController implements Initializable {
     /**
      * Get & initialize method for the ChooseBaseIPView GUI
      */
-    public void setStage() {
+    private void setStage() {
         try {
             AnchorPane parent = FXMLLoader.load(getClass()
                     .getResource("../resources/fxml/ChooseServer.fxml"));
@@ -83,11 +86,17 @@ public class ChooseServerController implements Initializable {
         Check if there is a selected server
          */
         if(server != null) {
-//            FileRowData[] listOfFiles = new BrowsingClient(server.getIp()).browserRequest("");
-            System.out.println(server.getIp());
+            FileRowData[] listOfFiles = new BrowsingClient(server.getIp()).browserRequest("");
+
+            Client.browserController = BrowserController.getInstance();
+            Client.browserController.setIP(server.getIp());
+            Client.browserController.setObservableList(listOfFiles);
+            Client.browserController.getStage().show();
+
+            Client.chooseServerController.getStage().close();
         } else {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Error Message");
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Invalid action");
             alert.setHeaderText(null);
             alert.setContentText("Please select a server");
             alert.showAndWait();

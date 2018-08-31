@@ -1,5 +1,6 @@
 package client.main;
 
+import client.controllers.BrowserController;
 import client.controllers.ChooseBaseIPController;
 import client.controllers.ChooseServerController;
 import client.controllers.LoaderController;
@@ -14,6 +15,7 @@ public class Client extends Application {
     public static ChooseBaseIPController chooseBaseIPController;
     public static LoaderController loaderController;
     public static ChooseServerController chooseServerController;
+    public static BrowserController browserController;
 
     public static void main(String[] args) {
         System.setProperty("java.net.preferIPv4Stack", "true");

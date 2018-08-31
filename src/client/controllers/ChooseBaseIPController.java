@@ -18,7 +18,7 @@ import shared.ObjectParser;
 import java.io.IOException;
 
 /**
- * Controller for the ChooseBaseIP.fxml file
+ * Controller for the ChooseBaseIPView.fxml file
  */
 public class ChooseBaseIPController implements Runnable{
 
@@ -47,7 +47,7 @@ public class ChooseBaseIPController implements Runnable{
     /**
      * Set & initialize method for the ChooseBaseIPView GUI
      */
-    public void setStage() {
+    private void setStage() {
         try {
             AnchorPane parent = FXMLLoader.load(getClass()
                     .getResource("../resources/fxml/ChooseBaseIPView.fxml"));
@@ -71,8 +71,8 @@ public class ChooseBaseIPController implements Runnable{
         Check if entered IP is a valid IP
          */
         if (!Constants.IPV4_REGEX.matcher(serverIP).matches()){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Error Message");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid IP");
             alert.setHeaderText(null);
             alert.setContentText("Please Enter a valid IP (IPv4)");
             alert.showAndWait();

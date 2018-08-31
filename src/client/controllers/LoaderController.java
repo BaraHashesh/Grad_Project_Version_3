@@ -34,7 +34,7 @@ public class LoaderController {
     /**
      * Set method for stage
      */
-    public void setStage(){
+    private void setStage(){
         try {
             AnchorPane parent = FXMLLoader.load(getClass()
                     .getResource("../resources/fxml/LoaderView.fxml"));

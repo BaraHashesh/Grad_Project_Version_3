@@ -53,7 +53,7 @@ public class EstimationController implements Runnable {
     /**
      * Set method for the EstimationView GUI
      */
-    public void setStage() {
+    private void setStage() {
         try {
             AnchorPane parent = FXMLLoader.load(getClass()
                     .getResource("../resources/fxml/EstimationView.fxml"));
