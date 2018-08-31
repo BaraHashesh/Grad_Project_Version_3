@@ -86,11 +86,8 @@ public class ChooseServerController implements Initializable {
         Check if there is a selected server
          */
         if(server != null) {
-            FileRowData[] listOfFiles = new BrowsingClient(server.getIp()).browserRequest("");
-
             Client.browserController = BrowserController.getInstance();
             Client.browserController.setIP(server.getIp());
-            Client.browserController.setObservableList(listOfFiles);
             Client.browserController.getStage().show();
 
             Client.chooseServerController.getStage().close();

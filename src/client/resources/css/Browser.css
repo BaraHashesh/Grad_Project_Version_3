@@ -3,6 +3,11 @@
     -fx-background-color: white;
 }
 
+.scroll-pane {
+    -fx-background: white;
+    -fx-border-color: white;
+}
+
 .body {
     -fx-background-color: white;
 }

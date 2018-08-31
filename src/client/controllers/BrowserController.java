@@ -2,6 +2,7 @@ package client.controllers;
 
 import client.models.FileRowData;
 import client.models.connection.BrowsingClient;
+import javafx.application.Platform;
 import javafx.beans.property.Property;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -123,9 +124,7 @@ public class BrowserController implements Initializable {
 
             Scene scene = new Scene(parent);
 
-            pathLabel = (Label) scene.lookup("#pathLabel");
-
-            fileTable = (TableView<FileRowData>) scene.lookup("#fileTable");
+            this.fileTable = (TableView<FileRowData>) scene.lookup("#fileTable");
 
             this.stage = new Stage();
             this.stage.setScene(scene);
@@ -204,7 +203,16 @@ public class BrowserController implements Initializable {
      */
     public void setIP(String IP) {
         serverIP = IP;
-        browsingClient = new BrowsingClient(this.serverIP);
+        browsingClient = new BrowsingClient(serverIP);
+
+        FileRowData[] result = new BrowsingClient(serverIP).browserRequest("");
+
+         /*
+            Check if browse was successful
+             */
+        if(result != null) {
+            this.setObservableList(result);
+        }
     }
 
     /**
