@@ -21,9 +21,8 @@ public class Client extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        Client.chooseBaseIPController = new ChooseBaseIPController();
-        Client.chooseBaseIPController.setStage();
+    public void start(Stage primaryStage) {
+        Client.chooseBaseIPController = ChooseBaseIPController.getInstance();
         Client.chooseBaseIPController.getStage().show();
     }
 }

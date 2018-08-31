@@ -21,6 +21,17 @@ public class LoaderController {
     private Stage stage;
 
     /**
+     * Get method for LoaderController
+     * @return An instance of LoaderController object
+     */
+    public static LoaderController getInstance() {
+        LoaderController instance = new LoaderController();
+        instance.setStage();
+
+        return instance;
+    }
+
+    /**
      * Set method for stage
      */
     public void setStage(){

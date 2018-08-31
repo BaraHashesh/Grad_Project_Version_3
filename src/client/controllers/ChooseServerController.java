@@ -1,8 +1,6 @@
 package client.controllers;
 
-import client.models.FileRowData;
 import client.models.ServerRowInfo;
-import client.models.connection.BrowsingClient;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -33,6 +31,18 @@ public class ChooseServerController implements Initializable {
     private ObservableList<ServerRowInfo> observableList = FXCollections.observableArrayList();
 
     private Stage stage;
+
+
+    /**
+     * Get method for ChooseServerController
+     * @return An instance of ChooseServerController object
+     */
+    public static ChooseServerController getInstance() {
+        ChooseServerController instance = new ChooseServerController();
+        instance.setStage();
+
+        return instance;
+    }
 
     /**
      * Get & initialize method for the ChooseBaseIPView GUI

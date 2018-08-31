@@ -32,6 +32,18 @@ public class ChooseBaseIPController implements Runnable{
     private ServerRowInfo[] serverRowInfo;
     private BroadCastSender broadCastSender;
 
+
+    /**
+     * Get method for ChooseBaseIPController
+     * @return An instance of the ChooseBaseIPController
+     */
+    public static ChooseBaseIPController getInstance(){
+        ChooseBaseIPController instance = new ChooseBaseIPController();
+        instance.setStage();
+
+        return instance;
+    }
+
     /**
      * Set & initialize method for the ChooseBaseIPView GUI
      */
@@ -70,8 +82,7 @@ public class ChooseBaseIPController implements Runnable{
 
             Client.chooseBaseIPController.getStage().hide();
 
-            Client.loaderController = new LoaderController();
-            Client.loaderController.setStage();
+            Client.loaderController = LoaderController.getInstance();
             Client.loaderController.getStage().show();
 
             new Thread(this).start();
@@ -105,8 +116,7 @@ public class ChooseBaseIPController implements Runnable{
             this.searched = true;
             Platform.runLater(this);
         } else {
-            Client.chooseServerController = new ChooseServerController();
-            Client.chooseServerController.setStage();
+            Client.chooseServerController = ChooseServerController.getInstance();
             Client.chooseServerController.setObservableList(this.serverRowInfo);
             Client.chooseServerController.getStage().show();
 
