@@ -101,11 +101,7 @@ public class StorageHandler {
         if (path.compareTo("") == 0)
             path = ROOT;
 
-        /*
-        Check if path contains the Root path
-         */
-        if (path.compareTo(ROOT) != 0)
-            path = path + "/";
+        path = path + "/";
 
         try {
             new FileTransfer().receiveFiles(fromClientBytesStream, fromClientStringStream, path);

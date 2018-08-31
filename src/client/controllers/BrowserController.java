@@ -162,10 +162,7 @@ public class BrowserController implements Initializable {
             if(result != null) {
                 this.setObservableList(result);
                 this.pathLabel.setText(
-                        this.observableList.get(0).getPath().
-                                substring(0, this.observableList.get(0).getPath()
-                                .lastIndexOf(this.observableList.get(0).getName()))
-                );
+                        this.observableList.get(0).getParent());
             }
         }
     }
