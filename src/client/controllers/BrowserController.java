@@ -2,8 +2,8 @@ package client.controllers;
 
 import client.models.FileRowData;
 import client.models.connection.BrowsingClient;
-import javafx.application.Platform;
-import javafx.beans.property.Property;
+import client.models.connection.DownloadClient;
+import client.models.connection.UploadClient;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -14,8 +14,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import shared.Constants;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -25,25 +29,21 @@ import java.util.ResourceBundle;
  */
 public class BrowserController implements Initializable {
 
-    @FXML
-    public Label pathLabel;
-
-    @FXML
-    public Button backButton, deleteButton, downloadButton, uploadFileButton, uploadFolderButton;
-
-    @FXML
-    public TableView<FileRowData> fileTable;
-
-    private ObservableList<FileRowData> observableList = FXCollections.observableArrayList();
-
-    private Stage stage;
-
     private static String serverIP;
     private static BrowsingClient browsingClient;
+    @FXML
+    public Label pathLabel;
+    @FXML
+    public Button backButton, deleteButton, downloadButton, uploadFileButton, uploadFolderButton;
+    @FXML
+    public TableView<FileRowData> fileTable;
+    private ObservableList<FileRowData> observableList = FXCollections.observableArrayList();
+    private Stage stage;
     private String parentDirectory = ""; //used to store the path of the previous directory
 
     /**
      * Get method for BrowserController
+     *
      * @return An instance of BrowserController
      */
     public static BrowserController getInstance() {
@@ -74,14 +74,14 @@ public class BrowserController implements Initializable {
         fileTable.getColumns().add(date);
         fileTable.getColumns().add(size);
 
-        fileTable.setRowFactory( tv -> {
+        fileTable.setRowFactory(tv -> {
             TableRow<FileRowData> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
                     this.handleRowDoubleClick();
                 }
             });
-            return row ;
+            return row;
         });
     }
 
@@ -94,18 +94,18 @@ public class BrowserController implements Initializable {
         /*
         Check if a file was selected and it is a directory
          */
-        if(fileRowData != null && fileRowData.isDirectory()) {
+        if (fileRowData != null && fileRowData.isDirectory()) {
             FileRowData[] result = browsingClient.browserRequest(fileRowData.getPath());
 
             /*
             Check if browse was successful
              */
-            if(result != null) {
+            if (result != null) {
                 this.parentDirectory = fileRowData.getParent();
                 /*
                 Check if parent isn't null
                  */
-                if(this.parentDirectory == null)
+                if (this.parentDirectory == null)
                     this.parentDirectory = "";
 
                 this.setObservableList(result);
@@ -140,18 +140,18 @@ public class BrowserController implements Initializable {
         /*
         Check if there're files in the current directory
          */
-        if(observableList.toArray().length == 0) {
+        if (observableList.toArray().length == 0) {
 
             FileRowData[] result = browsingClient.browserRequest(this.parentDirectory);
 
             /*
             Check if browse was successful
              */
-            if(result != null) {
+            if (result != null) {
                 this.setObservableList(result);
                 this.pathLabel.setText(this.parentDirectory);
             }
-        } else  {
+        } else {
             String path = this.observableList.get(0).getPreviousDirectory();
 
             FileRowData[] result = browsingClient.browserRequest(path);
@@ -159,7 +159,7 @@ public class BrowserController implements Initializable {
             /*
             Check if browse was successful
              */
-            if(result != null) {
+            if (result != null) {
                 this.setObservableList(result);
                 this.pathLabel.setText(
                         this.observableList.get(0).getParent());
@@ -171,31 +171,100 @@ public class BrowserController implements Initializable {
      * EventHandler used to handle click events on the delete button
      */
     public void onDeleteButtonClicked() {
+        FileRowData file = fileTable.getSelectionModel().getSelectedItem();
 
+        /*
+        Check if user selected a file
+         */
+        if (file == null) {
+            showAlert();
+        } else {
+            /*
+            Check if delete was successful
+             */
+            if (browsingClient.deleteRequest(file.getPath())) {
+                this.observableList.remove(file);
+                fileTable.setItems(this.observableList);
+            }
+        }
     }
+
     /**
      * EventHandler used to handle click events on the download button
      */
     public void onDownloadButtonClicked() {
+        FileRowData file = fileTable.getSelectionModel().getSelectedItem();
 
+        /*
+        Check if there is a selected file
+         */
+        if (file == null) {
+            this.showAlert();
+        } else {
+            DirectoryChooser chooser = new DirectoryChooser();
+            chooser.setTitle("Place to Save");
+
+            chooser.setInitialDirectory(new File("."));
+
+            File directoryChooser = chooser.showDialog(null);
+
+            /*
+            Check if user selected a location
+             */
+            if (directoryChooser != null)
+                new DownloadClient(serverIP).start(file.getPath(),
+                        directoryChooser.getAbsolutePath() + Constants.BACKWARD_DASH);
+        }
+    }
+
+    /**
+     * Method used to display a warning message to the user
+     */
+    private void showAlert() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Invalid action");
+        alert.setHeaderText(null);
+        alert.setContentText("Please select a File");
+        alert.showAndWait();
     }
 
     /**
      * EventHandler used to handle click events on the upload file button
      */
     public void onUploadFileButtonClicked() {
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("File to Upload");
+        chooser.setInitialDirectory(new File("."));
 
+        File FileChooser = chooser.showOpenDialog(null);
+
+         /*
+         Check if user selected a file
+          */
+        if (FileChooser != null)
+            new UploadClient(serverIP).start(FileChooser, pathLabel.getText());
     }
 
     /**
      * EventHandler used to handle click events on the upload folder button
      */
     public void onUploadFolderButtonClicked() {
+        DirectoryChooser chooser = new DirectoryChooser();
+        chooser.setTitle("Folder to Upload");
+        chooser.setInitialDirectory(new File("."));
 
+        File FileChooser = chooser.showDialog(null);
+
+         /*
+         Check if user selected a folder
+          */
+        if (FileChooser != null)
+            new UploadClient(serverIP).start(FileChooser, pathLabel.getText());
     }
 
     /**
      * Set method for ServerIP
+     *
      * @param IP The ip of the server
      */
     public void setIP(String IP) {
@@ -207,16 +276,17 @@ public class BrowserController implements Initializable {
          /*
             Check if browse was successful
              */
-        if(result != null) {
+        if (result != null) {
             this.setObservableList(result);
         }
     }
 
     /**
      * Set method for observableList
+     *
      * @param fileRowData Is a a list of FileRowData objects
      */
-    public void setObservableList(FileRowData... fileRowData){
+    public void setObservableList(FileRowData... fileRowData) {
         this.observableList.clear();
         this.observableList.addAll(fileRowData);
         this.fileTable.setItems(this.observableList);
@@ -224,20 +294,10 @@ public class BrowserController implements Initializable {
 
     /**
      * Get method for stage
+     *
      * @return A stage containing the GUI of the fxml file
      */
-    public Stage getStage(){
+    public Stage getStage() {
         return this.stage;
-    }
-
-    /**
-     * Method used to display a warning alert to the user
-     */
-    private void showAlert() {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Invalid action");
-        alert.setHeaderText(null);
-        alert.setContentText("Please select a File");
-        alert.showAndWait();
     }
 }

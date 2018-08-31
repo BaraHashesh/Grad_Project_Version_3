@@ -22,6 +22,7 @@ public class LoaderController {
 
     /**
      * Get method for LoaderController
+     *
      * @return An instance of LoaderController object
      */
     public static LoaderController getInstance() {
@@ -34,7 +35,7 @@ public class LoaderController {
     /**
      * Set method for stage
      */
-    private void setStage(){
+    private void setStage() {
         try {
             AnchorPane parent = FXMLLoader.load(getClass()
                     .getResource("../resources/fxml/LoaderView.fxml"));
@@ -59,9 +60,10 @@ public class LoaderController {
 
     /**
      * Get method for stage
+     *
      * @return A stage containing the GUI of the fxml file
      */
-    public Stage getStage(){
+    public Stage getStage() {
         return this.stage;
     }
 }

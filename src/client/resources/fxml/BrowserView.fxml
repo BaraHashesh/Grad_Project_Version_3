@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<AnchorPane prefHeight="570.0" prefWidth="743.0" styleClass="body" stylesheets="@../css/Browser.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.BrowserController">
-   <children>
-      <TableView fx:id="fileTable" layoutY="90.0" prefHeight="405.0" prefWidth="743.0" />
-      <ScrollPane layoutX="115.0" layoutY="10.0" prefHeight="74.0" prefViewportHeight="44.0" prefViewportWidth="601.0" prefWidth="604.0">
-         <content>
-            <Label fx:id="pathLabel" layoutX="100.0" layoutY="14.0" prefHeight="60.0" styleClass="path" />
-         </content>
-      </ScrollPane>
-      <Button fx:id="backButton" layoutX="14.0" layoutY="30.0" mnemonicParsing="false" onAction="#onBackButtonClicked" prefHeight="46.0" prefWidth="83.0" styleClass="backButton" text="Back" />
-      <Button fx:id="deleteButton" layoutX="72.0" layoutY="503.0" mnemonicParsing="false" onAction="#onDeleteButtonClicked" prefHeight="46.0" prefWidth="99.0" styleClass="deleteButton" text="Delete" />
-      <Button fx:id="uploadFileButton" layoutX="372.0" layoutY="503.0" mnemonicParsing="false" onAction="#onUploadFileButtonClicked" prefHeight="46.0" prefWidth="130.0" styleClass="uploadButton" text="Upload File" />
-      <Button fx:id="uploadFolderButton" layoutX="195.0" layoutY="503.0" mnemonicParsing="false" onAction="#onUploadFolderButtonClicked" prefHeight="46.0" prefWidth="151.0" styleClass="uploadButton" text="Upload Foler" />
-      <Button fx:id="downloadButton" layoutX="532.0" layoutY="503.0" mnemonicParsing="false" onAction="#onDownloadButtonClicked" prefHeight="46.0" prefWidth="121.0" styleClass="downloadButton" text="Download" />
-   </children>
+<?import javafx.scene.layout.AnchorPane?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="570.0" prefWidth="743.0" styleClass="body"
+            stylesheets="@../css/Browser.css" xmlns="http://javafx.com/javafx/8"
+            fx:controller="client.controllers.BrowserController">
+    <children>
+        <TableView fx:id="fileTable" layoutY="90.0" prefHeight="405.0" prefWidth="743.0"/>
+        <ScrollPane layoutX="115.0" layoutY="10.0" prefHeight="74.0" prefViewportHeight="44.0" prefViewportWidth="601.0"
+                    prefWidth="604.0">
+            <content>
+                <Label fx:id="pathLabel" layoutX="100.0" layoutY="14.0" prefHeight="60.0" styleClass="path"/>
+            </content>
+        </ScrollPane>
+        <Button fx:id="backButton" layoutX="14.0" layoutY="30.0" mnemonicParsing="false" onAction="#onBackButtonClicked"
+                prefHeight="46.0" prefWidth="83.0" styleClass="backButton" text="Back"/>
+        <Button fx:id="deleteButton" layoutX="72.0" layoutY="503.0" mnemonicParsing="false"
+                onAction="#onDeleteButtonClicked" prefHeight="46.0" prefWidth="99.0" styleClass="deleteButton"
+                text="Delete"/>
+        <Button fx:id="uploadFileButton" layoutX="372.0" layoutY="503.0" mnemonicParsing="false"
+                onAction="#onUploadFileButtonClicked" prefHeight="46.0" prefWidth="130.0" styleClass="uploadButton"
+                text="Upload File"/>
+        <Button fx:id="uploadFolderButton" layoutX="195.0" layoutY="503.0" mnemonicParsing="false"
+                onAction="#onUploadFolderButtonClicked" prefHeight="46.0" prefWidth="151.0" styleClass="uploadButton"
+                text="Upload Foler"/>
+        <Button fx:id="downloadButton" layoutX="532.0" layoutY="503.0" mnemonicParsing="false"
+                onAction="#onDownloadButtonClicked" prefHeight="46.0" prefWidth="121.0" styleClass="downloadButton"
+                text="Download"/>
+    </children>
 </AnchorPane>

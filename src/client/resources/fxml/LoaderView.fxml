@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import javafx.scene.web.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<AnchorPane prefHeight="342.0" prefWidth="321.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.LoaderController">
-   <children>
-      <WebView fx:id="loader" prefHeight="295.0" prefWidth="321.0" />
-      <Label alignment="CENTER" layoutY="292.0" prefHeight="50.0" prefWidth="321.0" style="-fx-background-color: white;" text="LOADING!!!">
-         <font>
-            <Font size="32.0" />
-         </font>
-      </Label>
-   </children>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.web.WebView?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="342.0" prefWidth="321.0" xmlns="http://javafx.com/javafx/8"
+            fx:controller="client.controllers.LoaderController">
+    <children>
+        <WebView fx:id="loader" prefHeight="295.0" prefWidth="321.0"/>
+        <Label alignment="CENTER" layoutY="292.0" prefHeight="50.0" prefWidth="321.0"
+               style="-fx-background-color: white;" text="LOADING!!!">
+            <font>
+                <Font size="32.0"/>
+            </font>
+        </Label>
+    </children>
 </AnchorPane>

@@ -1,9 +1,7 @@
 package client.controllers;
 
 import client.main.Client;
-import client.models.FileRowData;
 import client.models.ServerRowInfo;
-import client.models.connection.BrowsingClient;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -38,6 +36,7 @@ public class ChooseServerController implements Initializable {
 
     /**
      * Get method for ChooseServerController
+     *
      * @return An instance of ChooseServerController object
      */
     public static ChooseServerController getInstance() {
@@ -68,9 +67,10 @@ public class ChooseServerController implements Initializable {
 
     /**
      * Set method for observableList
+     *
      * @param ServerRowInfo Is a a list of ServerRowInfo objects
      */
-    public void setObservableList(ServerRowInfo... ServerRowInfo){
+    public void setObservableList(ServerRowInfo... ServerRowInfo) {
         this.observableList.clear();
         this.observableList.addAll(ServerRowInfo);
         this.serverInfoTable.setItems(this.observableList);
@@ -85,7 +85,7 @@ public class ChooseServerController implements Initializable {
         /*
         Check if there is a selected server
          */
-        if(server != null) {
+        if (server != null) {
             Client.browserController = BrowserController.getInstance();
             Client.browserController.setIP(server.getIp());
             Client.browserController.getStage().show();
@@ -109,9 +109,10 @@ public class ChooseServerController implements Initializable {
 
     /**
      * Get method for stage
+     *
      * @return A stage containing the GUI of the fxml file
      */
-    public Stage getStage(){
+    public Stage getStage() {
         return this.stage;
     }
 

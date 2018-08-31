@@ -20,7 +20,7 @@ import java.io.IOException;
 /**
  * Controller for the ChooseBaseIPView.fxml file
  */
-public class ChooseBaseIPController implements Runnable{
+public class ChooseBaseIPController implements Runnable {
 
     @FXML
     public TextField IP;
@@ -35,9 +35,10 @@ public class ChooseBaseIPController implements Runnable{
 
     /**
      * Get method for ChooseBaseIPController
+     *
      * @return An instance of the ChooseBaseIPController
      */
-    public static ChooseBaseIPController getInstance(){
+    public static ChooseBaseIPController getInstance() {
         ChooseBaseIPController instance = new ChooseBaseIPController();
         instance.setStage();
 
@@ -70,7 +71,7 @@ public class ChooseBaseIPController implements Runnable{
         /*
         Check if entered IP is a valid IP
          */
-        if (!Constants.IPV4_REGEX.matcher(serverIP).matches()){
+        if (!Constants.IPV4_REGEX.matcher(serverIP).matches()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Invalid IP");
             alert.setHeaderText(null);
@@ -98,9 +99,10 @@ public class ChooseBaseIPController implements Runnable{
 
     /**
      * Get method for stage
+     *
      * @return A stage containing the GUI of the fxml file
      */
-    public Stage getStage(){
+    public Stage getStage() {
         return this.stage;
     }
 
@@ -109,7 +111,7 @@ public class ChooseBaseIPController implements Runnable{
         /*
         Check if broadcast operations where concluded
          */
-        if(!this.searched) {
+        if (!this.searched) {
             this.serverRowInfo = ObjectParser.getInstance()
                     .constructServerInfo(this.broadCastSender.getResults());
 
