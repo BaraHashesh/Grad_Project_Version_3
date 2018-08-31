@@ -56,7 +56,7 @@ public class EstimationController implements Runnable {
     private void setStage() {
         try {
             AnchorPane parent = FXMLLoader.load(getClass()
-                    .getResource("../resources/fxml/EstimationView.fxml"));
+                    .getResource("/client/resources/fxml/EstimationView.fxml"));
 
             this.scene = new Scene(parent, parent.getPrefWidth(), 178);
 

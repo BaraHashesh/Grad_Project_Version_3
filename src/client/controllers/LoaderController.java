@@ -38,7 +38,7 @@ public class LoaderController {
     private void setStage() {
         try {
             AnchorPane parent = FXMLLoader.load(getClass()
-                    .getResource("../resources/fxml/LoaderView.fxml"));
+                    .getResource("/client/resources/fxml/LoaderView.fxml"));
 
             Scene scene = new Scene(parent);
 
@@ -47,7 +47,7 @@ public class LoaderController {
             WebEngine engine = loader.getEngine();
 
 
-            String url = getClass().getResource("../resources/html/Loader.html").toExternalForm();
+            String url = getClass().getResource("/client/resources/html/Loader.html").toExternalForm();
 
             engine.load(url);
 

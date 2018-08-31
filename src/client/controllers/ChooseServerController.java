@@ -52,7 +52,7 @@ public class ChooseServerController implements Initializable {
     private void setStage() {
         try {
             AnchorPane parent = FXMLLoader.load(getClass()
-                    .getResource("../resources/fxml/ChooseServer.fxml"));
+                    .getResource("/client/resources/fxml/ChooseServer.fxml"));
 
             Scene scene = new Scene(parent);
 

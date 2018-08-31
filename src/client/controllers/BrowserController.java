@@ -120,7 +120,7 @@ public class BrowserController implements Initializable {
     private void setStage() {
         try {
             AnchorPane parent = FXMLLoader.load(getClass()
-                    .getResource("../resources/fxml/BrowserView.fxml"));
+                    .getResource("/client/resources/fxml/BrowserView.fxml"));
 
             Scene scene = new Scene(parent);
 

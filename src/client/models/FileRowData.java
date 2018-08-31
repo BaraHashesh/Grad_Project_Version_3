@@ -75,7 +75,7 @@ public class FileRowData extends BasicFileData {
              */
             if (isDirectory()) {
                 return new ImageView(new Image(getClass()
-                        .getResource("../resources/images/folder.png").openStream()));
+                        .getResource("/client/resources/images/folder.png").openStream()));
             }
 
             String extension = this.getExtension();
@@ -85,7 +85,7 @@ public class FileRowData extends BasicFileData {
              */
             if (extension.compareTo("") == 0) {
                 return new ImageView(new Image(getClass()
-                        .getResource("../resources/images/file.png").openStream()));
+                        .getResource("/client/resources/images/file.png").openStream()));
             }
 
             /*
@@ -128,7 +128,7 @@ public class FileRowData extends BasicFileData {
              */
             try {
                 return new ImageView(new Image(getClass()
-                        .getResource("../resources/images/file.png").openStream()));
+                        .getResource("/client/resources/images/file.png").openStream()));
 
             } catch (Exception ignored) {
                 return null;

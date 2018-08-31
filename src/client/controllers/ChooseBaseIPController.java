@@ -51,7 +51,7 @@ public class ChooseBaseIPController implements Runnable {
     private void setStage() {
         try {
             AnchorPane parent = FXMLLoader.load(getClass()
-                    .getResource("../resources/fxml/ChooseBaseIPView.fxml"));
+                    .getResource("/client/resources/fxml/ChooseBaseIPView.fxml"));
 
             Scene scene = new Scene(parent);
 
