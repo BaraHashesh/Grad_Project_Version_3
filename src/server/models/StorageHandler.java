@@ -13,7 +13,7 @@ import java.io.*;
  */
 public class StorageHandler {
 
-    private static final String ROOT = "/home/barahashesh";
+    private static final String ROOT = "/media/pi";
 
     private static StorageHandler instance = new StorageHandler();
 

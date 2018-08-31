@@ -7,7 +7,6 @@
       </element>
       <element id="module-output" name="Grad_Project_Version_3" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/shared/gson-2.6.2.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/lib/client/jfoenix.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/client/sqlite-jdbc-3.21.0.jar" path-in-jar="/" />
     </root>
   </artifact>
