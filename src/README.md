@@ -1,42 +1,23 @@
-# Wireless Storage Device
+# src Directory
 
-This project was generated using the [Intellij IDE](https://www.jetbrains.com/idea/)
+This directory contains the source code for the project for both the client and the server.
 
-## Project Description
+This directory can further be divided into multiple sub-packages being: The client package, 
+the server package, the shared package, and the mutex package.
 
-This project is implemented in order to create a connection between storage devices 
-and the user device (PC/MAC/Mobile) via a wireless connection.
+## 1. client Package
 
-## What's to Come
+Contains source code used only by the client.
 
-The project currently is nearly finished as basic functionalities for a storage device
-have already been implemented (store, delete, retrieve, and browse operations), however
-several new features are planned to be added soon, which are:
+## 2. server Package
 
-1. Optimize File Meta data	
+Contains source code used only by the server.
 
-		This has already been implemented
-	
-2. Compression 
+## 3. shared Package
 
-		Dropped due to long execution time
+Contains source code used by both the client and the server.
 
-3. Encryption
+## 4. mutex Package 
 
-	 	Have yet to decide no an encryption standard 
-	 
-4. Try to change the structure of the system as such it supports multiple storage devices 
-at any given time (previous structure supports one device) 
-
-		Foundations have been created only server side semaphore 
-		remains to be implemented
-
-5. Create a functioning mobile version of the project (android) 
-
-		Work has yet to start on this
-
-6. Create pop-ups to appear in case of errors
-
-		Work has yet to start on this (not of much importance)
-
-
+Contains source code for server mutex operations for 
+testing reasons before being fully integerated in the code. 
