@@ -78,7 +78,7 @@ public class BrowserController implements Initializable {
             TableRow<FileRowData> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (!row.isEmpty())) {
-                    this.handleRowDoubleClick();
+                    this.onRowDoubleClick();
                 }
             });
             return row;
@@ -88,7 +88,7 @@ public class BrowserController implements Initializable {
     /**
      * Method used to handle double click on rows in the table
      */
-    private void handleRowDoubleClick() {
+    private void onRowDoubleClick() {
         FileRowData fileRowData = fileTable.getSelectionModel().getSelectedItem();
 
         /*
