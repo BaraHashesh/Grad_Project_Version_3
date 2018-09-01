@@ -31,6 +31,7 @@ public class ChooseBaseIPController implements Runnable {
     private boolean searched = false;
     private ServerRowInfo[] serverRowInfo;
     private BroadCastSender broadCastSender;
+    private String baseIP;
 
 
     /**
@@ -66,19 +67,19 @@ public class ChooseBaseIPController implements Runnable {
      * EventHandler used to handle click events on the search button
      */
     public void onSearchButtonClicked() {
-        String serverIP = this.IP.getText();
+        this.baseIP = this.IP.getText();
 
         /*
         Check if entered IP is a valid IP
          */
-        if (!Constants.IPV4_REGEX.matcher(serverIP).matches()) {
+        if (!Constants.IPV4_REGEX.matcher(this.baseIP).matches()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Invalid IP");
             alert.setHeaderText(null);
             alert.setContentText("Please Enter a valid IP (IPv4)");
             alert.showAndWait();
         } else {
-            this.broadCastSender = new BroadCastSender(serverIP);
+            this.broadCastSender = new BroadCastSender(this.baseIP);
             this.broadCastSender.start();
 
             Client.chooseBaseIPController.getStage().hide();
@@ -120,6 +121,7 @@ public class ChooseBaseIPController implements Runnable {
         } else {
             Client.chooseServerController = ChooseServerController.getInstance();
             Client.chooseServerController.setObservableList(this.serverRowInfo);
+            Client.chooseServerController.setIP(this.baseIP);
             Client.chooseServerController.getStage().show();
 
             Client.chooseBaseIPController.getStage().close();

@@ -34,7 +34,8 @@ public class BrowserController implements Initializable {
     @FXML
     public Label pathLabel;
     @FXML
-    public Button backButton, deleteButton, downloadButton, uploadFileButton, uploadFolderButton;
+    public Button backButton, deleteButton, downloadButton,
+            uploadFileButton, uploadFolderButton, refreshButton;
     @FXML
     public TableView<FileRowData> fileTable;
     private ObservableList<FileRowData> observableList = FXCollections.observableArrayList();
@@ -299,5 +300,21 @@ public class BrowserController implements Initializable {
      */
     public Stage getStage() {
         return this.stage;
+    }
+
+    /**
+     * EventHandler used to handle click events on the refresh button
+     */
+    public void onRefreshButtonClicked() {
+
+        FileRowData[] result = browsingClient.browserRequest(this.pathLabel.getText());
+
+        /*
+        Check if browse was successful
+        */
+        if (result != null) {
+            this.setObservableList(result);
+        }
+
     }
 }

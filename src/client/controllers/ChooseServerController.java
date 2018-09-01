@@ -2,6 +2,8 @@ package client.controllers;
 
 import client.main.Client;
 import client.models.ServerRowInfo;
+import client.models.connection.BroadCastSender;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -15,6 +17,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import shared.ObjectParser;
 
 import java.io.IOException;
 import java.net.URL;
@@ -23,15 +26,19 @@ import java.util.ResourceBundle;
 /**
  * Controller for the ChooseServer.fxml file
  */
-public class ChooseServerController implements Initializable {
+public class ChooseServerController implements Initializable, Runnable {
 
     @FXML
     public TableView<ServerRowInfo> serverInfoTable;
-    public Button select, cancel;
+    public Button select, cancel, refresh;
 
     private ObservableList<ServerRowInfo> observableList = FXCollections.observableArrayList();
 
     private Stage stage;
+
+    private static String baseIP;
+    private boolean updated;
+    private BroadCastSender broadCastSender;
 
 
     /**
@@ -124,5 +131,48 @@ public class ChooseServerController implements Initializable {
 
         serverInfoTable.getColumns().clear();
         serverInfoTable.getColumns().add(ip);
+    }
+
+    /**
+     * EventHandler used to handle click events on the refresh button
+     */
+    public void onRefreshButtonClicked() {
+        this.updated = false;
+
+        Client.chooseServerController.getStage().hide();
+
+        Client.loaderController.getStage().show();
+
+        this.broadCastSender = new BroadCastSender(baseIP);
+
+        this.broadCastSender.start();
+
+        new Thread(this).start();
+    }
+
+    /**
+     * Set method for baseIP
+     * @param IP Is the baseIP for the network
+     */
+    public void setIP(String IP){
+        baseIP = IP;
+    }
+
+    @Override
+    public void run() {
+        /*
+        Check if update operation is done
+         */
+        if(!this.updated) {
+            this.setObservableList(ObjectParser.getInstance()
+                    .constructServerInfo(this.broadCastSender.getResults()));
+
+            this.updated = true;
+
+            Platform.runLater(this);
+        } else {
+            Client.loaderController.getStage().close();
+            Client.chooseServerController.getStage().show();
+        }
     }
 }
