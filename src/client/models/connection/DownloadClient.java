@@ -7,9 +7,9 @@ import shared.FileTransfer;
 import shared.JsonParser;
 import shared.models.Message;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.DataInputStream;
 import java.net.Socket;
 
 /**
@@ -63,7 +63,7 @@ public class DownloadClient implements Runnable {
             BufferedWriter stringOutputStream = ConnectionBuilder.getInstance()
                     .buildStringOutputStream(stringSocket);
 
-            DataInputStream byteInputStream = ConnectionBuilder.getInstance()
+            BufferedInputStream byteInputStream = ConnectionBuilder.getInstance()
                     .buildByteInputStream(byteSocket);
 
             BufferedReader stringInputStream = ConnectionBuilder.getInstance()

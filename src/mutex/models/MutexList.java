@@ -118,7 +118,7 @@ public class MutexList {
      * method will return string "yes" if delete is available otherwise will return a message
      * that describes the issue
      *
-     * @param    path includes both path and name of given file (path+"/"+file Name)
+     * @param path includes both path and name of given file (path+"/"+file Name)
      * @return will return a message stating the availability of download, if available then
      * return "yes" else will return a message for each scenario
      */
@@ -138,7 +138,7 @@ public class MutexList {
      * method will return string "yes" if delete is available otherwise will return a message
      * that describes the issue
      *
-     * @param    path includes both path and name of given file (path+"/"+file Name)
+     * @param path includes both path and name of given file (path+"/"+file Name)
      * @return will return a message stating the availability of upload, if available
      * return "yes" else will return a message for each scenario
      */
@@ -160,7 +160,7 @@ public class MutexList {
      * method will return string "yes" if delete is available otherwise will return a message
      * that describes the issue
      *
-     * @param    path includes both path and name of given file (path+"/"+file Name)
+     * @param path includes both path and name of given file (path+"/"+file Name)
      * @return will return a message stating the availability of delete, if available then
      * return "yes" else will return a message for each scenario
      */

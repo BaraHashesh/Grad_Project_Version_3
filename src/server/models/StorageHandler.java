@@ -75,7 +75,7 @@ public class StorageHandler {
      * @param path               Is the path of the file/folder to be uploaded
      */
     public void uploadFile(BufferedWriter stringOutputStream,
-                           DataOutputStream byteOutputStream, String path) {
+                           BufferedOutputStream byteOutputStream, String path) {
         File mainFile = new File(path);
 
         String parent = mainFile.getParent();
@@ -92,7 +92,7 @@ public class StorageHandler {
      * @param fromClientStringStream Is the byte input stream
      * @param path                   Is the path to store the folder/file under
      */
-    public void downloadFile(DataInputStream fromClientBytesStream,
+    public void downloadFile(BufferedInputStream fromClientBytesStream,
                              BufferedReader fromClientStringStream, String path) {
 
         /*

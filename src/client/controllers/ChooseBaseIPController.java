@@ -1,9 +1,9 @@
 package client.controllers;
 
 import client.main.Client;
+import client.models.connection.BroadCastSender;
 import client.models.controllers.AlertHandler;
 import client.models.models.ServerRowInfo;
-import client.models.connection.BroadCastSender;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

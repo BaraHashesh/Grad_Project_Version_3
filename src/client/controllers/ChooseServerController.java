@@ -1,9 +1,9 @@
 package client.controllers;
 
 import client.main.Client;
+import client.models.connection.BroadCastSender;
 import client.models.controllers.AlertHandler;
 import client.models.models.ServerRowInfo;
-import client.models.connection.BroadCastSender;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,15 +29,12 @@ import java.util.ResourceBundle;
  */
 public class ChooseServerController implements Initializable, Runnable {
 
+    private static String baseIP;
     @FXML
     public TableView<ServerRowInfo> serverInfoTable;
     public Button select, cancel, refresh;
-
     private ObservableList<ServerRowInfo> observableList = FXCollections.observableArrayList();
-
     private Stage stage;
-
-    private static String baseIP;
     private boolean updated;
     private BroadCastSender broadCastSender;
 
@@ -150,9 +147,10 @@ public class ChooseServerController implements Initializable, Runnable {
 
     /**
      * Set method for baseIP
+     *
      * @param IP Is the baseIP for the network
      */
-    public void setIP(String IP){
+    public void setIP(String IP) {
         baseIP = IP;
     }
 
@@ -161,7 +159,7 @@ public class ChooseServerController implements Initializable, Runnable {
         /*
         Check if update operation is done
          */
-        if(!this.updated) {
+        if (!this.updated) {
             this.setObservableList(ObjectParser.getInstance()
                     .constructServerInfo(this.broadCastSender.getResults()));
 

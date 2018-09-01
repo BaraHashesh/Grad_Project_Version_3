@@ -99,21 +99,21 @@ public class ConnectionBuilder {
      * Method used to build an output stream for pure bytes
      *
      * @param socket Is the socket to build an output stream for
-     * @return A DataOutputStream Object
+     * @return A BufferedOutputStream Object
      * @throws IOException Socket stream is closed or unavailable
      */
-    public DataOutputStream buildByteOutputStream(Socket socket) throws IOException {
-        return new DataOutputStream(socket.getOutputStream());
+    public BufferedOutputStream buildByteOutputStream(Socket socket) throws IOException {
+        return new BufferedOutputStream(socket.getOutputStream());
     }
 
     /**
      * Method used to build an input stream for pure bytes
      *
      * @param socket Is the socket to build an input stream for
-     * @return A DataInputStream Object
+     * @return A BufferedInputStream Object
      * @throws IOException Socket stream is closed or unavailable
      */
-    public DataInputStream buildByteInputStream(Socket socket) throws IOException {
-        return new DataInputStream(socket.getInputStream());
+    public BufferedInputStream buildByteInputStream(Socket socket) throws IOException {
+        return new BufferedInputStream(socket.getInputStream());
     }
 }

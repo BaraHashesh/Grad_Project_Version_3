@@ -8,9 +8,9 @@ import shared.JsonParser;
 import shared.Methods;
 import shared.models.Message;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.net.Socket;
 
@@ -66,7 +66,7 @@ public class UploadClient implements Runnable {
             BufferedWriter stringOutputStream = ConnectionBuilder.getInstance()
                     .buildStringOutputStream(stringSocket);
 
-            DataOutputStream byteOutputStream = ConnectionBuilder.getInstance()
+            BufferedOutputStream byteOutputStream = ConnectionBuilder.getInstance()
                     .buildByteOutputStream(byteSocket);
 
             BufferedReader stringInputStream = ConnectionBuilder.getInstance()

@@ -23,7 +23,7 @@ public class FileTransfer {
      * @param mainPath           Is the parents path of the main file/folder(to establish relationship of files)
      */
     public void sendFiles(BufferedWriter stringOutputStream,
-                          DataOutputStream byteOutputStream,
+                          BufferedOutputStream byteOutputStream,
                           File file, String mainPath) {
 
         try {
@@ -84,9 +84,9 @@ public class FileTransfer {
                     size -= bytesRead;
 
                     this.transferredFileSize += bytesRead;
-
-                    byteOutputStream.flush();
                 }
+                byteOutputStream.flush();
+                
                 fileData.close();
             }
         } catch (Exception e) {
@@ -102,7 +102,7 @@ public class FileTransfer {
      * @param stringInputStream Is the input stream to receive strings from
      * @param path              Is the location to save data under
      */
-    public void receiveFiles(DataInputStream byteInputStream, BufferedReader stringInputStream, String path) {
+    public void receiveFiles(BufferedInputStream byteInputStream, BufferedReader stringInputStream, String path) {
         FileOutputStream output = null;
         try {
             for (String temp; (temp = stringInputStream.readLine()) != null; ) {

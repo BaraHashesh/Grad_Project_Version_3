@@ -53,10 +53,10 @@ public class ServerHandler implements Runnable {
             BufferedWriter stringOutputStream = ConnectionBuilder.getInstance()
                     .buildStringOutputStream(this.stringSocket);
 
-            DataInputStream byteInputStream = ConnectionBuilder.getInstance()
+            BufferedInputStream byteInputStream = ConnectionBuilder.getInstance()
                     .buildByteInputStream(this.byteSocket);
 
-            DataOutputStream byteOutputStream = ConnectionBuilder.getInstance()
+            BufferedOutputStream byteOutputStream = ConnectionBuilder.getInstance()
                     .buildByteOutputStream(this.byteSocket);
 
             clientRequest = JsonParser.getInstance().fromJson(stringInputStream.readLine(), Message.class);

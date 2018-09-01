@@ -1,10 +1,10 @@
 package client.controllers;
 
-import client.models.controllers.AlertHandler;
-import client.models.models.FileRowData;
 import client.models.connection.BrowsingClient;
 import client.models.connection.DownloadClient;
 import client.models.connection.UploadClient;
+import client.models.controllers.AlertHandler;
+import client.models.models.FileRowData;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
