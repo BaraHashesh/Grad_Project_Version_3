@@ -1,7 +1,8 @@
 package client.controllers;
 
 import client.main.Client;
-import client.models.ServerRowInfo;
+import client.models.controllers.AlertHandler;
+import client.models.models.ServerRowInfo;
 import client.models.connection.BroadCastSender;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -73,11 +74,9 @@ public class ChooseBaseIPController implements Runnable {
         Check if entered IP is a valid IP
          */
         if (!Constants.IPV4_REGEX.matcher(this.baseIP).matches()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Invalid IP");
-            alert.setHeaderText(null);
-            alert.setContentText("Please Enter a valid IP (IPv4)");
-            alert.showAndWait();
+            AlertHandler.getInstance().start("Invalid IP",
+                    "Please Enter a valid IP (IPv4)", Alert.AlertType.ERROR);
+
         } else {
             this.broadCastSender = new BroadCastSender(this.baseIP);
             this.broadCastSender.start();

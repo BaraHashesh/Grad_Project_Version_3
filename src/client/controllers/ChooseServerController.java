@@ -1,7 +1,8 @@
 package client.controllers;
 
 import client.main.Client;
-import client.models.ServerRowInfo;
+import client.models.controllers.AlertHandler;
+import client.models.models.ServerRowInfo;
 import client.models.connection.BroadCastSender;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -99,11 +100,8 @@ public class ChooseServerController implements Initializable, Runnable {
 
             Client.chooseServerController.getStage().close();
         } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Invalid action");
-            alert.setHeaderText(null);
-            alert.setContentText("Please select a server");
-            alert.showAndWait();
+            AlertHandler.getInstance().start("Invalid action",
+                    "Please select a server", Alert.AlertType.WARNING);
         }
     }
 

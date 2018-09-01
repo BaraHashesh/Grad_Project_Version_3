@@ -1,6 +1,6 @@
 package client.models.connection;
 
-import client.models.FileRowData;
+import client.models.models.FileRowData;
 import shared.ConnectionBuilder;
 import shared.JsonParser;
 import shared.models.Message;

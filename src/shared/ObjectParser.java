@@ -1,6 +1,6 @@
 package shared;
 
-import client.models.ServerRowInfo;
+import client.models.models.ServerRowInfo;
 import shared.models.BasicFileData;
 
 import java.io.File;

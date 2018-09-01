@@ -1,6 +1,7 @@
 package client.controllers;
 
-import client.models.FileRowData;
+import client.models.controllers.AlertHandler;
+import client.models.models.FileRowData;
 import client.models.connection.BrowsingClient;
 import client.models.connection.DownloadClient;
 import client.models.connection.UploadClient;
@@ -222,11 +223,8 @@ public class BrowserController implements Initializable {
      * Method used to display a warning message to the user
      */
     private void showAlert() {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Invalid action");
-        alert.setHeaderText(null);
-        alert.setContentText("Please select a File");
-        alert.showAndWait();
+        AlertHandler.getInstance().start("Invalid action",
+                "Please select a File", Alert.AlertType.WARNING);
     }
 
     /**

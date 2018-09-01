@@ -1,4 +1,4 @@
-package client.models;
+package client.models.models;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;

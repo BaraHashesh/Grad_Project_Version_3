@@ -1,4 +1,4 @@
-package client.models;
+package client.models.models;
 
 /**
  * ServerRowInfo object is used by the GUI to display information

@@ -1,7 +1,7 @@
 package client.models.connection;
 
 
-import client.models.EstimationUpdater;
+import client.models.controllers.EstimationUpdater;
 import shared.ConnectionBuilder;
 import shared.FileTransfer;
 import shared.JsonParser;

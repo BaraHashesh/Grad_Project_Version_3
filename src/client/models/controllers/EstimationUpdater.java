@@ -1,4 +1,4 @@
-package client.models;
+package client.models.controllers;
 
 import client.controllers.EstimationController;
 import shared.Constants;
