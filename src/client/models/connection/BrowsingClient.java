@@ -9,6 +9,8 @@ import shared.models.Message;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.net.Socket;
 
 /**
@@ -35,28 +37,24 @@ public class BrowsingClient {
     public FileRowData[] browserRequest(String path) {
         Message request, response;
         try {
-            Socket clientStringsSocket = ConnectionBuilder.getInstance().buildClientStringSocket(this.IP);
-            Socket clientBytesSocket = ConnectionBuilder.getInstance().buildClientByteSocket(this.IP);
+            Socket clientSocket = ConnectionBuilder.getInstance().buildClientSocket(this.IP);
 
-            BufferedWriter stringOutputStream = ConnectionBuilder.getInstance()
-                    .buildStringOutputStream(clientStringsSocket);
+            DataOutputStream dataOutputStream = ConnectionBuilder.getInstance()
+                    .buildOutputStream(clientSocket);
 
-            BufferedReader stringInputStream = ConnectionBuilder.getInstance()
-                    .buildStringInputStream(clientStringsSocket);
+            DataInputStream dataInputStream = ConnectionBuilder.getInstance()
+                    .buildInputStream(clientSocket);
 
             request = new Message();
             request.createBrowseMessage(path);
 
-            stringOutputStream.write(JsonParser.getInstance().toJson(request));
-            stringOutputStream.write('\n');
-            stringOutputStream.flush();
+            dataOutputStream.writeUTF(JsonParser.getInstance().toJson(request));
 
-            response = JsonParser.getInstance().fromJson(stringInputStream.readLine(), Message.class);
+            response = JsonParser.getInstance().fromJson(dataInputStream.readUTF(), Message.class);
 
-            stringInputStream.close();
-            stringOutputStream.close();
-            clientBytesSocket.close();
-            clientStringsSocket.close();
+            dataOutputStream.close();
+            dataInputStream.close();
+            clientSocket.close();
 
             /*
              Check if operation was a success
@@ -90,33 +88,25 @@ public class BrowsingClient {
         Message request, response;
         try {
 
-            Socket clientStringsSocket = ConnectionBuilder.getInstance()
-                    .buildClientStringSocket(this.IP);
+            Socket clientSocket = ConnectionBuilder.getInstance().buildClientSocket(this.IP);
 
-            Socket clientBytesSocket = ConnectionBuilder.getInstance()
-                    .buildClientByteSocket(this.IP);
+            DataOutputStream dataOutputStream = ConnectionBuilder.getInstance()
+                    .buildOutputStream(clientSocket);
 
-
-            BufferedWriter stringOutputStream = ConnectionBuilder.getInstance()
-                    .buildStringOutputStream(clientStringsSocket);
-
-            BufferedReader stringInputStream = ConnectionBuilder.getInstance()
-                    .buildStringInputStream(clientStringsSocket);
+            DataInputStream dataInputStream = ConnectionBuilder.getInstance()
+                    .buildInputStream(clientSocket);
 
 
             request = new Message();
             request.createDeleteMessage(path);
 
-            stringOutputStream.write(JsonParser.getInstance().toJson(request));
-            stringOutputStream.write('\n');
-            stringOutputStream.flush();
+            dataOutputStream.writeUTF(JsonParser.getInstance().toJson(request));
 
-            response = JsonParser.getInstance().fromJson(stringInputStream.readLine(), Message.class);
+            response = JsonParser.getInstance().fromJson(dataInputStream.readUTF(), Message.class);
 
-            stringInputStream.close();
-            stringOutputStream.close();
-            clientBytesSocket.close();
-            clientStringsSocket.close();
+            dataOutputStream.close();
+            dataInputStream.close();
+            clientSocket.close();
 
             // check if operation is possible
             if (response.isErrorMessage()) {

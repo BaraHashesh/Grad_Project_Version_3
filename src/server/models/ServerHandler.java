@@ -13,20 +13,16 @@ import java.net.Socket;
  * for each client using threads
  */
 public class ServerHandler implements Runnable {
-    private Socket stringSocket;
-    private Socket byteSocket;
+    private Socket clientSocket;
     private Thread thread;
 
     /**
      * Constructor
      *
-     * @param stringSocket Is the connection socket used to exchange information about status and
-     *                     the meta data of the files
-     * @param byteSocket   Is the connection socket used to in file data as bytes
+     * @param clientSocket Is the connection socket for the client
      */
-    public ServerHandler(Socket stringSocket, Socket byteSocket) {
-        this.stringSocket = stringSocket;
-        this.byteSocket = byteSocket;
+    public ServerHandler(Socket clientSocket) {
+        this.clientSocket = clientSocket;
     }
 
     /**
@@ -47,19 +43,13 @@ public class ServerHandler implements Runnable {
         Message clientRequest, serverResponse;
 
         try {
-            BufferedReader stringInputStream = ConnectionBuilder.getInstance()
-                    .buildStringInputStream(this.stringSocket);
+            DataInputStream dataInputStream = ConnectionBuilder.getInstance()
+                    .buildInputStream(this.clientSocket);
 
-            BufferedWriter stringOutputStream = ConnectionBuilder.getInstance()
-                    .buildStringOutputStream(this.stringSocket);
+            DataOutputStream dataOutputStream = ConnectionBuilder.getInstance()
+                    .buildOutputStream(this.clientSocket);
 
-            BufferedInputStream byteInputStream = ConnectionBuilder.getInstance()
-                    .buildByteInputStream(this.byteSocket);
-
-            BufferedOutputStream byteOutputStream = ConnectionBuilder.getInstance()
-                    .buildByteOutputStream(this.byteSocket);
-
-            clientRequest = JsonParser.getInstance().fromJson(stringInputStream.readLine(), Message.class);
+            clientRequest = JsonParser.getInstance().fromJson(dataInputStream.readUTF(), Message.class);
 
             /*
             Check if browse request
@@ -80,9 +70,7 @@ public class ServerHandler implements Runnable {
                     serverResponse = new Message();
                     serverResponse.createErrorMessage(conflict);
                 }
-                stringOutputStream.write(JsonParser.getInstance().toJson(serverResponse));
-                stringOutputStream.write('\n');
-                stringOutputStream.flush();
+                dataOutputStream.writeUTF(JsonParser.getInstance().toJson(serverResponse));
             }
 
             /*
@@ -104,9 +92,7 @@ public class ServerHandler implements Runnable {
                     serverResponse = new Message();
                     serverResponse.createErrorMessage(conflict);
                 }
-                stringOutputStream.write(JsonParser.getInstance().toJson(serverResponse));
-                stringOutputStream.write('\n');
-                stringOutputStream.flush();
+                dataOutputStream.writeUTF(JsonParser.getInstance().toJson(serverResponse));
             }
 
             /*
@@ -125,13 +111,11 @@ public class ServerHandler implements Runnable {
                     serverResponse.createSuccessMessage(StorageHandler.getInstance().calculateSize(path) + "");
 
 
-                    stringOutputStream.write(JsonParser.getInstance().toJson(serverResponse));
-                    stringOutputStream.write('\n');
-                    stringOutputStream.flush();
+                    dataOutputStream.writeUTF(JsonParser.getInstance().toJson(serverResponse));
 
-                    StorageHandler.getInstance().uploadFile(stringOutputStream, byteOutputStream, path);
+                    StorageHandler.getInstance().uploadFile(dataOutputStream, path);
                 } else {
-                    this.handleConflict(stringOutputStream, conflict);
+                    this.handleConflict(dataOutputStream, conflict);
                 }
             }
 
@@ -149,23 +133,18 @@ public class ServerHandler implements Runnable {
                     serverResponse = new Message();
                     serverResponse.createSuccessMessage("");
 
-                    stringOutputStream.write(JsonParser.getInstance().toJson(serverResponse));
-                    stringOutputStream.write('\n');
-                    stringOutputStream.flush();
+                    dataOutputStream.writeUTF(JsonParser.getInstance().toJson(serverResponse));
 
-                    StorageHandler.getInstance().downloadFile(byteInputStream, stringInputStream, path);
+                    StorageHandler.getInstance().downloadFile(dataInputStream, path);
                 } else {
-                    this.handleConflict(stringOutputStream, conflict);
+                    this.handleConflict(dataOutputStream, conflict);
                 }
             }
 
 
-            stringInputStream.close();
-            stringOutputStream.close();
-            byteInputStream.close();
-            byteOutputStream.close();
-            this.byteSocket.close();
-            this.stringSocket.close();
+            dataOutputStream.close();
+            dataInputStream.close();
+            this.clientSocket.close();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -185,16 +164,14 @@ public class ServerHandler implements Runnable {
     /**
      * Method used to handle conflicts in Upload & Download requests
      *
-     * @param stringOutputStream Is the output stream for JSON data
+     * @param outputStream Is the output stream
      * @throws IOException Output stream is not available
      */
-    private void handleConflict(BufferedWriter stringOutputStream, String conflict) throws IOException {
+    private void handleConflict(DataOutputStream outputStream, String conflict) throws IOException {
         Message serverResponse = new Message();
         serverResponse.createErrorMessage(conflict);
 
-        stringOutputStream.write(JsonParser.getInstance().toJson(serverResponse));
-        stringOutputStream.write('\n');
-        stringOutputStream.flush();
+        outputStream.writeUTF(JsonParser.getInstance().toJson(serverResponse));
     }
 
 }

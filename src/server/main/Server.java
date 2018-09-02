@@ -16,18 +16,16 @@ public class Server {
 
             new BroadCastReceiver().start();
 
-            ServerSocket serverStringSocket = ConnectionBuilder.getInstance().buildServerStringSocket();
-            ServerSocket serverByteSocket = ConnectionBuilder.getInstance().buildServerByteSocket();
+            ServerSocket serverSocket = ConnectionBuilder.getInstance().buildServerSocket();
 
             /*
             Infinite loop to handle multiple clients
              */
             //noinspection InfiniteLoopStatement
             while (true) {
-                Socket stringSocket = serverStringSocket.accept();
-                Socket byteSocket = serverByteSocket.accept();
+                Socket clientSocket = serverSocket.accept();
 
-                new ServerHandler(stringSocket, byteSocket).start();
+                new ServerHandler(clientSocket).start();
             }
         } catch (Exception e) {
             e.printStackTrace();

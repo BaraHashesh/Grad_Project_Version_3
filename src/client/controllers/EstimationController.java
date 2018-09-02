@@ -22,7 +22,7 @@ public class EstimationController implements Runnable {
     public Label labelProgress, labelRemaining,
             infoSize, infoProgress, infoRemaining, infoSpeed, infoTime;
     private long totalFileSize, progress, previousValue;
-    private Socket stringSocket, byteSocket;
+    private Socket clientSocket;
     private Boolean initialized = false;
     private Stage stage;
     private Scene scene;
@@ -31,15 +31,13 @@ public class EstimationController implements Runnable {
      * Initializer for the EstimationController
      *
      * @param totalFileSize Is the size of the current file/folder in bytes
-     * @param stringSocket  Is the stream socket responsible for the JSON strings for the current file/folder
-     * @param byteSocket    Is the stream socket responsible for the pure bytes for the current file/folder
+     * @param clientSocket  Is the stream socket
      */
     public void initializeVariables(long totalFileSize,
-                                    Socket stringSocket, Socket byteSocket) {
+                                    Socket clientSocket) {
 
         this.totalFileSize = totalFileSize;
-        this.stringSocket = stringSocket;
-        this.byteSocket = byteSocket;
+        this.clientSocket = clientSocket;
     }
 
     /**
@@ -75,8 +73,7 @@ public class EstimationController implements Runnable {
 
             this.stage.setOnCloseRequest(action -> {
                 try {
-                    this.stringSocket.close();
-                    this.byteSocket.close();
+                    this.clientSocket.close();
                 } catch (IOException ignored) {
 
                 }

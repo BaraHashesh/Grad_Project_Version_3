@@ -70,30 +70,26 @@ public class StorageHandler {
     /**
      * Method used to the declare main requirements to upload a file/folder
      *
-     * @param stringOutputStream Is the output stream for sending strings
-     * @param byteOutputStream   Is the output stream for sending bytes
+     * @param dataOutputStream Is the output stream
      * @param path               Is the path of the file/folder to be uploaded
      */
-    public void uploadFile(BufferedWriter stringOutputStream,
-                           BufferedOutputStream byteOutputStream, String path) {
+    public void uploadFile(DataOutputStream dataOutputStream, String path) {
         File mainFile = new File(path);
 
         String parent = mainFile.getParent();
 
         FileTransfer fileTransfer = new FileTransfer();
 
-        fileTransfer.sendFiles(stringOutputStream, byteOutputStream, mainFile, parent);
+        fileTransfer.sendFiles(dataOutputStream, mainFile, parent);
     }
 
     /**
      * Method used to receive a file/folder from client
      *
-     * @param fromClientBytesStream  Is the string input stream
-     * @param fromClientStringStream Is the byte input stream
-     * @param path                   Is the path to store the folder/file under
+     * @param dataInputStream  Is the input stream
+     * @param path             Is the path to store the folder/file under
      */
-    public void downloadFile(BufferedInputStream fromClientBytesStream,
-                             BufferedReader fromClientStringStream, String path) {
+    public void downloadFile(DataInputStream dataInputStream, String path) {
 
         /*
         Check if path is empty (Root path)
@@ -104,7 +100,7 @@ public class StorageHandler {
         path = path + "/";
 
         try {
-            new FileTransfer().receiveFiles(fromClientBytesStream, fromClientStringStream, path);
+            new FileTransfer().receiveFiles(dataInputStream, path);
         } catch (Exception e) {
             e.printStackTrace();
         }

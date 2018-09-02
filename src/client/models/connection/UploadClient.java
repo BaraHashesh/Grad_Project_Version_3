@@ -10,10 +10,7 @@ import shared.JsonParser;
 import shared.Methods;
 import shared.models.Message;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -61,27 +58,20 @@ public class UploadClient implements Runnable {
     public void run() {
         Message request, response;
         try {
+            Socket clientSocket = ConnectionBuilder.getInstance().buildClientSocket(this.IP);
 
-            Socket stringSocket = ConnectionBuilder.getInstance().buildClientStringSocket(this.IP);
-            Socket byteSocket = ConnectionBuilder.getInstance().buildClientByteSocket(this.IP);
+            DataOutputStream dataOutputStream = ConnectionBuilder.getInstance()
+                    .buildOutputStream(clientSocket);
 
-            BufferedWriter stringOutputStream = ConnectionBuilder.getInstance()
-                    .buildStringOutputStream(stringSocket);
-
-            BufferedOutputStream byteOutputStream = ConnectionBuilder.getInstance()
-                    .buildByteOutputStream(byteSocket);
-
-            BufferedReader stringInputStream = ConnectionBuilder.getInstance()
-                    .buildStringInputStream(stringSocket);
+            DataInputStream dataInputStream = ConnectionBuilder.getInstance()
+                    .buildInputStream(clientSocket);
 
             request = new Message();
             request.createUploadMessage(locationToSave);
 
-            stringOutputStream.write(JsonParser.getInstance().toJson(request));
-            stringOutputStream.write('\n');
-            stringOutputStream.flush();
+            dataOutputStream.writeUTF(JsonParser.getInstance().toJson(request));
 
-            response = JsonParser.getInstance().fromJson(stringInputStream.readLine(), Message.class);
+            response = JsonParser.getInstance().fromJson(dataInputStream.readUTF(), Message.class);
 
             /*
             Check if operation was possible
@@ -97,18 +87,17 @@ public class UploadClient implements Runnable {
                 FileTransfer fileTransfer = new FileTransfer();
 
                 EstimationUpdater updater = new EstimationUpdater(fileTransfer,
-                        Methods.getInstance().calculateSize(this.file), stringSocket, byteSocket);
+                        Methods.getInstance().calculateSize(this.file), clientSocket);
 
                 updater.start();
 
-                fileTransfer.sendFiles(stringOutputStream, byteOutputStream, this.file, parent);
+                fileTransfer.sendFiles(dataOutputStream, this.file, parent);
 
                 updater.finalUpdate();
             }
 
-            stringInputStream.close();
-            stringOutputStream.close();
-            byteOutputStream.close();
+            dataOutputStream.close();
+            dataInputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
 

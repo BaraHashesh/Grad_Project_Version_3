@@ -9,9 +9,7 @@ import shared.FileTransfer;
 import shared.JsonParser;
 import shared.models.Message;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -59,27 +57,21 @@ public class DownloadClient implements Runnable {
     public void run() {
         Message request, response;
         try {
-            Socket stringSocket = ConnectionBuilder.getInstance().buildClientStringSocket(this.IP);
-            Socket byteSocket = ConnectionBuilder.getInstance().buildClientByteSocket(this.IP);
+            Socket clientSocket = ConnectionBuilder.getInstance().buildClientSocket(this.IP);
 
-            BufferedWriter stringOutputStream = ConnectionBuilder.getInstance()
-                    .buildStringOutputStream(stringSocket);
+            DataOutputStream dataOutputStream = ConnectionBuilder.getInstance()
+                    .buildOutputStream(clientSocket);
 
-            BufferedInputStream byteInputStream = ConnectionBuilder.getInstance()
-                    .buildByteInputStream(byteSocket);
-
-            BufferedReader stringInputStream = ConnectionBuilder.getInstance()
-                    .buildStringInputStream(stringSocket);
+            DataInputStream dataInputStream = ConnectionBuilder.getInstance()
+                    .buildInputStream(clientSocket);
 
 
             request = new Message();
             request.createDownloadMessage(path);
 
-            stringOutputStream.write(JsonParser.getInstance().toJson(request));
-            stringOutputStream.write('\n');
-            stringOutputStream.flush();
+            dataOutputStream.writeUTF(JsonParser.getInstance().toJson(request));
 
-            response = JsonParser.getInstance().fromJson(stringInputStream.readLine(), Message.class);
+            response = JsonParser.getInstance().fromJson(dataInputStream.readUTF(), Message.class);
 
             /*
              Check if operation was possible
@@ -96,18 +88,17 @@ public class DownloadClient implements Runnable {
                 long size = Long.parseLong(response.getMessageInfo());
 
                 EstimationUpdater updater = new EstimationUpdater(fileTransfer,
-                        size, stringSocket, byteSocket);
+                        size, clientSocket);
 
                 updater.start();
 
-                fileTransfer.receiveFiles(byteInputStream, stringInputStream, locationToSave);
+                fileTransfer.receiveFiles(dataInputStream, locationToSave);
 
                 updater.finalUpdate();
             }
 
-            stringInputStream.close();
-            byteInputStream.close();
-            stringOutputStream.close();
+            dataOutputStream.close();
+            dataInputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
 

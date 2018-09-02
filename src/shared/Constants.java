@@ -32,8 +32,7 @@ public class Constants {
     /*
     Socket ports related constants
      */
-    public static final int BYTE_PORT = 8_888;
-    public static final int STRING_PORT = 9_999;
+    public static final int PORT_NUMBER = 8_888;
     public static final int BROAD_CAST_PORT = 11_111;
 
     /*
