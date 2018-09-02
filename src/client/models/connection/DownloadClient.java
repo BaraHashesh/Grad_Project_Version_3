@@ -1,7 +1,9 @@
 package client.models.connection;
 
 
+import client.models.controllers.AlertHandler;
 import client.models.controllers.EstimationUpdater;
+import javafx.scene.control.Alert;
 import shared.ConnectionBuilder;
 import shared.FileTransfer;
 import shared.JsonParser;
@@ -83,9 +85,10 @@ public class DownloadClient implements Runnable {
              Check if operation was possible
               */
             if (response.isErrorMessage()) {
-                /*
-                 * Handle Error Here
-                 */
+
+                AlertHandler.getInstance().start("Server Error",
+                        response.getMessageInfo(), Alert.AlertType.ERROR);
+
             } else {
 
                 FileTransfer fileTransfer = new FileTransfer();
@@ -107,6 +110,9 @@ public class DownloadClient implements Runnable {
             stringOutputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
+
+            AlertHandler.getInstance().start("Server Error",
+                    "Connection to server was lost", Alert.AlertType.ERROR);
         }
     }
 }

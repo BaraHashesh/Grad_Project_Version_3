@@ -1,6 +1,8 @@
 package client.models.connection;
 
+import client.models.controllers.AlertHandler;
 import client.models.models.FileRowData;
+import javafx.scene.control.Alert;
 import shared.ConnectionBuilder;
 import shared.JsonParser;
 import shared.models.Message;
@@ -62,13 +64,18 @@ public class BrowsingClient {
             if (response.isSuccessMessage()) {
                 return JsonParser.getInstance().fromJson(response.getMessageInfo(), FileRowData[].class);
             } else {
-                /*
-                 * Handle error here
-                 */
+
+                AlertHandler.getInstance().start("Server Error",
+                        response.getMessageInfo(), Alert.AlertType.ERROR);
+
                 return null;
             }
         } catch (Exception e) {
             e.printStackTrace();
+
+            AlertHandler.getInstance().start("Server Error",
+                    "Unable to connect to server", Alert.AlertType.ERROR);
+
             return null;
         }
     }
@@ -113,9 +120,10 @@ public class BrowsingClient {
 
             // check if operation is possible
             if (response.isErrorMessage()) {
-                /*
-                 * Handle Error Here
-                 */
+
+                AlertHandler.getInstance().start("Server Error",
+                        response.getMessageInfo(), Alert.AlertType.ERROR);
+
                 Object error;
                 return false;
             }
@@ -123,6 +131,10 @@ public class BrowsingClient {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
+
+            AlertHandler.getInstance().start("Server Error",
+                    "Unable to connect to server", Alert.AlertType.ERROR);
+
             return false;
         }
     }
