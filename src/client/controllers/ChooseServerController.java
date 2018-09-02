@@ -65,6 +65,11 @@ public class ChooseServerController implements Initializable, Runnable {
 
             this.stage = new Stage();
             this.stage.setScene(scene);
+
+            this.stage.setTitle("Server Browser");
+
+            this.stage.setResizable(false);
+
         } catch (IOException e) {
             e.printStackTrace();
         }

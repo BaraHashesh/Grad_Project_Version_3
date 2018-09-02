@@ -129,7 +129,12 @@ public class BrowserController implements Initializable {
             this.fileTable = (TableView<FileRowData>) scene.lookup("#fileTable");
 
             this.stage = new Stage();
+
             this.stage.setScene(scene);
+
+            this.stage.setTitle("File Browser");
+
+            this.stage.setResizable(false);
         } catch (IOException e) {
             e.printStackTrace();
         }

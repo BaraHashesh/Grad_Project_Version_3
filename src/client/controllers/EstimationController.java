@@ -81,6 +81,11 @@ public class EstimationController implements Runnable {
 
                 }
             });
+
+            this.stage.setTitle("File Transfer Estimator");
+
+            this.stage.setResizable(false);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

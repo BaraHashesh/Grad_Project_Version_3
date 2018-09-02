@@ -58,7 +58,12 @@ public class ChooseBaseIPController implements Runnable {
             Scene scene = new Scene(parent);
 
             this.stage = new Stage();
+
             this.stage.setScene(scene);
+
+            this.stage.setTitle("IP Selector");
+
+            this.stage.setResizable(false);
         } catch (IOException e) {
             e.printStackTrace();
         }

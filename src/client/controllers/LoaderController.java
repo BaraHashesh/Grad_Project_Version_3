@@ -53,6 +53,11 @@ public class LoaderController {
 
             this.stage = new Stage();
             this.stage.setScene(scene);
+
+            this.stage.setTitle("Loading");
+
+            this.stage.setResizable(false);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
