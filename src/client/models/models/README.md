@@ -11,5 +11,5 @@ to extract information about the file to be displayed to the user in table forma
 ## 2. ServerRowInfo
 
 This object is used to store data about a given server, 
-so that data can be displayed to the user in table format.
+so that data can be displayed to the user in table format in the GUI.
 
