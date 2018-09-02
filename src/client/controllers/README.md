@@ -1,4 +1,4 @@
-# controllers Package
+# client.controllers Package
 
 This package contains the classes responsible for handling the fxml views,
 which are: BrowserController, ChooseBaseIPController, ChooseServerController, LoaderController.
@@ -94,7 +94,7 @@ This controller is used to handle the `ChooseServerView.fxml` file, which in tur
  
 This controller is used to handle the `EstimationView.fxml` file, this controller does not provide the
 user with direct actions, but rather is auto-updated by an external thread (controller for the controller), 
-this for out application being the `EstimationUpdated.java` class from the `client.models` package.
+this for out application being the `EstimationUpdated.java` class from the `client.models.controllers` package.
  
 ## 5. Loader Controller
 

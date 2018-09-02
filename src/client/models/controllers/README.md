@@ -1,4 +1,4 @@
-# controllers Package
+# client.models.controllers Package
 
 This package contains controllers that are not associated with any FXML view.
 

@@ -1,4 +1,4 @@
-# models Package
+# client.models Package
 
 This package includes any class that does not belong to any other category, which can be divided 
 into 3 sub-packages which are: connection package, controllers package, and models package.
