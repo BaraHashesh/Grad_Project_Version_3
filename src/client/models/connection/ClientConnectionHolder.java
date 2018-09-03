@@ -6,6 +6,10 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
 
+/**
+ * ClientConnectionHolder is used store the connection socket
+ * as well as the input & output streams of the client
+ */
 public class ClientConnectionHolder {
 
     private static ClientConnectionHolder instance = new ClientConnectionHolder();
