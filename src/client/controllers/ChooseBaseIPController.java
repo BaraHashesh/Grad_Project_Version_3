@@ -1,7 +1,7 @@
 package client.controllers;
 
 import client.main.Client;
-import client.models.connection.BroadCastSender;
+import client.models.connection.DiscoverySender;
 import client.models.controllers.AlertHandler;
 import client.models.models.ServerRowInfo;
 import javafx.application.Platform;
@@ -31,7 +31,7 @@ public class ChooseBaseIPController implements Runnable {
 
     private boolean searched = false;
     private ServerRowInfo[] serverRowInfo;
-    private BroadCastSender broadCastSender;
+    private DiscoverySender broadCastSender;
     private String baseIP;
 
     private static ChooseBaseIPController instance;
@@ -89,7 +89,7 @@ public class ChooseBaseIPController implements Runnable {
                     "Please Enter a valid IP (IPv4)", Alert.AlertType.ERROR);
 
         } else {
-            this.broadCastSender = new BroadCastSender(this.baseIP);
+            this.broadCastSender = new DiscoverySender(this.baseIP);
             this.broadCastSender.start();
 
             Client.chooseBaseIPController.getStage().hide();

@@ -1,6 +1,6 @@
 package server.main;
 
-import server.models.BroadCastReceiver;
+import server.models.DiscoveryReceiver;
 import server.models.ServerHandler;
 import shared.ConnectionBuilder;
 
@@ -14,7 +14,7 @@ public class Server {
         try {
             System.setProperty("java.net.preferIPv4Stack", "true");
 
-            new BroadCastReceiver().start();
+            new DiscoveryReceiver().start();
 
             ServerSocket serverSocket = ConnectionBuilder.getInstance().buildServerSocket();
 

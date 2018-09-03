@@ -7,10 +7,10 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 
 /**
- * BroadCastReceiver class is used by server to receive
+ * DiscoveryReceiver class is used by server to receive
  * discover massages from the clients and then replay to them
  */
-public class BroadCastReceiver implements Runnable {
+public class DiscoveryReceiver implements Runnable {
 
     private Thread thread = null;
 

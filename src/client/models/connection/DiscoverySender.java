@@ -8,9 +8,9 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 
 /**
- * BroadCastSender class is used by clients to discover storage devices
+ * DiscoverySender class is used by clients to discover storage devices
  */
-public class BroadCastSender implements Runnable {
+public class DiscoverySender implements Runnable {
 
     private static final Object lock = new Object();
     private String broadcastIP;
@@ -19,11 +19,11 @@ public class BroadCastSender implements Runnable {
     private Thread thread = null;
 
     /**
-     * Constructor for the BroadCastSender object
+     * Constructor for the DiscoverySender object
      *
      * @param baseIP is the base IP of the network
      */
-    public BroadCastSender(String baseIP) {
+    public DiscoverySender(String baseIP) {
         String[] temp = baseIP.split("\\.");
         this.broadcastIP = temp[0] + "." + temp[1] + "." + temp[2] + ".255";
     }
@@ -71,7 +71,7 @@ public class BroadCastSender implements Runnable {
             }
         } catch (Exception e) {
             this.done = true;
-            System.out.println("BroadCastSender - time Out");
+            System.out.println("DiscoverySender - time Out");
         }
     }
 

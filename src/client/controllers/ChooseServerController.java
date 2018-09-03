@@ -1,7 +1,7 @@
 package client.controllers;
 
 import client.main.Client;
-import client.models.connection.BroadCastSender;
+import client.models.connection.DiscoverySender;
 import client.models.controllers.AlertHandler;
 import client.models.models.ServerRowInfo;
 import javafx.application.Platform;
@@ -36,7 +36,7 @@ public class ChooseServerController implements Initializable, Runnable {
     private ObservableList<ServerRowInfo> observableList = FXCollections.observableArrayList();
     private Stage stage;
     private boolean updated;
-    private BroadCastSender broadCastSender;
+    private DiscoverySender broadCastSender;
 
     private static ChooseServerController instance;
 
@@ -149,7 +149,7 @@ public class ChooseServerController implements Initializable, Runnable {
 
         Client.loaderController.getStage().show();
 
-        this.broadCastSender = new BroadCastSender(baseIP);
+        this.broadCastSender = new DiscoverySender(baseIP);
 
         this.broadCastSender.start();
 
