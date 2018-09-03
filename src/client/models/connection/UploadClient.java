@@ -94,6 +94,12 @@ public class UploadClient implements Runnable {
 
                 fileTransfer.sendFiles(dataOutputStream, this.file, parent);
 
+                Message streamEndMessage = new Message();
+                streamEndMessage.createStreamEndMessage("");
+
+                dataOutputStream.writeUTF(JsonParser.getInstance().toJson(streamEndMessage));
+                dataOutputStream.flush();
+
                 updater.finalUpdate();
             }
 

@@ -117,6 +117,12 @@ public class ServerHandler implements Runnable {
                     dataOutputStream.flush();
 
                     StorageHandler.getInstance().uploadFile(dataOutputStream, path);
+
+                    Message streamEndMessage = new Message();
+                    streamEndMessage.createStreamEndMessage("");
+
+                    dataOutputStream.writeUTF(JsonParser.getInstance().toJson(streamEndMessage));
+                    dataOutputStream.flush();
                 } else {
                     this.handleConflict(dataOutputStream, conflict);
                 }

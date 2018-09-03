@@ -79,6 +79,24 @@ public class Message {
     }
 
     /**
+     * Method used for checking if current message is a file info message
+     *
+     * @return a boolean that indicates if the message is a file info message or not
+     */
+    public boolean isFileInfoMessage() {
+        return this.messageType == Constants.FILE_INFO_MESSAGE;
+    }
+
+    /**
+     * Method used for checking if current message is a stream end message
+     *
+     * @return a boolean that indicates if the message is a stream end message or not
+     */
+    public boolean isStreamEndMessage() {
+        return this.messageType == Constants.STREAM_END_MESSAGE;
+    }
+
+    /**
      * Method used to create a download message
      *
      * @param info Some extra info for the message (usually file path)
@@ -137,6 +155,27 @@ public class Message {
         this.messageType = Constants.ERROR_MESSAGE;
         this.messageInfo = info;
     }
+
+    /**
+     * method used to create a file info message
+     *
+     * @param info Some extra info for the message (usually a BasicFileData object)
+     */
+    public void createFileInfoMessage(String info) {
+        this.messageType = Constants.FILE_INFO_MESSAGE;
+        this.messageInfo = info;
+    }
+
+    /**
+     * method used to create a stream end message
+     *
+     * @param info Some extra info for the message (usually empty)
+     */
+    public void createStreamEndMessage(String info) {
+        this.messageType = Constants.STREAM_END_MESSAGE;
+        this.messageInfo = info;
+    }
+
 
     @Override
     public String toString() {

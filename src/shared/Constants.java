@@ -24,6 +24,8 @@ public class Constants {
     public final static int BROWSE_MESSAGE = 3;
     public final static int ERROR_MESSAGE = 4;
     public final static int SUCCESS_MESSAGE = 5;
+    public final static int FILE_INFO_MESSAGE = 6;
+    public final static int STREAM_END_MESSAGE = 7;
 
     /*
     Time related Constants
