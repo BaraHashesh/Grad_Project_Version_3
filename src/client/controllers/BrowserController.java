@@ -43,15 +43,23 @@ public class BrowserController implements Initializable {
     private Stage stage;
     private String parentDirectory = ""; //used to store the path of the previous directory
 
+    private static BrowserController instance;
+
     /**
-     * Get method for BrowserController
+     * Get method for instance
      *
      * @return An instance of BrowserController
      */
     public static BrowserController getInstance() {
-        BrowserController browserController = new BrowserController();
-        browserController.setStage();
-        return browserController;
+        /*
+        Check if instance is already set
+         */
+        if (instance == null) {
+            instance = new BrowserController();
+            instance.setStage();
+        }
+
+        return instance;
     }
 
     @Override

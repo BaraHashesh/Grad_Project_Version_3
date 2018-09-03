@@ -20,14 +20,21 @@ public class LoaderController {
 
     private Stage stage;
 
+    private static LoaderController instance;
+
     /**
-     * Get method for LoaderController
+     * Get method for instance
      *
      * @return An instance of LoaderController object
      */
     public static LoaderController getInstance() {
-        LoaderController instance = new LoaderController();
-        instance.setStage();
+        /*
+        Check if instance is already set
+         */
+        if (instance == null) {
+            instance = new LoaderController();
+            instance.setStage();
+        }
 
         return instance;
     }

@@ -38,15 +38,21 @@ public class ChooseServerController implements Initializable, Runnable {
     private boolean updated;
     private BroadCastSender broadCastSender;
 
+    private static ChooseServerController instance;
 
     /**
-     * Get method for ChooseServerController
+     * Get method for instance
      *
      * @return An instance of ChooseServerController object
      */
     public static ChooseServerController getInstance() {
-        ChooseServerController instance = new ChooseServerController();
-        instance.setStage();
+        /*
+        Check if instance is already set
+         */
+        if (instance == null) {
+            instance = new ChooseServerController();
+            instance.setStage();
+        }
 
         return instance;
     }

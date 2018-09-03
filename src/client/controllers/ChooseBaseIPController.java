@@ -34,15 +34,21 @@ public class ChooseBaseIPController implements Runnable {
     private BroadCastSender broadCastSender;
     private String baseIP;
 
+    private static ChooseBaseIPController instance;
 
     /**
-     * Get method for ChooseBaseIPController
+     * Get method for instance
      *
      * @return An instance of the ChooseBaseIPController
      */
     public static ChooseBaseIPController getInstance() {
-        ChooseBaseIPController instance = new ChooseBaseIPController();
-        instance.setStage();
+        /*
+        Check if instance is already set
+         */
+        if (instance == null) {
+            instance = new ChooseBaseIPController();
+            instance.setStage();
+        }
 
         return instance;
     }
