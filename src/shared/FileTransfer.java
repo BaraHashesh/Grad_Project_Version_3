@@ -9,7 +9,6 @@ import java.io.*;
  * FileTransfer class is used to transfer and receive files
  */
 public class FileTransfer {
-    private static final int BUFFER = 1024 * 1024 * 4;
     private long transferredFileSize = 0;
     private File firstFile;
     private boolean pipe = true;
@@ -64,7 +63,7 @@ public class FileTransfer {
 
             } else {
                 FileInputStream fileData = new FileInputStream(file);
-                byte[] buffer = new byte[BUFFER];
+                byte[] buffer = new byte[Constants.BUFFER_SIZE];
                 long size = file.length();
 
                 /*
@@ -133,7 +132,7 @@ public class FileTransfer {
                     output = new FileOutputStream(file);
 
                     long size = basicFileData.getSize();
-                    byte[] buffer = new byte[BUFFER];
+                    byte[] buffer = new byte[Constants.BUFFER_SIZE];
 
                     //check if file is the first to be received
                     if (this.firstFile == null)
@@ -147,8 +146,8 @@ public class FileTransfer {
                         /*
                         Check if file size to be read is bigger or smaller than the reading buffer
                          */
-                        if (size > BUFFER)
-                            bytesRead = dataInputStream.read(buffer, 0, BUFFER);
+                        if (size > Constants.BUFFER_SIZE)
+                            bytesRead = dataInputStream.read(buffer, 0, Constants.BUFFER_SIZE);
                         else
                             bytesRead = dataInputStream.read(buffer, 0, (int) size);
 

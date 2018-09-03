@@ -12,6 +12,8 @@ public class Constants {
     public static final String FORWARD_DASH = "\\";
     public static final String BACKWARD_DASH = "/";
     public static final String DOUBLE_FORWARD_DASH = "\\\\";
+    public static final String FILE_NAME = "TEMP_FILE_";
+    public static final int BUFFER_SIZE = 1024*64;
 
     /*
     Message related Constants
@@ -34,11 +36,6 @@ public class Constants {
      */
     public static final int PORT_NUMBER = 8_888;
     public static final int BROAD_CAST_PORT = 11_111;
-
-    /*
-    File related Constants
-     */
-    public static final String FILE_NAME = "TEMP_FILE_";
 
     /*
     Regex expressions
