@@ -22,15 +22,18 @@ public class EstimationUpdater implements Runnable {
      *
      * @param fileTransfer  Is the FileTransfer object responsible for the current file/folder
      * @param totalFileSize Is the size of the current file/folder in bytes
+     * @param clientSocket  Is the stream socket
      */
-    public EstimationUpdater(FileTransfer fileTransfer, long totalFileSize) {
+    public EstimationUpdater(FileTransfer fileTransfer, long totalFileSize,
+                             Socket clientSocket) {
 
         this.totalFileSize = totalFileSize;
         this.fileTransfer = fileTransfer;
 
         estimationViewController = new EstimationController();
 
-        estimationViewController.initializeVariables(totalFileSize);
+        estimationViewController.initializeVariables(totalFileSize,
+                clientSocket);
 
         estimationViewController.update(0);
 

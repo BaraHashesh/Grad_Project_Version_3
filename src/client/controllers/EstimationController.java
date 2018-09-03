@@ -1,5 +1,6 @@
 package client.controllers;
 
+import client.models.connection.ClientConnectionHolder;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,13 +27,17 @@ public class EstimationController implements Runnable {
     private Stage stage;
     private Scene scene;
 
+    private Socket clientSocket;
+
     /**
      * Initializer for the EstimationController
      *
      * @param totalFileSize Is the size of the current file/folder in bytes
      */
-    public void initializeVariables(long totalFileSize) {
+    public void initializeVariables(long totalFileSize,
+                                    Socket clientSocket) {
 
+        this.clientSocket = clientSocket;
         this.totalFileSize = totalFileSize;
     }
 
@@ -71,6 +76,15 @@ public class EstimationController implements Runnable {
 
             this.stage.setResizable(false);
 
+            this.stage.setOnCloseRequest(e-> {
+                try {
+                    this.clientSocket.close();
+                    ClientConnectionHolder.getInstance().resetInstance();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            });
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -93,7 +107,7 @@ public class EstimationController implements Runnable {
             Check if operations are done
              */
             if (this.progress == this.totalFileSize) {
-                this.stage.close();
+                this.stage.hide();
             } else {
                 // speed in bytes per second
                 double speed = (this.progress - this.previousValue) / Constants.UPDATE_RATE;

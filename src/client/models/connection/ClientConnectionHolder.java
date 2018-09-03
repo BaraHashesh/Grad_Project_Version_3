@@ -10,6 +10,7 @@ public class ClientConnectionHolder {
 
     private static ClientConnectionHolder instance = new ClientConnectionHolder();
 
+    private String serverIP;
     private Socket connectionSocket;
     private DataInputStream dataInputStream;
     private DataOutputStream dataOutputStream;
@@ -30,6 +31,7 @@ public class ClientConnectionHolder {
          */
         if(instance.getConnectionSocket() == null) {
             try {
+                instance.serverIP = IP;
                 instance.connectionSocket = ConnectionBuilder.getInstance().buildClientSocket(IP);
 
                 instance.dataInputStream = ConnectionBuilder.getInstance()
@@ -75,5 +77,13 @@ public class ClientConnectionHolder {
      */
     public DataOutputStream getDataOutputStream() {
         return dataOutputStream;
+    }
+
+    /**
+     * Method used to reset the connection socket in case of failure
+     */
+    public void resetInstance(){
+        instance.connectionSocket = null;
+        instance.setInstance(instance.serverIP);
     }
 }

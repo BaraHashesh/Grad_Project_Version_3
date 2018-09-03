@@ -84,7 +84,7 @@ public class DownloadClient implements Runnable {
                 long size = Long.parseLong(response.getMessageInfo());
 
                 EstimationUpdater updater = new EstimationUpdater(fileTransfer,
-                        size);
+                        size, ClientConnectionHolder.getInstance().getConnectionSocket());
 
                 updater.start();
 

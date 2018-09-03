@@ -83,7 +83,8 @@ public class UploadClient implements Runnable {
                 FileTransfer fileTransfer = new FileTransfer();
 
                 EstimationUpdater updater = new EstimationUpdater(fileTransfer,
-                        Methods.getInstance().calculateSize(this.file));
+                        Methods.getInstance().calculateSize(this.file),
+                        ClientConnectionHolder.getInstance().getConnectionSocket());
 
                 updater.start();
 
