@@ -1,6 +1,7 @@
 package client.controllers;
 
 import client.main.Client;
+import client.models.connection.ClientConnectionHolder;
 import client.models.connection.DiscoverySender;
 import client.models.controllers.AlertHandler;
 import client.models.models.ServerRowInfo;
@@ -102,6 +103,8 @@ public class ChooseServerController implements Initializable, Runnable {
         Check if there is a selected server
          */
         if (server != null) {
+            ClientConnectionHolder.getInstance().setInstance(server.getIp());
+
             Client.browserController = BrowserController.getInstance();
             Client.browserController.setIP(server.getIp());
             Client.browserController.getStage().show();
