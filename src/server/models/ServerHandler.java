@@ -71,6 +71,7 @@ public class ServerHandler implements Runnable {
                     serverResponse.createErrorMessage(conflict);
                 }
                 dataOutputStream.writeUTF(JsonParser.getInstance().toJson(serverResponse));
+                dataOutputStream.flush();
             }
 
             /*
@@ -93,6 +94,7 @@ public class ServerHandler implements Runnable {
                     serverResponse.createErrorMessage(conflict);
                 }
                 dataOutputStream.writeUTF(JsonParser.getInstance().toJson(serverResponse));
+                dataOutputStream.flush();
             }
 
             /*
@@ -112,6 +114,7 @@ public class ServerHandler implements Runnable {
 
 
                     dataOutputStream.writeUTF(JsonParser.getInstance().toJson(serverResponse));
+                    dataOutputStream.flush();
 
                     StorageHandler.getInstance().uploadFile(dataOutputStream, path);
                 } else {
@@ -134,6 +137,7 @@ public class ServerHandler implements Runnable {
                     serverResponse.createSuccessMessage("");
 
                     dataOutputStream.writeUTF(JsonParser.getInstance().toJson(serverResponse));
+                    dataOutputStream.flush();
 
                     StorageHandler.getInstance().downloadFile(dataInputStream, path);
                 } else {

@@ -49,6 +49,7 @@ public class BrowsingClient {
             request.createBrowseMessage(path);
 
             dataOutputStream.writeUTF(JsonParser.getInstance().toJson(request));
+            dataOutputStream.flush();
 
             response = JsonParser.getInstance().fromJson(dataInputStream.readUTF(), Message.class);
 
@@ -101,6 +102,7 @@ public class BrowsingClient {
             request.createDeleteMessage(path);
 
             dataOutputStream.writeUTF(JsonParser.getInstance().toJson(request));
+            dataOutputStream.flush();
 
             response = JsonParser.getInstance().fromJson(dataInputStream.readUTF(), Message.class);
 

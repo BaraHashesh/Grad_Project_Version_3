@@ -70,6 +70,7 @@ public class DownloadClient implements Runnable {
             request.createDownloadMessage(path);
 
             dataOutputStream.writeUTF(JsonParser.getInstance().toJson(request));
+            dataOutputStream.flush();
 
             response = JsonParser.getInstance().fromJson(dataInputStream.readUTF(), Message.class);
 

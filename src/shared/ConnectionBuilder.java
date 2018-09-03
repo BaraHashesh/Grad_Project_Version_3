@@ -57,7 +57,9 @@ public class ConnectionBuilder {
      * @throws IOException Socket stream is closed or unavailable
      */
     public DataOutputStream buildOutputStream(Socket socket) throws IOException {
-        return new DataOutputStream(socket.getOutputStream());
+        return new DataOutputStream(
+                new BufferedOutputStream(socket.getOutputStream())
+        );
     }
 
     /**
@@ -68,6 +70,8 @@ public class ConnectionBuilder {
      * @throws IOException Socket stream is closed or unavailable
      */
     public DataInputStream buildInputStream(Socket socket) throws IOException {
-        return new DataInputStream(socket.getInputStream());
+        return new DataInputStream(
+                new BufferedInputStream(socket.getInputStream())
+        );
     }
 }

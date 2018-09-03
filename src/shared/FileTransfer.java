@@ -81,6 +81,9 @@ public class FileTransfer {
 
                 fileData.close();
             }
+
+            dataOutputStream.flush();
+
         } catch (Exception e) {
             this.pipe = false; //Pipe was broken
             e.printStackTrace();

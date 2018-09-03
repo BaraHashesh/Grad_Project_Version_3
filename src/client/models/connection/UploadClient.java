@@ -70,6 +70,7 @@ public class UploadClient implements Runnable {
             request.createUploadMessage(locationToSave);
 
             dataOutputStream.writeUTF(JsonParser.getInstance().toJson(request));
+            dataOutputStream.flush();
 
             response = JsonParser.getInstance().fromJson(dataInputStream.readUTF(), Message.class);
 
