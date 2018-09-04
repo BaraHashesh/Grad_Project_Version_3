@@ -1,7 +1,6 @@
 package client.controllers;
 
 import client.main.Client;
-import client.models.connection.ClientConnectionHolder;
 import client.models.connection.DiscoverySender;
 import client.models.controllers.AlertHandler;
 import client.models.models.ServerRowInfo;

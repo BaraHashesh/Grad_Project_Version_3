@@ -1,6 +1,5 @@
 package client.controllers;
 
-import client.models.connection.ClientConnectionHolder;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -79,7 +78,6 @@ public class EstimationController implements Runnable {
             this.stage.setOnCloseRequest(e-> {
                 try {
                     this.clientSocket.close();
-                    ClientConnectionHolder.getInstance().resetInstance();
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }

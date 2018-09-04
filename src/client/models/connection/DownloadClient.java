@@ -3,11 +3,13 @@ package client.models.connection;
 import client.models.controllers.AlertHandler;
 import client.models.controllers.EstimationUpdater;
 import javafx.scene.control.Alert;
+import shared.ConnectionBuilder;
 import shared.FileTransfer;
 import shared.JsonParser;
 import shared.models.Message;
 
 import java.io.*;
+import java.net.Socket;
 
 /**
  * DownloadClient class is used to download files from server on a separate thread
@@ -54,11 +56,13 @@ public class DownloadClient implements Runnable {
     public void run() {
         Message request, response;
         try {
-            DataOutputStream dataOutputStream = ClientConnectionHolder.getInstance()
-                    .getDataOutputStream();
+            Socket clientSocket = ConnectionBuilder.getInstance().buildClientSocket(this.IP);
 
-            DataInputStream dataInputStream = ClientConnectionHolder.getInstance()
-                    .getDataInputStream();
+            DataOutputStream dataOutputStream = ConnectionBuilder.getInstance()
+                    .buildOutputStream(clientSocket);
+
+            DataInputStream dataInputStream = ConnectionBuilder.getInstance()
+                    .buildInputStream(clientSocket);
 
 
             request = new Message();
@@ -84,7 +88,7 @@ public class DownloadClient implements Runnable {
                 long size = Long.parseLong(response.getMessageInfo());
 
                 EstimationUpdater updater = new EstimationUpdater(fileTransfer,
-                        size, ClientConnectionHolder.getInstance().getConnectionSocket());
+                        size, clientSocket);
 
                 updater.start();
 
@@ -92,6 +96,11 @@ public class DownloadClient implements Runnable {
 
                 updater.finalUpdate();
             }
+
+            dataInputStream.close();
+            dataOutputStream.close();
+            clientSocket.close();
+
         } catch (Exception e) {
             e.printStackTrace();
 

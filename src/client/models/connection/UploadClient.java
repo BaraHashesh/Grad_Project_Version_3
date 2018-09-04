@@ -3,12 +3,14 @@ package client.models.connection;
 import client.models.controllers.AlertHandler;
 import client.models.controllers.EstimationUpdater;
 import javafx.scene.control.Alert;
+import shared.ConnectionBuilder;
 import shared.FileTransfer;
 import shared.JsonParser;
 import shared.Methods;
 import shared.models.Message;
 
 import java.io.*;
+import java.net.Socket;
 
 /**
  * UploadClient class is used to upload files to storage device on a separate thread
@@ -55,11 +57,13 @@ public class UploadClient implements Runnable {
     public void run() {
         Message request, response;
         try {
-            DataOutputStream dataOutputStream = ClientConnectionHolder.getInstance()
-                    .getDataOutputStream();
+            Socket clientSocket = ConnectionBuilder.getInstance().buildClientSocket(this.IP);
 
-            DataInputStream dataInputStream = ClientConnectionHolder.getInstance()
-                    .getDataInputStream();
+            DataOutputStream dataOutputStream = ConnectionBuilder.getInstance()
+                    .buildOutputStream(clientSocket);
+
+            DataInputStream dataInputStream = ConnectionBuilder.getInstance()
+                    .buildInputStream(clientSocket);
 
             request = new Message();
             request.createUploadMessage(locationToSave);
@@ -84,7 +88,7 @@ public class UploadClient implements Runnable {
 
                 EstimationUpdater updater = new EstimationUpdater(fileTransfer,
                         Methods.getInstance().calculateSize(this.file),
-                        ClientConnectionHolder.getInstance().getConnectionSocket());
+                        clientSocket);
 
                 updater.start();
 
@@ -98,6 +102,11 @@ public class UploadClient implements Runnable {
 
                 updater.finalUpdate();
             }
+
+            clientSocket.close();
+            dataInputStream.close();
+            dataOutputStream.close();
+            
         } catch (Exception e) {
             e.printStackTrace();
 

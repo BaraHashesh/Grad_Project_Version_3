@@ -3,11 +3,13 @@ package client.models.connection;
 import client.models.controllers.AlertHandler;
 import client.models.models.FileRowData;
 import javafx.scene.control.Alert;
+import shared.ConnectionBuilder;
 import shared.JsonParser;
 import shared.models.Message;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.net.Socket;
 
 /**
  * BrowseClient class is used to browse the storage device and to delete files if required
@@ -33,11 +35,13 @@ public class BrowsingClient {
     public FileRowData[] browserRequest(String path) {
         Message request, response;
         try {
-            DataOutputStream dataOutputStream = ClientConnectionHolder.getInstance()
-                    .getDataOutputStream();
+            Socket clientSocket = ConnectionBuilder.getInstance().buildClientSocket(this.IP);
 
-            DataInputStream dataInputStream = ClientConnectionHolder.getInstance()
-                    .getDataInputStream();
+            DataOutputStream dataOutputStream = ConnectionBuilder.getInstance()
+                    .buildOutputStream(clientSocket);
+
+            DataInputStream dataInputStream = ConnectionBuilder.getInstance()
+                    .buildInputStream(clientSocket);
 
             request = new Message();
             request.createBrowseMessage(path);
@@ -46,6 +50,10 @@ public class BrowsingClient {
             dataOutputStream.flush();
 
             response = JsonParser.getInstance().fromJson(dataInputStream.readUTF(), Message.class);
+
+            clientSocket.close();
+            dataInputStream.close();
+            dataOutputStream.close();
 
             /*
              Check if operation was a success
@@ -78,11 +86,13 @@ public class BrowsingClient {
     public boolean deleteRequest(String path) {
         Message request, response;
         try {
-            DataOutputStream dataOutputStream = ClientConnectionHolder.getInstance()
-                    .getDataOutputStream();
+            Socket clientSocket = ConnectionBuilder.getInstance().buildClientSocket(this.IP);
 
-            DataInputStream dataInputStream = ClientConnectionHolder.getInstance()
-                    .getDataInputStream();
+            DataOutputStream dataOutputStream = ConnectionBuilder.getInstance()
+                    .buildOutputStream(clientSocket);
+
+            DataInputStream dataInputStream = ConnectionBuilder.getInstance()
+                    .buildInputStream(clientSocket);
 
             request = new Message();
             request.createDeleteMessage(path);
@@ -91,6 +101,10 @@ public class BrowsingClient {
             dataOutputStream.flush();
 
             response = JsonParser.getInstance().fromJson(dataInputStream.readUTF(), Message.class);
+
+            clientSocket.close();
+            dataInputStream.close();
+            dataOutputStream.close();
 
             // check if operation is possible
             if (response.isErrorMessage()) {

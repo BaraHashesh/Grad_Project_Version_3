@@ -31,7 +31,3 @@ to send files & folders to the storage device.
 
     Note: This class implements the Runnable interface so it 
     does not hinder the progress of the over all application
-
-## 5. Client Connection Holder
-
-This class is used to store the connection socket as well as the input & output streams of the client.
