@@ -32,6 +32,7 @@ public class BrowserController implements Initializable {
 
     private static String serverIP;
     private static BrowsingClient browsingClient;
+    private static BrowserController instance;
     @FXML
     public Label pathLabel;
     @FXML
@@ -42,8 +43,6 @@ public class BrowserController implements Initializable {
     private ObservableList<FileRowData> observableList = FXCollections.observableArrayList();
     private Stage stage;
     private String parentDirectory = ""; //used to store the path of the previous directory
-
-    private static BrowserController instance;
 
     /**
      * Get method for instance

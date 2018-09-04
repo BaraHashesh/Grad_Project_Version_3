@@ -13,7 +13,7 @@ public class Constants {
     public static final String BACKWARD_DASH = "/";
     public static final String DOUBLE_FORWARD_DASH = "\\\\";
     public static final String FILE_NAME = "TEMP_FILE_";
-    public static final int BUFFER_SIZE = 1024*64;
+    public static final int BUFFER_SIZE = 1024 * 64;
 
     /*
     Message related Constants

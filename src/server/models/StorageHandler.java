@@ -5,7 +5,9 @@ import shared.Methods;
 import shared.ObjectParser;
 import shared.models.BasicFileData;
 
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
 
 /**
  * This Class is used to access the USB and get data or directories from it
@@ -71,7 +73,7 @@ public class StorageHandler {
      * Method used to the declare main requirements to upload a file/folder
      *
      * @param dataOutputStream Is the output stream
-     * @param path               Is the path of the file/folder to be uploaded
+     * @param path             Is the path of the file/folder to be uploaded
      */
     public void uploadFile(DataOutputStream dataOutputStream, String path) {
         File mainFile = new File(path);
@@ -86,8 +88,8 @@ public class StorageHandler {
     /**
      * Method used to receive a file/folder from client
      *
-     * @param dataInputStream  Is the input stream
-     * @param path             Is the path to store the folder/file under
+     * @param dataInputStream Is the input stream
+     * @param path            Is the path to store the folder/file under
      */
     public void downloadFile(DataInputStream dataInputStream, String path) {
 

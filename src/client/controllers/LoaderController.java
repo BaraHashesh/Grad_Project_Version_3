@@ -15,12 +15,10 @@ import java.io.IOException;
  */
 public class LoaderController {
 
+    private static LoaderController instance;
     @FXML
     public WebView loader;
-
     private Stage stage;
-
-    private static LoaderController instance;
 
     /**
      * Get method for instance

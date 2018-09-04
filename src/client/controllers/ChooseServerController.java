@@ -30,6 +30,7 @@ import java.util.ResourceBundle;
 public class ChooseServerController implements Initializable, Runnable {
 
     private static String baseIP;
+    private static ChooseServerController instance;
     @FXML
     public TableView<ServerRowInfo> serverInfoTable;
     public Button select, cancel, refresh;
@@ -37,8 +38,6 @@ public class ChooseServerController implements Initializable, Runnable {
     private Stage stage;
     private boolean updated;
     private DiscoverySender broadCastSender;
-
-    private static ChooseServerController instance;
 
     /**
      * Get method for instance
@@ -102,8 +101,6 @@ public class ChooseServerController implements Initializable, Runnable {
         Check if there is a selected server
          */
         if (server != null) {
-            ClientConnectionHolder.getInstance().setInstance(server.getIp());
-
             Client.browserController = BrowserController.getInstance();
             Client.browserController.setIP(server.getIp());
             Client.browserController.getStage().show();

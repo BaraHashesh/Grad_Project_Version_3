@@ -4,7 +4,10 @@ import shared.ConnectionBuilder;
 import shared.JsonParser;
 import shared.models.Message;
 
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.EOFException;
+import java.io.IOException;
 import java.net.Socket;
 
 
@@ -154,14 +157,7 @@ public class ServerHandler implements Runnable {
                 }
             }
         } catch (Exception e) {
-            /*
-            Check if EOFException (client left)
-             */
-            if (! (e instanceof EOFException) ) {
-                e.printStackTrace();
-            } else {
-                System.out.println(this.clientSocket.getInetAddress() + " Client has left");
-            }
+            e.printStackTrace();
         }
     }
 

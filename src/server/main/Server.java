@@ -24,7 +24,6 @@ public class Server {
             //noinspection InfiniteLoopStatement
             while (true) {
                 Socket clientSocket = serverSocket.accept();
-
                 new ServerHandler(clientSocket).start();
             }
         } catch (Exception e) {

@@ -9,7 +9,9 @@ import shared.JsonParser;
 import shared.Methods;
 import shared.models.Message;
 
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
 import java.net.Socket;
 
 /**
@@ -106,7 +108,7 @@ public class UploadClient implements Runnable {
             clientSocket.close();
             dataInputStream.close();
             dataOutputStream.close();
-            
+
         } catch (Exception e) {
             e.printStackTrace();
 

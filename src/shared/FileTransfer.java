@@ -18,8 +18,8 @@ public class FileTransfer {
      * method used to recursively upload files/folders
      *
      * @param dataOutputStream Is output stream
-     * @param file               Is the main file/folder to be uploaded
-     * @param mainPath           Is the parents path of the main file/folder(to establish relationship of files)
+     * @param file             Is the main file/folder to be uploaded
+     * @param mainPath         Is the parents path of the main file/folder(to establish relationship of files)
      */
     public void sendFiles(DataOutputStream dataOutputStream, File file, String mainPath) {
         try {
@@ -97,8 +97,8 @@ public class FileTransfer {
     /**
      * Method used to download a file/folder
      *
-     * @param dataInputStream   Is the input stream
-     * @param path              Is the location to save data under
+     * @param dataInputStream Is the input stream
+     * @param path            Is the location to save data under
      */
     public void receiveFiles(DataInputStream dataInputStream, String path) {
         FileOutputStream output = null;
@@ -108,7 +108,7 @@ public class FileTransfer {
              */
             while (true) {
 
-                String temp =  dataInputStream.readUTF();
+                String temp = dataInputStream.readUTF();
 
                 Message fileInfoMessage = JsonParser.getInstance().fromJson(temp, Message.class);
 

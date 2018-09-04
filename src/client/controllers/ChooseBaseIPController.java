@@ -23,18 +23,15 @@ import java.io.IOException;
  */
 public class ChooseBaseIPController implements Runnable {
 
+    private static ChooseBaseIPController instance;
     @FXML
     public TextField IP;
     public Button search, cancel;
-
     private Stage stage;
-
     private boolean searched = false;
     private ServerRowInfo[] serverRowInfo;
     private DiscoverySender broadCastSender;
     private String baseIP;
-
-    private static ChooseBaseIPController instance;
 
     /**
      * Get method for instance

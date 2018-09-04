@@ -75,7 +75,7 @@ public class EstimationController implements Runnable {
 
             this.stage.setResizable(false);
 
-            this.stage.setOnCloseRequest(e-> {
+            this.stage.setOnCloseRequest(e -> {
                 try {
                     this.clientSocket.close();
                 } catch (IOException e1) {
