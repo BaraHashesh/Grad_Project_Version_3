@@ -35,7 +35,7 @@ public class ConnectionBuilder {
      * @throws IOException Unable to connect to server
      */
     public Socket buildClientSocket(String IP) throws IOException {
-        return new Socket(IP, Constants.PORT_NUMBER);
+        return new Socket(IP, Constants.TCP_CONNECTION_PORT);
     }
 
     /**
@@ -45,7 +45,7 @@ public class ConnectionBuilder {
      * @throws IOException Port is busy
      */
     public ServerSocket buildServerSocket() throws IOException {
-        return new ServerSocket(Constants.PORT_NUMBER);
+        return new ServerSocket(Constants.TCP_CONNECTION_PORT);
     }
 
 

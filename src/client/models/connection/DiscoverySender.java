@@ -52,7 +52,7 @@ public class DiscoverySender implements Runnable {
             byte[] buffer = new byte[1];
 
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length,
-                    InetAddress.getByName(this.broadcastIP), Constants.BROAD_CAST_PORT);
+                    InetAddress.getByName(this.broadcastIP), Constants.UDP_DISCOVERY_PORT);
 
             socket.send(packet); // send a broadcast message for all devices
             socket.setSoTimeout((int) (Constants.WAIT_PERIOD * 1000));

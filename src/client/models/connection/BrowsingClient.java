@@ -81,9 +81,8 @@ public class BrowsingClient {
      * Method used to delete a file/directory on the storage device
      *
      * @param path Is the path to the file/directory the storage device
-     * @return A boolean that indicates wither delete operation was successful or not
      */
-    public boolean deleteRequest(String path) {
+    public void deleteRequest(String path) {
         Message request, response;
         try {
             Socket clientSocket = ConnectionBuilder.getInstance().buildClientSocket(this.IP);
@@ -112,17 +111,12 @@ public class BrowsingClient {
                 AlertHandler.getInstance().start("Server Error",
                         response.getMessageInfo(), Alert.AlertType.ERROR);
 
-                return false;
             }
-
-            return true;
         } catch (Exception e) {
             e.printStackTrace();
 
             AlertHandler.getInstance().start("Server Error",
                     "Unable to connect to server", Alert.AlertType.ERROR);
-
-            return false;
         }
     }
 }

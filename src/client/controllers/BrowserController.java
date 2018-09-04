@@ -5,6 +5,7 @@ import client.models.connection.DownloadClient;
 import client.models.connection.UploadClient;
 import client.models.controllers.AlertHandler;
 import client.models.models.FileRowData;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -193,13 +194,7 @@ public class BrowserController implements Initializable {
         if (file == null) {
             showAlert();
         } else {
-            /*
-            Check if delete was successful
-             */
-            if (browsingClient.deleteRequest(file.getPath())) {
-                this.observableList.remove(file);
-                fileTable.setItems(this.observableList);
-            }
+            browsingClient.deleteRequest(file.getPath());
         }
     }
 
@@ -326,5 +321,33 @@ public class BrowserController implements Initializable {
             this.setObservableList(result);
         }
 
+    }
+
+    /**
+     * Method used to update the client Observable
+     * list from an outside thread
+     */
+    public void updateObservableList() {
+        Platform.runLater(() -> {
+
+            FileRowData[] result = browsingClient
+                    .browserRequest(((Label) stage.getScene().lookup("#pathLabel")).getText());
+
+            /*
+            Check if browse was successful
+            */
+            if (result != null) {
+                setObservableList(result);
+            }
+        });
+    }
+
+    /**
+     * Get method for serverIP
+     *
+     * @return The server IP the client is connected to
+     */
+    public String getServerIP() {
+        return serverIP;
     }
 }

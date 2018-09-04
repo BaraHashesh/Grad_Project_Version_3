@@ -1,21 +1,21 @@
-package server.models;
+package client.models.connection;
 
+import client.controllers.BrowserController;
 import shared.Constants;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
 
 /**
- * DiscoveryReceiver class is used by server to receive
- * discover massages from the clients and then replay to them
+ * UpdateReceiver class is used by the client to receive
+ * update massages from the server
  */
-public class DiscoveryReceiver implements Runnable {
+public class UpdateReceiver implements Runnable {
 
     private Thread thread = null;
 
     /**
-     * Method used to start the thread of the broadcast receiving operations
+     * Method used to start the thread of the UpdateReceiver
      */
     public void start() {
         if (this.thread == null) {
@@ -30,7 +30,7 @@ public class DiscoveryReceiver implements Runnable {
     @Override
     public void run() {
         try {
-            DatagramSocket socket = new DatagramSocket(Constants.UDP_DISCOVERY_PORT);
+            DatagramSocket socket = new DatagramSocket(Constants.UDP_UPDATE_PORT);
 
             /*
             Infinite while loop to receive all discover messages
@@ -45,17 +45,11 @@ public class DiscoveryReceiver implements Runnable {
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
                 socket.receive(packet);
 
-                /*
-                extract address and port from packet
-                 */
-                InetAddress address = packet.getAddress();
-                int port = packet.getPort();
+                String serverIP = packet.getAddress().toString().substring(1);
 
-                /*
-                replay to discovery packet
-                 */
-                packet = new DatagramPacket(buffer, buffer.length, address, port);
-                socket.send(packet);
+                if (BrowserController.getInstance().getServerIP().compareTo(serverIP) == 0) {
+                    BrowserController.getInstance().updateObservableList();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

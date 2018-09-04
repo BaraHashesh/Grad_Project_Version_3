@@ -36,8 +36,9 @@ public class Constants {
     /*
     Socket ports related constants
      */
-    public static final int PORT_NUMBER = 8_888;
-    public static final int BROAD_CAST_PORT = 11_111;
+    public static final int TCP_CONNECTION_PORT = 8_888;
+    public static final int UDP_UPDATE_PORT = 9_999;
+    public static final int UDP_DISCOVERY_PORT = 11_111;
 
     /*
     Regex expressions

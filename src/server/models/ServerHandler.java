@@ -6,7 +6,6 @@ import shared.models.Message;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
 
@@ -52,110 +51,115 @@ public class ServerHandler implements Runnable {
             DataOutputStream dataOutputStream = ConnectionBuilder.getInstance()
                     .buildOutputStream(this.clientSocket);
 
-            //noinspection InfiniteLoopStatement
-            while (true) {
-                clientRequest = JsonParser.getInstance().fromJson(dataInputStream.readUTF(), Message.class);
+            clientRequest = JsonParser.getInstance().fromJson(dataInputStream.readUTF(), Message.class);
 
                 /*
                 Check if browse request
                  */
-                if (clientRequest.isBrowseMessage()) {
-                    String path = clientRequest.getMessageInfo();
+            if (clientRequest.isBrowseMessage()) {
+                String path = clientRequest.getMessageInfo();
 
-                    String conflict = checkForConflict(path);
+                String conflict = checkForConflict(path);
                     /*
                      Check for conflicts
                       */
-                    if (conflict == null) {
-                        String files = JsonParser.getInstance().toJson(StorageHandler.getInstance().browseFolder(path));
+                if (conflict == null) {
+                    String files = JsonParser.getInstance().toJson(StorageHandler.getInstance().browseFolder(path));
 
-                        serverResponse = new Message();
-                        serverResponse.createSuccessMessage(files);
-                    } else {
-                        serverResponse = new Message();
-                        serverResponse.createErrorMessage(conflict);
-                    }
-                    dataOutputStream.writeUTF(JsonParser.getInstance().toJson(serverResponse));
-                    dataOutputStream.flush();
+                    serverResponse = new Message();
+                    serverResponse.createSuccessMessage(files);
+                } else {
+                    serverResponse = new Message();
+                    serverResponse.createErrorMessage(conflict);
                 }
+                dataOutputStream.writeUTF(JsonParser.getInstance().toJson(serverResponse));
+                dataOutputStream.flush();
+            }
 
                 /*
                 Check if delete request
                  */
-                if (clientRequest.isDeleteMessage()) {
-                    String path = clientRequest.getMessageInfo();
+            if (clientRequest.isDeleteMessage()) {
+                String path = clientRequest.getMessageInfo();
 
-                    String conflict = checkForConflict(path);
+                String conflict = checkForConflict(path);
                     /*
                      check for conflicts
                       */
-                    if (conflict == null) {
-                        StorageHandler.getInstance().deleteFile(path);
+                if (conflict == null) {
+                    StorageHandler.getInstance().deleteFile(path);
 
-                        serverResponse = new Message();
-                        serverResponse.createSuccessMessage("");
-                    } else {
-                        serverResponse = new Message();
-                        serverResponse.createErrorMessage(conflict);
-                    }
-                    dataOutputStream.writeUTF(JsonParser.getInstance().toJson(serverResponse));
-                    dataOutputStream.flush();
+                    serverResponse = new Message();
+                    serverResponse.createSuccessMessage("");
+                } else {
+                    serverResponse = new Message();
+                    serverResponse.createErrorMessage(conflict);
                 }
+                dataOutputStream.writeUTF(JsonParser.getInstance().toJson(serverResponse));
+                dataOutputStream.flush();
+
+                new UpdateSender().start();
+            }
 
                 /*
                 Check if download message
                  */
-                if (clientRequest.isDownloadMessage()) {
-                    String path = clientRequest.getMessageInfo();
+            if (clientRequest.isDownloadMessage()) {
+                String path = clientRequest.getMessageInfo();
 
-                    String conflict = checkForConflict(path);
+                String conflict = checkForConflict(path);
                     /*
                      check for conflicts
                       */
-                    if (conflict == null) {
-                        serverResponse = new Message();
-                        // Set the info of the response message to be the total size of the file/folder
-                        serverResponse.createSuccessMessage(StorageHandler.getInstance().calculateSize(path) + "");
+                if (conflict == null) {
+                    serverResponse = new Message();
+                    // Set the info of the response message to be the total size of the file/folder
+                    serverResponse.createSuccessMessage(StorageHandler.getInstance().calculateSize(path) + "");
 
 
-                        dataOutputStream.writeUTF(JsonParser.getInstance().toJson(serverResponse));
-                        dataOutputStream.flush();
+                    dataOutputStream.writeUTF(JsonParser.getInstance().toJson(serverResponse));
+                    dataOutputStream.flush();
 
-                        StorageHandler.getInstance().uploadFile(dataOutputStream, path);
+                    StorageHandler.getInstance().uploadFile(dataOutputStream, path);
 
-                        Message streamEndMessage = new Message();
-                        streamEndMessage.createStreamEndMessage("");
+                    Message streamEndMessage = new Message();
+                    streamEndMessage.createStreamEndMessage("");
 
-                        dataOutputStream.writeUTF(JsonParser.getInstance().toJson(streamEndMessage));
-                        dataOutputStream.flush();
-                    } else {
-                        this.handleConflict(dataOutputStream, conflict);
-                    }
+                    dataOutputStream.writeUTF(JsonParser.getInstance().toJson(streamEndMessage));
+                    dataOutputStream.flush();
+                } else {
+                    this.handleConflict(dataOutputStream, conflict);
                 }
+            }
 
                 /*
                 Check if upload request
                  */
-                if (clientRequest.isUploadMessage()) {
-                    String path = clientRequest.getMessageInfo();
+            if (clientRequest.isUploadMessage()) {
+                String path = clientRequest.getMessageInfo();
 
-                    String conflict = checkForConflict(path);
+                String conflict = checkForConflict(path);
                 /*
                  check for conflicts
                   */
-                    if (conflict == null) {
-                        serverResponse = new Message();
-                        serverResponse.createSuccessMessage("");
+                if (conflict == null) {
+                    serverResponse = new Message();
+                    serverResponse.createSuccessMessage("");
 
-                        dataOutputStream.writeUTF(JsonParser.getInstance().toJson(serverResponse));
-                        dataOutputStream.flush();
+                    dataOutputStream.writeUTF(JsonParser.getInstance().toJson(serverResponse));
+                    dataOutputStream.flush();
 
-                        StorageHandler.getInstance().downloadFile(dataInputStream, path);
-                    } else {
-                        this.handleConflict(dataOutputStream, conflict);
-                    }
+                    StorageHandler.getInstance().downloadFile(dataInputStream, path);
+
+                    new UpdateSender().start();
+                } else {
+                    this.handleConflict(dataOutputStream, conflict);
                 }
             }
+
+            this.clientSocket.close();
+            dataInputStream.close();
+            dataOutputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
