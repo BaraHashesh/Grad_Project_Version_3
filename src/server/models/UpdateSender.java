@@ -40,7 +40,7 @@ public class UpdateSender implements Runnable {
             Enumeration<NetworkInterface> networkInterface = NetworkInterface.getNetworkInterfaces();
 
             String broadcastIP = networkInterface.nextElement().getInterfaceAddresses()
-                    .get(1).getBroadcast().toString().substring(1);
+                    .get(0).getBroadcast().toString().substring(1);
 
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length,
                     InetAddress.getByName(broadcastIP), Constants.UDP_UPDATE_PORT);
