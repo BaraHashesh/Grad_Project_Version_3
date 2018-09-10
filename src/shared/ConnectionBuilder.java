@@ -1,7 +1,10 @@
 package shared;
 
+import javax.net.ssl.SSLServerSocket;
+import javax.net.ssl.SSLServerSocketFactory;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
 import java.io.*;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
@@ -28,24 +31,42 @@ public class ConnectionBuilder {
 
 
     /**
-     * Method used to build a client socket for byte exchange
+     * Method used to build a client ssl tcp socket
      *
      * @param IP Is the IP of the server
      * @return A client socket
      * @throws IOException Unable to connect to server
      */
-    public Socket buildClientSocket(String IP) throws IOException {
-        return new Socket(IP, Constants.TCP_CONNECTION_PORT);
+    public SSLSocket buildClientSocket(String IP) throws IOException {
+
+        System.setProperty("javax.net.ssl.trustStore", "/yourKEYSTORE");
+        System.setProperty("javax.net.ssl.trustStorePassword", "password");
+
+        SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+        SSLSocket sslsocket = (SSLSocket) factory.createSocket(IP, Constants.TCP_CONNECTION_PORT);
+
+        sslsocket.setEnabledCipherSuites(factory.getSupportedCipherSuites());
+
+
+        return sslsocket;
     }
 
     /**
-     * Method used to build a server socket for string exchange
+     * Method used to build a ssl tcp server socket
      *
      * @return A Server socket
      * @throws IOException Port is busy
      */
-    public ServerSocket buildServerSocket() throws IOException {
-        return new ServerSocket(Constants.TCP_CONNECTION_PORT);
+    public SSLServerSocket buildServerSocket() throws IOException {
+
+        SSLServerSocketFactory factory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
+
+        SSLServerSocket sslserversocket = (SSLServerSocket) factory
+                .createServerSocket(Constants.TCP_CONNECTION_PORT);
+
+        sslserversocket.setEnabledCipherSuites(factory.getSupportedCipherSuites());
+
+        return sslserversocket;
     }
 
 

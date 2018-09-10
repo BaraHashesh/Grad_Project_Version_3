@@ -4,10 +4,10 @@ import shared.ConnectionBuilder;
 import shared.JsonParser;
 import shared.models.Message;
 
+import javax.net.ssl.SSLSocket;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.Socket;
 
 
 /**
@@ -15,7 +15,7 @@ import java.net.Socket;
  * for each client using threads
  */
 public class ServerHandler implements Runnable {
-    private Socket clientSocket;
+    private SSLSocket clientSocket;
     private Thread thread;
 
     /**
@@ -23,7 +23,7 @@ public class ServerHandler implements Runnable {
      *
      * @param clientSocket Is the connection socket for the client
      */
-    public ServerHandler(Socket clientSocket) {
+    public ServerHandler(SSLSocket clientSocket) {
         this.clientSocket = clientSocket;
     }
 

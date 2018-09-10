@@ -7,6 +7,7 @@ import shared.ConnectionBuilder;
 import shared.JsonParser;
 import shared.models.Message;
 
+import javax.net.ssl.SSLSocket;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
@@ -85,7 +86,7 @@ public class BrowsingClient {
     public void deleteRequest(String path) {
         Message request, response;
         try {
-            Socket clientSocket = ConnectionBuilder.getInstance().buildClientSocket(this.IP);
+            SSLSocket clientSocket = ConnectionBuilder.getInstance().buildClientSocket(this.IP);
 
             DataOutputStream dataOutputStream = ConnectionBuilder.getInstance()
                     .buildOutputStream(clientSocket);

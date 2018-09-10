@@ -23,7 +23,7 @@ several new features are planned to be added soon, which are:
 
 3. Encryption
 
-	 	Have yet to decide no an encryption standard 
+	 	Have been implemented using java SSLSocktes
 	 
 4. Try to change the structure of the system as such it supports multiple storage devices 
 at any given time (previous structure supports one device) 
@@ -33,10 +33,10 @@ at any given time (previous structure supports one device)
 
 5. Create a functioning mobile version of the project (android) 
 
-		Work has yet to start on this
+		Work in progress
 
 6. Create pop-ups to appear in case of errors
 
-		Work has yet to start on this (not of much importance)
+		Have been implemented using the JavaFx Alert module
 
 

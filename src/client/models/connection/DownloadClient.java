@@ -8,9 +8,9 @@ import shared.FileTransfer;
 import shared.JsonParser;
 import shared.models.Message;
 
+import javax.net.ssl.SSLSocket;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.net.Socket;
 
 /**
  * DownloadClient class is used to download files from server on a separate thread
@@ -57,7 +57,7 @@ public class DownloadClient implements Runnable {
     public void run() {
         Message request, response;
         try {
-            Socket clientSocket = ConnectionBuilder.getInstance().buildClientSocket(this.IP);
+            SSLSocket clientSocket = ConnectionBuilder.getInstance().buildClientSocket(this.IP);
 
             DataOutputStream dataOutputStream = ConnectionBuilder.getInstance()
                     .buildOutputStream(clientSocket);

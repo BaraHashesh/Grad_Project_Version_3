@@ -9,10 +9,10 @@ import shared.JsonParser;
 import shared.Methods;
 import shared.models.Message;
 
+import javax.net.ssl.SSLSocket;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.net.Socket;
 
 /**
  * UploadClient class is used to upload files to storage device on a separate thread
@@ -59,7 +59,7 @@ public class UploadClient implements Runnable {
     public void run() {
         Message request, response;
         try {
-            Socket clientSocket = ConnectionBuilder.getInstance().buildClientSocket(this.IP);
+            SSLSocket clientSocket = ConnectionBuilder.getInstance().buildClientSocket(this.IP);
 
             DataOutputStream dataOutputStream = ConnectionBuilder.getInstance()
                     .buildOutputStream(clientSocket);

@@ -19,6 +19,9 @@ public class Client extends Application {
 
     public static void main(String[] args) {
         System.setProperty("java.net.preferIPv4Stack", "true");
+        System.setProperty("javax.net.ssl.trustStore", "/KEYSTORE");
+        System.setProperty("javax.net.ssl.trustStorePassword", "password");
+
         Application.launch();
     }
 
