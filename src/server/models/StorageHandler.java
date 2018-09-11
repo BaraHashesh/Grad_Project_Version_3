@@ -117,4 +117,21 @@ public class StorageHandler {
     public long calculateSize(String path) {
         return Methods.getInstance().calculateSize(new File(path));
     }
+
+    /**
+     * Method used to check if a file/folder exists
+     * @param path The path for the file
+     * @return If the file/folder exists or not
+     */
+    public boolean checkIfFileExists(String path){
+        /*
+        Check if path is empty (Root path)
+         */
+        if (path.compareTo("") == 0)
+            path = ROOT;
+
+        File file = new File(path);
+
+        return file.exists();
+    }
 }

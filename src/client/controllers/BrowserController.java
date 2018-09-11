@@ -24,6 +24,7 @@ import shared.Constants;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 /**
@@ -43,7 +44,8 @@ public class BrowserController implements Initializable {
     public TableView<FileRowData> fileTable;
     private ObservableList<FileRowData> observableList = FXCollections.observableArrayList();
     private Stage stage;
-    private String parentDirectory = ""; //used to store the path of the previous directory
+
+    private ArrayList<String> pathList = new ArrayList<>(10);
 
     /**
      * Get method for instance
@@ -111,12 +113,7 @@ public class BrowserController implements Initializable {
             Check if browse was successful
              */
             if (result != null) {
-                this.parentDirectory = fileRowData.getParent();
-                /*
-                Check if parent isn't null
-                 */
-                if (this.parentDirectory == null)
-                    this.parentDirectory = "";
+                this.pathList.add(fileRowData.getParent());
 
                 this.setObservableList(result);
                 this.pathLabel.setText(fileRowData.getPath());
@@ -142,6 +139,10 @@ public class BrowserController implements Initializable {
 
             this.stage.setTitle("File Browser");
 
+            this.stage.setOnCloseRequest(e->{
+                System.exit(1);
+            });
+
             this.stage.setResizable(false);
         } catch (IOException e) {
             e.printStackTrace();
@@ -153,32 +154,18 @@ public class BrowserController implements Initializable {
      */
     public void onBackButtonClicked() {
         /*
-        Check if there're files in the current directory
+        Check if pathList is empty
          */
-        if (observableList.toArray().length == 0) {
+        if (this.pathList.size() != 0) {
+            String path = this.pathList.get(this.pathList.size()-1);
 
-            FileRowData[] result = browsingClient.browserRequest(this.parentDirectory);
-
-            /*
-            Check if browse was successful
-             */
-            if (result != null) {
-                this.setObservableList(result);
-                this.pathLabel.setText(this.parentDirectory);
-            }
-        } else {
-            String path = this.observableList.get(0).getPreviousDirectory();
+            this.pathList.remove(this.pathList.size()-1);
 
             FileRowData[] result = browsingClient.browserRequest(path);
 
-            /*
-            Check if browse was successful
-             */
-            if (result != null) {
-                this.setObservableList(result);
-                this.pathLabel.setText(
-                        this.observableList.get(0).getParent());
-            }
+            this.setObservableList(result);
+
+            this.pathLabel.setText(path);
         }
     }
 

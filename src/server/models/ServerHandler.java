@@ -53,16 +53,16 @@ public class ServerHandler implements Runnable {
 
             clientRequest = JsonParser.getInstance().fromJson(dataInputStream.readUTF(), Message.class);
 
-                /*
-                Check if browse request
-                 */
+            /*
+            Check if browse request
+            */
             if (clientRequest.isBrowseMessage()) {
                 String path = clientRequest.getMessageInfo();
 
                 String conflict = checkForConflict(path);
-                    /*
-                     Check for conflicts
-                      */
+                /*
+                Check for conflicts
+                */
                 if (conflict == null) {
                     String files = JsonParser.getInstance().toJson(StorageHandler.getInstance().browseFolder(path));
 
@@ -76,16 +76,16 @@ public class ServerHandler implements Runnable {
                 dataOutputStream.flush();
             }
 
-                /*
-                Check if delete request
-                 */
+            /*
+            Check if delete request
+            */
             if (clientRequest.isDeleteMessage()) {
                 String path = clientRequest.getMessageInfo();
 
                 String conflict = checkForConflict(path);
-                    /*
-                     check for conflicts
-                      */
+                /*
+                check for conflicts
+                */
                 if (conflict == null) {
                     StorageHandler.getInstance().deleteFile(path);
 
@@ -101,16 +101,16 @@ public class ServerHandler implements Runnable {
                 new UpdateSender().start();
             }
 
-                /*
-                Check if download message
-                 */
+            /*
+            Check if download message
+            */
             if (clientRequest.isDownloadMessage()) {
                 String path = clientRequest.getMessageInfo();
 
                 String conflict = checkForConflict(path);
-                    /*
-                     check for conflicts
-                      */
+                /*
+                check for conflicts
+                */
                 if (conflict == null) {
                     serverResponse = new Message();
                     // Set the info of the response message to be the total size of the file/folder
@@ -132,9 +132,9 @@ public class ServerHandler implements Runnable {
                 }
             }
 
-                /*
-                Check if upload request
-                 */
+            /*
+            Check if upload request
+            */
             if (clientRequest.isUploadMessage()) {
                 String path = clientRequest.getMessageInfo();
 
@@ -172,7 +172,7 @@ public class ServerHandler implements Runnable {
      * @return a string if there is a conflict, null otherwise
      */
     private String checkForConflict(String filePath) {
-        return null;
+        return StorageHandler.getInstance().checkIfFileExists(filePath) ? null : "File doesn't exist";
     }
 
     /**
