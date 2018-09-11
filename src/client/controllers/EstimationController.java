@@ -131,30 +131,38 @@ public class EstimationController implements Runnable {
                         .round((double) sizeInfo[0], 2) + " " + sizeInfo[1]);
 
                 /*
-                update the infoTime label
+                Check if there was progress
                  */
-                double remainingTime = (double) remaining / speed; //Time in seconds
+                if (speed != 0) {
+                    /*
+                    update the infoTime label
+                     */
+                    double remainingTime = (double) remaining / speed; //Time in seconds
 
-                this.infoTime.setText(Methods.getInstance().reduceTime((long) (remainingTime * 1000)));
+                    this.infoTime.setText(Methods.getInstance().reduceTime((long) (remainingTime * 1000)));
 
-                /*
-                update the infoSpeed label
-                 */
-                sizeInfo = Methods.getInstance().reduceSize(speed);
+                    /*
+                    update the infoSpeed label
+                     */
+                    sizeInfo = Methods.getInstance().reduceSize(speed);
 
-                this.infoSpeed.setText(Methods.getInstance().round((double) sizeInfo[0], 2)
-                        + " " + sizeInfo[1] + "/s");
+                    this.infoSpeed.setText(Methods.getInstance().round((double) sizeInfo[0], 2)
+                            + " " + sizeInfo[1] + "/s");
 
-                /*
-                update the progress par
-                 */
-                double width = scene.getWidth();
+                    /*
+                    update the progress par
+                     */
+                    double width = scene.getWidth();
 
-                double percentage = (double) remaining / this.totalFileSize;
+                    double percentage = (double) remaining / this.totalFileSize;
 
-                this.labelProgress.setPrefWidth(width - percentage * width);
+                    this.labelProgress.setPrefWidth(width - percentage * width);
 
-                this.labelRemaining.setPrefWidth(percentage * width);
+                    this.labelRemaining.setPrefWidth(percentage * width);
+                } else {
+                    this.infoTime.setText("Computing!!!");
+                    this.infoSpeed.setText("Computing!!!");
+                }
             }
         }
     }
