@@ -320,12 +320,8 @@ public class BrowserController implements Initializable {
             FileRowData[] result = browsingClient
                     .browserRequest(((Label) stage.getScene().lookup("#pathLabel")).getText());
 
-            /*
-            Check if browse was successful
-            */
-            if (result != null) {
-                setObservableList(result);
-            }
+
+            setObservableList(result);
         });
     }
 
