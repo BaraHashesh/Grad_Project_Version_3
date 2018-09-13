@@ -5,6 +5,7 @@ import shared.Constants;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.util.ArrayList;
 
 /**
  * UpdateReceiver class is used by the client to receive
@@ -47,8 +48,18 @@ public class UpdateReceiver implements Runnable {
 
                 String serverIP = packet.getAddress().toString().substring(1);
 
-                if (BrowserController.getInstance().getServerIP().compareTo(serverIP) == 0) {
-                    BrowserController.getInstance().updateObservableList();
+                ArrayList<BrowserController> browsers = BrowserController.getInstances();
+
+                /*
+                check for browsers needing update
+                 */
+                for(BrowserController browser: browsers){
+                    /*
+                    Check if if browser needs update
+                     */
+                    if (browser.getServerIP().compareTo(serverIP) == 0)
+                        browser.updateObservableList();
+
                 }
             }
         } catch (Exception e) {

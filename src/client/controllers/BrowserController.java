@@ -32,9 +32,6 @@ import java.util.ResourceBundle;
  */
 public class BrowserController implements Initializable {
 
-    private static String serverIP;
-    private static BrowsingClient browsingClient;
-    private static BrowserController instance;
     @FXML
     public Label pathLabel;
     @FXML
@@ -42,26 +39,88 @@ public class BrowserController implements Initializable {
             uploadFileButton, uploadFolderButton, refreshButton;
     @FXML
     public TableView<FileRowData> fileTable;
-    private ObservableList<FileRowData> observableList = FXCollections.observableArrayList();
-    private Stage stage;
 
+    private ObservableList<FileRowData> observableList = FXCollections.observableArrayList();
+
+    private static ArrayList<BrowserController> instances = new ArrayList<>();
+
+    private BrowsingClient browsingClient;
+    private String serverIP;
     private ArrayList<String> pathList = new ArrayList<>(10);
+    private Stage stage;
 
     /**
      * Get method for instance
      *
      * @return An instance of BrowserController
      */
-    public static BrowserController getInstance() {
-        /*
-        Check if instance is already set
-         */
-        if (instance == null) {
-            instance = new BrowserController();
-            instance.setStage();
-        }
+    public static BrowserController getInstance(String IP) {
 
-        return instance;
+        try {
+            FXMLLoader loader = new FXMLLoader(BrowserController.class
+                    .getResource("/client/resources/fxml/BrowserView.fxml"));
+
+            AnchorPane parent = loader.load();
+
+            // Get the controller of the loaded scene
+            BrowserController controller = loader.getController();
+
+            Scene scene = new Scene(parent);
+
+            controller.fileTable = (TableView<FileRowData>) scene.lookup("#fileTable");
+
+            controller.stage = new Stage();
+
+            controller.stage.setScene(scene);
+
+            controller.stage.setTitle("File Browser");
+
+            controller.stage.setOnShown(e->{
+
+                FileRowData[] result = new BrowsingClient(controller.serverIP).browserRequest("");
+
+                /*
+                Check if browse was successful
+                */
+                if (result != null) {
+                    controller.setObservableList(result);
+                }
+            });
+
+            controller.stage.setOnCloseRequest(e->{
+
+                getInstances().remove(controller);
+
+                /*
+                check if one stage is open or not
+                 */
+                if(getInstances().size() == 0
+                        && !ChooseServerController.getInstance().isOpen())
+                    System.exit(1);
+            });
+
+            controller.stage.setResizable(false);
+
+            controller.serverIP = IP;
+
+            controller.browsingClient = new BrowsingClient(controller.serverIP);
+
+            instances.add(controller);
+
+            return controller;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Get method for instances
+     * @return All available instances of the BrowserController
+     */
+    public static ArrayList<BrowserController> getInstances(){
+        return instances;
     }
 
     @Override
@@ -78,19 +137,19 @@ public class BrowserController implements Initializable {
         date.setCellValueFactory(new PropertyValueFactory<>("modifiedDate"));
         size.setCellValueFactory(new PropertyValueFactory<>("sizeInfo"));
 
-        fileTable.getColumns().clear();
+        this.fileTable.getColumns().clear();
 
-        fileTable.getColumns().add(image);
-        fileTable.getColumns().add(name);
-        fileTable.getColumns().add(type);
-        fileTable.getColumns().add(date);
-        fileTable.getColumns().add(size);
+        this.fileTable.getColumns().add(image);
+        this.fileTable.getColumns().add(name);
+        this.fileTable.getColumns().add(type);
+        this.fileTable.getColumns().add(date);
+        this.fileTable.getColumns().add(size);
 
-        fileTable.setRowFactory(tv -> {
+        this.fileTable.setRowFactory(tv -> {
             TableRow<FileRowData> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (!row.isEmpty())) {
-                    this.onRowDoubleClick();
+                    onRowDoubleClick();
                 }
             });
             return row;
@@ -101,13 +160,13 @@ public class BrowserController implements Initializable {
      * Method used to handle double click on rows in the table
      */
     private void onRowDoubleClick() {
-        FileRowData fileRowData = fileTable.getSelectionModel().getSelectedItem();
+        FileRowData fileRowData = this.fileTable.getSelectionModel().getSelectedItem();
 
         /*
         Check if a file was selected and it is a directory
          */
-        if (fileRowData != null && fileRowData.isDirectory()) {
-            FileRowData[] result = browsingClient.browserRequest(fileRowData.getPath());
+        if (fileRowData.isDirectory()) {
+            FileRowData[] result = this.browsingClient.browserRequest(fileRowData.getPath());
 
             /*
             Check if browse was successful
@@ -118,34 +177,6 @@ public class BrowserController implements Initializable {
                 this.setObservableList(result);
                 this.pathLabel.setText(fileRowData.getPath());
             }
-        }
-    }
-
-    /**
-     * Set & initialize method for the BrowserView GUI
-     */
-    private void setStage() {
-        try {
-            AnchorPane parent = FXMLLoader.load(getClass()
-                    .getResource("/client/resources/fxml/BrowserView.fxml"));
-
-            Scene scene = new Scene(parent);
-
-            this.fileTable = (TableView<FileRowData>) scene.lookup("#fileTable");
-
-            this.stage = new Stage();
-
-            this.stage.setScene(scene);
-
-            this.stage.setTitle("File Browser");
-
-            this.stage.setOnCloseRequest(e->{
-                System.exit(1);
-            });
-
-            this.stage.setResizable(false);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -161,7 +192,7 @@ public class BrowserController implements Initializable {
 
             this.pathList.remove(this.pathList.size()-1);
 
-            FileRowData[] result = browsingClient.browserRequest(path);
+            FileRowData[] result = this.browsingClient.browserRequest(path);
 
             this.setObservableList(result);
 
@@ -173,7 +204,7 @@ public class BrowserController implements Initializable {
      * EventHandler used to handle click events on the delete button
      */
     public void onDeleteButtonClicked() {
-        FileRowData file = fileTable.getSelectionModel().getSelectedItem();
+        FileRowData file = this.fileTable.getSelectionModel().getSelectedItem();
 
         /*
         Check if user selected a file
@@ -181,7 +212,7 @@ public class BrowserController implements Initializable {
         if (file == null) {
             showAlert();
         } else {
-            browsingClient.deleteRequest(file.getPath());
+            this.browsingClient.deleteRequest(file.getPath());
         }
     }
 
@@ -189,7 +220,7 @@ public class BrowserController implements Initializable {
      * EventHandler used to handle click events on the download button
      */
     public void onDownloadButtonClicked() {
-        FileRowData file = fileTable.getSelectionModel().getSelectedItem();
+        FileRowData file = this.fileTable.getSelectionModel().getSelectedItem();
 
         /*
         Check if there is a selected file
@@ -256,30 +287,11 @@ public class BrowserController implements Initializable {
     }
 
     /**
-     * Set method for ServerIP
-     *
-     * @param IP The ip of the server
-     */
-    public void setIP(String IP) {
-        serverIP = IP;
-        browsingClient = new BrowsingClient(serverIP);
-
-        FileRowData[] result = new BrowsingClient(serverIP).browserRequest("");
-
-         /*
-            Check if browse was successful
-             */
-        if (result != null) {
-            this.setObservableList(result);
-        }
-    }
-
-    /**
      * Set method for observableList
      *
      * @param fileRowData Is a a list of FileRowData objects
      */
-    public void setObservableList(FileRowData... fileRowData) {
+    private void setObservableList(FileRowData... fileRowData) {
         this.observableList.clear();
         this.observableList.addAll(fileRowData);
         this.fileTable.setItems(this.observableList);
@@ -290,7 +302,7 @@ public class BrowserController implements Initializable {
      *
      * @return A stage containing the GUI of the fxml file
      */
-    public Stage getStage() {
+    Stage getStage() {
         return this.stage;
     }
 
@@ -299,7 +311,7 @@ public class BrowserController implements Initializable {
      */
     public void onRefreshButtonClicked() {
 
-        FileRowData[] result = browsingClient.browserRequest(this.pathLabel.getText());
+        FileRowData[] result = this.browsingClient.browserRequest(this.pathLabel.getText());
 
         /*
         Check if browse was successful
@@ -317,7 +329,7 @@ public class BrowserController implements Initializable {
     public void updateObservableList() {
         Platform.runLater(() -> {
 
-            FileRowData[] result = browsingClient
+            FileRowData[] result = this.browsingClient
                     .browserRequest(((Label) stage.getScene().lookup("#pathLabel")).getText());
 
 
@@ -331,6 +343,6 @@ public class BrowserController implements Initializable {
      * @return The server IP the client is connected to
      */
     public String getServerIP() {
-        return serverIP;
+        return this.serverIP;
     }
 }

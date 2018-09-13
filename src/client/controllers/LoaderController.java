@@ -8,8 +8,6 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
 /**
  * LoaderController is the controller class for the Loader.fxml file
  */
@@ -17,7 +15,7 @@ public class LoaderController {
 
     private static LoaderController instance;
     @FXML
-    public WebView loader;
+    private WebView loaderWebView;
     private Stage stage;
 
     /**
@@ -30,42 +28,43 @@ public class LoaderController {
         Check if instance is already set
          */
         if (instance == null) {
-            instance = new LoaderController();
-            instance.setStage();
+            try {
+                FXMLLoader loader = new FXMLLoader(ChooseServerController.class
+                        .getResource("/client/resources/fxml/LoaderView.fxml"));
+
+                AnchorPane parent = loader.load();
+
+                // Get the controller of the loaded scene
+                instance = loader.getController();
+
+                Scene scene = new Scene(parent);
+
+                instance.loaderWebView = (WebView) scene.lookup("#loader");
+
+                WebEngine engine = instance.loaderWebView.getEngine();
+
+
+                String url = LoaderController.class
+                        .getResource("/client/resources/html/Loader.html").toExternalForm();
+
+                engine.load(url);
+
+                instance.stage = new Stage();
+                instance.stage.setScene(scene);
+
+                instance.stage.setTitle("Loading");
+
+                instance.stage.setResizable(false);
+
+                instance.stage.setOnCloseRequest(e->System.exit(1));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
 
         return instance;
-    }
-
-    /**
-     * Set method for stage
-     */
-    private void setStage() {
-        try {
-            AnchorPane parent = FXMLLoader.load(getClass()
-                    .getResource("/client/resources/fxml/LoaderView.fxml"));
-
-            Scene scene = new Scene(parent);
-
-            loader = (WebView) scene.lookup("#loader");
-
-            WebEngine engine = loader.getEngine();
-
-
-            String url = getClass().getResource("/client/resources/html/Loader.html").toExternalForm();
-
-            engine.load(url);
-
-            this.stage = new Stage();
-            this.stage.setScene(scene);
-
-            this.stage.setTitle("Loading");
-
-            this.stage.setResizable(false);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -73,7 +72,7 @@ public class LoaderController {
      *
      * @return A stage containing the GUI of the fxml file
      */
-    public Stage getStage() {
+    Stage getStage() {
         return this.stage;
     }
 }

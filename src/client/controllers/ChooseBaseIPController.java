@@ -1,6 +1,5 @@
 package client.controllers;
 
-import client.main.Client;
 import client.models.connection.DiscoverySender;
 import client.models.controllers.AlertHandler;
 import client.models.models.ServerRowInfo;
@@ -43,33 +42,33 @@ public class ChooseBaseIPController implements Runnable {
         Check if instance is already set
          */
         if (instance == null) {
-            instance = new ChooseBaseIPController();
-            instance.setStage();
+            try {
+                FXMLLoader loader = new FXMLLoader(ChooseBaseIPController.class
+                        .getResource("/client/resources/fxml/ChooseBaseIPView.fxml"));
+
+                AnchorPane parent = loader.load();
+
+                // Get the controller of the loaded scene
+                instance = loader.getController();
+
+                Scene scene = new Scene(parent);
+
+                instance.stage = new Stage();
+
+                instance.stage.setScene(scene);
+
+                instance.stage.setTitle("IP Selector");
+
+                instance.stage.setResizable(false);
+
+                instance.stage.setOnCloseRequest(e-> System.exit(1));
+
+            } catch (Exception e){
+                e.printStackTrace();
+            }
         }
 
         return instance;
-    }
-
-    /**
-     * Set & initialize method for the ChooseBaseIPView GUI
-     */
-    private void setStage() {
-        try {
-            AnchorPane parent = FXMLLoader.load(getClass()
-                    .getResource("/client/resources/fxml/ChooseBaseIPView.fxml"));
-
-            Scene scene = new Scene(parent);
-
-            this.stage = new Stage();
-
-            this.stage.setScene(scene);
-
-            this.stage.setTitle("IP Selector");
-
-            this.stage.setResizable(false);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -89,10 +88,9 @@ public class ChooseBaseIPController implements Runnable {
             this.broadCastSender = new DiscoverySender(this.baseIP);
             this.broadCastSender.start();
 
-            Client.chooseBaseIPController.getStage().hide();
+            ChooseBaseIPController.getInstance().getStage().hide();
 
-            Client.loaderController = LoaderController.getInstance();
-            Client.loaderController.getStage().show();
+            LoaderController.getInstance().getStage().show();
 
             new Thread(this).start();
         }
@@ -126,13 +124,13 @@ public class ChooseBaseIPController implements Runnable {
             this.searched = true;
             Platform.runLater(this);
         } else {
-            Client.chooseServerController = ChooseServerController.getInstance();
-            Client.chooseServerController.setObservableList(this.serverRowInfo);
-            Client.chooseServerController.setIP(this.baseIP);
-            Client.chooseServerController.getStage().show();
+            ChooseServerController chooseServerController = ChooseServerController.getInstance();
+            chooseServerController.setObservableList(this.serverRowInfo);
+            chooseServerController.setIP(this.baseIP);
+            chooseServerController.getStage().show();
 
-            Client.chooseBaseIPController.getStage().close();
-            Client.loaderController.getStage().close();
+            ChooseBaseIPController.getInstance().getStage().close();
+            LoaderController.getInstance().getStage().close();
         }
 
     }

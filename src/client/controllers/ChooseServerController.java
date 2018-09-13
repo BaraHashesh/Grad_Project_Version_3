@@ -1,8 +1,6 @@
 package client.controllers;
 
-import client.main.Client;
 import client.models.connection.DiscoverySender;
-import client.models.connection.UpdateReceiver;
 import client.models.controllers.AlertHandler;
 import client.models.models.ServerRowInfo;
 import javafx.application.Platform;
@@ -21,24 +19,28 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import shared.ObjectParser;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Controller for the ChooseServer.fxml file
+ * Controller for the ChooseServerView.fxml file
  */
 public class ChooseServerController implements Initializable, Runnable {
 
     private static String baseIP;
     private static ChooseServerController instance;
+
     @FXML
     public TableView<ServerRowInfo> serverInfoTable;
+    @FXML
     public Button select, cancel, refresh;
+
     private ObservableList<ServerRowInfo> observableList = FXCollections.observableArrayList();
     private Stage stage;
     private boolean updated;
     private DiscoverySender broadCastSender;
+
+    private boolean open;
 
     /**
      * Get method for instance
@@ -50,35 +52,47 @@ public class ChooseServerController implements Initializable, Runnable {
         Check if instance is already set
          */
         if (instance == null) {
-            instance = new ChooseServerController();
-            instance.setStage();
+
+            try {
+                FXMLLoader loader = new FXMLLoader(ChooseServerController.class
+                        .getResource("/client/resources/fxml/ChooseServerView.fxml"));
+
+                AnchorPane parent = loader.load();
+
+                // Get the controller of the loaded scene
+                instance = loader.getController();
+
+                instance.open = true;
+
+                Scene scene = new Scene(parent);
+
+                instance.serverInfoTable = (TableView<ServerRowInfo>) scene
+                        .lookup("#serverInfoTable");
+
+                instance.stage = new Stage();
+                instance.stage.setScene(scene);
+
+                instance.stage.setTitle("Server Browser");
+
+                instance.stage.setResizable(false);
+
+                instance.stage.setOnCloseRequest(e->{
+                    instance.open = false;
+
+                /*
+                check if one stage was opened
+                 */
+                    if(BrowserController.getInstances().size() == 0)
+                        System.exit(1);
+                });
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
 
         return instance;
-    }
-
-    /**
-     * Get & initialize method for the ChooseBaseIPView GUI
-     */
-    private void setStage() {
-        try {
-            AnchorPane parent = FXMLLoader.load(getClass()
-                    .getResource("/client/resources/fxml/ChooseServer.fxml"));
-
-            Scene scene = new Scene(parent);
-
-            this.serverInfoTable = (TableView<ServerRowInfo>) scene.lookup("#serverInfoTable");
-
-            this.stage = new Stage();
-            this.stage.setScene(scene);
-
-            this.stage.setTitle("Server Browser");
-
-            this.stage.setResizable(false);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -86,7 +100,7 @@ public class ChooseServerController implements Initializable, Runnable {
      *
      * @param ServerRowInfo Is a a list of ServerRowInfo objects
      */
-    public void setObservableList(ServerRowInfo... ServerRowInfo) {
+    void setObservableList(ServerRowInfo... ServerRowInfo) {
         this.observableList.clear();
         this.observableList.addAll(ServerRowInfo);
         this.serverInfoTable.setItems(this.observableList);
@@ -102,13 +116,9 @@ public class ChooseServerController implements Initializable, Runnable {
         Check if there is a selected server
          */
         if (server != null) {
-            new UpdateReceiver().start();
-
-            Client.browserController = BrowserController.getInstance();
-            Client.browserController.setIP(server.getIp());
-            Client.browserController.getStage().show();
-
-            Client.chooseServerController.getStage().close();
+            BrowserController browserController = BrowserController.getInstance(server.getIp());
+            assert browserController != null; // check if creating browser was successful
+            browserController.getStage().show();
         } else {
             AlertHandler.getInstance().start("Invalid action",
                     "Please select a server", Alert.AlertType.WARNING);
@@ -127,7 +137,7 @@ public class ChooseServerController implements Initializable, Runnable {
      *
      * @return A stage containing the GUI of the fxml file
      */
-    public Stage getStage() {
+    Stage getStage() {
         return this.stage;
     }
 
@@ -147,9 +157,9 @@ public class ChooseServerController implements Initializable, Runnable {
     public void onRefreshButtonClicked() {
         this.updated = false;
 
-        Client.chooseServerController.getStage().hide();
+        ChooseServerController.getInstance().getStage().hide();
 
-        Client.loaderController.getStage().show();
+        LoaderController.getInstance().getStage().show();
 
         this.broadCastSender = new DiscoverySender(baseIP);
 
@@ -180,8 +190,16 @@ public class ChooseServerController implements Initializable, Runnable {
 
             Platform.runLater(this);
         } else {
-            Client.loaderController.getStage().close();
-            Client.chooseServerController.getStage().show();
+            LoaderController.getInstance().getStage().close();
+            ChooseServerController.getInstance().getStage().show();
         }
+    }
+
+    /**
+     * Get method for open
+     * @return Wither the current server chooser is open or not
+     */
+    boolean isOpen(){
+        return open;
     }
 }
