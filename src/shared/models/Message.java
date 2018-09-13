@@ -83,6 +83,7 @@ public class Message {
      *
      * @return a boolean that indicates if the message is a file info message or not
      */
+    @SuppressWarnings("unused")
     public boolean isFileInfoMessage() {
         return this.messageType == Constants.FILE_INFO_MESSAGE;
     }

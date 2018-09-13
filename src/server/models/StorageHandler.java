@@ -35,7 +35,7 @@ public class StorageHandler {
      * @param folderURL Path to the folder (given root is an empty string i.e. "")
      * @return List of the child files for the folder
      */
-    public BasicFileData[] browseFolder(String folderURL) {
+    BasicFileData[] browseFolder(String folderURL) {
 
         /*
         Check if folder is out of scope
@@ -64,7 +64,7 @@ public class StorageHandler {
      *
      * @param path is the path of the file within the USB
      */
-    public void deleteFile(String path) {
+    void deleteFile(String path) {
         Methods.getInstance().deleteFile(new File(path));
     }
 
@@ -75,7 +75,7 @@ public class StorageHandler {
      * @param dataOutputStream Is the output stream
      * @param path             Is the path of the file/folder to be uploaded
      */
-    public void uploadFile(DataOutputStream dataOutputStream, String path) {
+    void uploadFile(DataOutputStream dataOutputStream, String path) {
         File mainFile = new File(path);
 
         String parent = mainFile.getParent();
@@ -91,7 +91,7 @@ public class StorageHandler {
      * @param dataInputStream Is the input stream
      * @param path            Is the path to store the folder/file under
      */
-    public void downloadFile(DataInputStream dataInputStream, String path) {
+    void downloadFile(DataInputStream dataInputStream, String path) {
 
         /*
         Check if path is empty (Root path)
@@ -114,7 +114,7 @@ public class StorageHandler {
      * @param path Is the path to the file/folder
      * @return The size of the file/folder in bytes
      */
-    public long calculateSize(String path) {
+    long calculateSize(String path) {
         return Methods.getInstance().calculateSize(new File(path));
     }
 
@@ -123,7 +123,7 @@ public class StorageHandler {
      * @param path The path for the file
      * @return If the file/folder exists or not
      */
-    public boolean checkIfFileExists(String path){
+    boolean checkIfFileExists(String path){
         /*
         Check if path is empty (Root path)
          */

@@ -67,8 +67,6 @@ public class BrowserController implements Initializable {
 
             Scene scene = new Scene(parent);
 
-            controller.fileTable = (TableView<FileRowData>) scene.lookup("#fileTable");
-
             controller.stage = new Stage();
 
             controller.stage.setScene(scene);
@@ -330,7 +328,7 @@ public class BrowserController implements Initializable {
         Platform.runLater(() -> {
 
             FileRowData[] result = this.browsingClient
-                    .browserRequest(((Label) stage.getScene().lookup("#pathLabel")).getText());
+                    .browserRequest(this.pathLabel.getText());
 
 
             setObservableList(result);

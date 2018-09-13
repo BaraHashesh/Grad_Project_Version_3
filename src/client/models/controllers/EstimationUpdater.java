@@ -58,7 +58,6 @@ public class EstimationUpdater implements Runnable {
      */
     @Override
     public void run() {
-        long time = 1;
         /*
         While loop to continue updating until entire file/folder is transformed
          */
@@ -66,7 +65,6 @@ public class EstimationUpdater implements Runnable {
             try {
                 Thread.sleep((long) (Constants.UPDATE_RATE * 1000));
                 this.estimationViewController.update(this.fileTransfer.getTransferredFileSize());
-                time++;
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

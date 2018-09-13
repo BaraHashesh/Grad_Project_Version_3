@@ -15,8 +15,6 @@ import javafx.stage.Stage;
 import shared.Constants;
 import shared.ObjectParser;
 
-import java.io.IOException;
-
 /**
  * Controller for the ChooseBaseIPView.fxml file
  */

@@ -66,9 +66,6 @@ public class ChooseServerController implements Initializable, Runnable {
 
                 Scene scene = new Scene(parent);
 
-                instance.serverInfoTable = (TableView<ServerRowInfo>) scene
-                        .lookup("#serverInfoTable");
-
                 instance.stage = new Stage();
                 instance.stage.setScene(scene);
 

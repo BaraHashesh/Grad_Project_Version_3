@@ -15,6 +15,11 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+/**
+ * Class used by client to extract extra data about using the file data
+ * in the BasicFileData object
+ */
+@SuppressWarnings("unused")
 public class FileRowData extends BasicFileData {
 
     /**
@@ -206,18 +211,5 @@ public class FileRowData extends BasicFileData {
         int i = getPath().lastIndexOf(Constants.BACKWARD_DASH);
 
         return getPath().substring(0, i);
-    }
-
-    /**
-     * Method used to obtain parent directory of the file
-     *
-     * @return The path for the directory at which the parent exists
-     */
-    public String getPreviousDirectory() {
-        String parent = getParent();
-
-        int i = parent.lastIndexOf(Constants.BACKWARD_DASH);
-
-        return parent.substring(0, i + 1);
     }
 }

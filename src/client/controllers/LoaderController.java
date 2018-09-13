@@ -14,8 +14,10 @@ import javafx.stage.Stage;
 public class LoaderController {
 
     private static LoaderController instance;
+
     @FXML
-    private WebView loaderWebView;
+    public WebView loaderWebView;
+
     private Stage stage;
 
     /**
@@ -38,8 +40,6 @@ public class LoaderController {
                 instance = loader.getController();
 
                 Scene scene = new Scene(parent);
-
-                instance.loaderWebView = (WebView) scene.lookup("#loader");
 
                 WebEngine engine = instance.loaderWebView.getEngine();
 

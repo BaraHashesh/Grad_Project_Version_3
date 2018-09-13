@@ -39,7 +39,7 @@ public class BasicFileData {
      *
      * @return Date at which file was last modified
      */
-    public long getLastModified() {
+    protected long getLastModified() {
         return lastModified;
     }
 

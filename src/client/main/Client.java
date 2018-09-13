@@ -1,9 +1,6 @@
 package client.main;
 
-import client.controllers.BrowserController;
 import client.controllers.ChooseBaseIPController;
-import client.controllers.ChooseServerController;
-import client.controllers.LoaderController;
 import client.models.connection.UpdateReceiver;
 import javafx.application.Application;
 import javafx.stage.Stage;

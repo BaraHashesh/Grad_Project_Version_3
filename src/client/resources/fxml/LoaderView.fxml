@@ -6,13 +6,11 @@
 <?import javafx.scene.web.WebView?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="342.0" prefWidth="321.0" xmlns="http://javafx.com/javafx/8"
             fx:controller="client.controllers.LoaderController">
-    <children>
-        <WebView fx:id="loader" prefHeight="295.0" prefWidth="321.0"/>
-        <Label alignment="CENTER" layoutY="292.0" prefHeight="50.0" prefWidth="321.0"
-               style="-fx-background-color: white;" text="LOADING!!!">
-            <font>
-                <Font size="32.0"/>
-            </font>
-        </Label>
-    </children>
+    <WebView fx:id="loaderWebView" prefHeight="295.0" prefWidth="321.0"/>
+    <Label alignment="CENTER" layoutY="292.0" prefHeight="50.0" prefWidth="321.0"
+           style="-fx-background-color: white;" text="LOADING!!!">
+        <font>
+            <Font size="32.0"/>
+        </font>
+    </Label>
 </AnchorPane>

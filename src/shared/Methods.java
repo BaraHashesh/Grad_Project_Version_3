@@ -29,9 +29,8 @@ public class Methods {
      * Method used to delete a given file
      *
      * @param file Is the file to be deleted
-     * @return A boolean that indicates wither delete was successful or not
      */
-    public boolean deleteFile(File file) {
+    public void deleteFile(File file) {
         try {
             /*
             Check if file Exists
@@ -48,13 +47,9 @@ public class Methods {
                         deleteFile(childFile);
                     }
                 }
-                return file.delete();
-            } else {
-                return false;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
     }
 
