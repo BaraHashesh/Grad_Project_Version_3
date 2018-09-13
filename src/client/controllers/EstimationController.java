@@ -21,6 +21,7 @@ public class EstimationController implements Runnable {
     @FXML
     public Label labelProgress, labelRemaining,
             infoSize, infoProgress, infoRemaining, infoSpeed, infoTime;
+
     private long totalFileSize, progress, previousValue;
     private Boolean initialized = false;
     private Stage stage;
@@ -28,16 +29,49 @@ public class EstimationController implements Runnable {
 
     private Socket clientSocket;
 
-    /**
-     * Initializer for the EstimationController
-     *
-     * @param totalFileSize Is the size of the current file/folder in bytes
-     */
-    public void initializeVariables(long totalFileSize,
-                                    Socket clientSocket) {
+    public static EstimationController getInstance(long totalFileSize, Socket clientSocket) {
 
-        this.clientSocket = clientSocket;
-        this.totalFileSize = totalFileSize;
+        EstimationController controller = null;
+
+        try {
+            FXMLLoader loader = new FXMLLoader(EstimationController.class
+                    .getResource("/client/resources/fxml/EstimationView.fxml"));
+
+            AnchorPane parent = loader.load();
+
+            // Get the controller of the loaded scene
+            controller = loader.getController();
+
+            controller.totalFileSize =totalFileSize;
+            controller.clientSocket = clientSocket;
+
+            controller.scene = new Scene(parent, parent.getPrefWidth(), 178);
+
+            EstimationController finalController = controller;
+
+            Platform.runLater(() -> {
+                finalController.stage = new Stage();
+                finalController.stage.setScene(finalController.scene);
+
+                finalController.stage.setTitle("File Transfer Estimator");
+
+                finalController.stage.setResizable(false);
+
+
+                finalController.stage.setOnCloseRequest(e -> {
+                    try {
+                        finalController.clientSocket.close();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                });
+            });
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return controller;
     }
 
     /**
@@ -46,46 +80,6 @@ public class EstimationController implements Runnable {
     public void update(long progress) {
         this.progress = progress;
         Platform.runLater(this);
-    }
-
-    /**
-     * Set method for the EstimationView GUI
-     */
-    private void setStage() {
-        try {
-            AnchorPane parent = FXMLLoader.load(getClass()
-                    .getResource("/client/resources/fxml/EstimationView.fxml"));
-
-            this.scene = new Scene(parent, parent.getPrefWidth(), 178);
-
-            this.labelProgress = (Label) this.scene.lookup("#labelProgress");
-            this.labelRemaining = (Label) this.scene.lookup("#labelRemaining");
-
-            this.infoSize = (Label) this.scene.lookup("#infoSize");
-            this.infoProgress = (Label) this.scene.lookup("#infoProgress");
-            this.infoRemaining = (Label) this.scene.lookup("#infoRemaining");
-            this.infoSpeed = (Label) this.scene.lookup("#infoSpeed");
-            this.infoTime = (Label) this.scene.lookup("#infoTime");
-
-
-            this.stage = new Stage();
-            this.stage.setScene(this.scene);
-
-            this.stage.setTitle("File Transfer Estimator");
-
-            this.stage.setResizable(false);
-
-            this.stage.setOnCloseRequest(e -> {
-                try {
-                    this.clientSocket.close();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            });
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -171,9 +165,6 @@ public class EstimationController implements Runnable {
      * Initialize method for the stage
      */
     private void initializeStage() {
-
-        this.setStage();
-
         this.previousValue = 0;
 
         Object[] sizeInfo = Methods.getInstance().reduceSize((double) this.totalFileSize);

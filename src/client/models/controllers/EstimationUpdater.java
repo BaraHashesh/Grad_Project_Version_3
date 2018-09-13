@@ -30,10 +30,7 @@ public class EstimationUpdater implements Runnable {
         this.totalFileSize = totalFileSize;
         this.fileTransfer = fileTransfer;
 
-        estimationViewController = new EstimationController();
-
-        estimationViewController.initializeVariables(totalFileSize,
-                clientSocket);
+        estimationViewController = EstimationController.getInstance(totalFileSize, clientSocket);
 
         estimationViewController.update(0);
 

@@ -73,13 +73,13 @@ public class ChooseServerController implements Initializable, Runnable {
 
                 instance.stage.setResizable(false);
 
-                instance.stage.setOnCloseRequest(e->{
+                instance.stage.setOnCloseRequest(e -> {
                     instance.open = false;
 
-                /*
-                check if one stage was opened
-                 */
-                    if(BrowserController.getInstances().size() == 0)
+                    /*
+                    check if one stage was opened
+                     */
+                    if (BrowserController.getInstances().size() == 0)
                         System.exit(1);
                 });
 
@@ -194,9 +194,10 @@ public class ChooseServerController implements Initializable, Runnable {
 
     /**
      * Get method for open
+     *
      * @return Wither the current server chooser is open or not
      */
-    boolean isOpen(){
+    boolean isOpen() {
         return open;
     }
 }
