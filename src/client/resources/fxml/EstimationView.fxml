@@ -10,46 +10,37 @@
           AnchorPane.bottomAnchor="222.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
           AnchorPane.topAnchor="0.0">
 
-            <HBox prefHeight="13.0" prefWidth="600.0" styleClass="hBox">
-                <children>
-                    <Label styleClass="label" text="File Size:"/>
-                    <Label fx:id="infoSize" prefHeight="21.0" prefWidth="509.0" styleClass="label"/>
-                </children>
-            </HBox>
-            <HBox prefHeight="18.0" prefWidth="600.0" styleClass="hBox">
-                <children>
-                    <Label styleClass="label" text="Progress:"/>
-                    <Label fx:id="infoProgress" prefHeight="21.0" prefWidth="504.0" styleClass="label"/>
-                </children>
-            </HBox>
+        <HBox prefHeight="13.0" prefWidth="600.0" styleClass="hBox">
+            <Label styleClass="label" text="File Size:"/>
+            <Label fx:id="infoSize" prefHeight="21.0" prefWidth="509.0" styleClass="label"/>
+        </HBox>
 
-            <HBox prefHeight="22.0" prefWidth="589.0" styleClass="hBox">
-                <children>
-                    <Label styleClass="label" text="Remaining:"/>
-                    <Label fx:id="infoRemaining" prefHeight="21.0" prefWidth="485.0" styleClass="label"/>
-                </children>
-            </HBox>
-            <HBox prefHeight="20.0" prefWidth="600.0" styleClass="hBox">
-                <children>
-                    <Label styleClass="label" text="Speed:"/>
-                    <Label fx:id="infoSpeed" prefHeight="21.0" prefWidth="527.0" styleClass="label"/>
-                </children>
-            </HBox>
-            <HBox prefHeight="18.0" prefWidth="600.0" styleClass="hBox">
-                <children>
-                    <Label styleClass="label" text="Time Estimation: "/>
-                    <Label fx:id="infoTime" prefHeight="21.0" prefWidth="431.0" styleClass="label"/>
-                </children>
-            </HBox>
+        <HBox prefHeight="18.0" prefWidth="600.0" styleClass="hBox">
+            <Label styleClass="label" text="Progress:"/>
+            <Label fx:id="infoProgress" prefHeight="21.0" prefWidth="504.0" styleClass="label"/>
+        </HBox>
 
-            <HBox prefHeight="14.0" prefWidth="600.0">
-                <children>
-                    <Label fx:id="labelProgress" prefHeight="15.0" prefWidth="71.0" style="-fx-pref-width: 0;"
-                           styleClass="label-progress"/>
-                    <Label fx:id="labelRemaining" prefHeight="15.0" prefWidth="52.0" style="-fx-pref-width: 0;"
-                           styleClass="label"/>
-                </children>
-            </HBox>
+        <HBox prefHeight="22.0" prefWidth="589.0" styleClass="hBox">
+            <Label styleClass="label" text="Remaining:"/>
+            <Label fx:id="infoRemaining" prefHeight="21.0" prefWidth="485.0" styleClass="label"/>
+        </HBox>
+
+        <HBox prefHeight="20.0" prefWidth="600.0" styleClass="hBox">
+            <Label styleClass="label" text="Speed:"/>
+            <Label fx:id="infoSpeed" prefHeight="21.0" prefWidth="527.0" styleClass="label"/>
+        </HBox>
+
+        <HBox prefHeight="18.0" prefWidth="600.0" styleClass="hBox">
+            <Label styleClass="label" text="Time Estimation: "/>
+            <Label fx:id="infoTime" prefHeight="21.0" prefWidth="431.0" styleClass="label"/>
+        </HBox>
+
+        <HBox prefHeight="14.0" prefWidth="600.0">
+            <Label fx:id="labelProgress" prefHeight="15.0" prefWidth="71.0" style="-fx-pref-width: 0;"
+                   styleClass="label-progress"/>
+            <Label fx:id="labelRemaining" prefHeight="15.0" prefWidth="52.0" style="-fx-pref-width: 0;"
+                   styleClass="label"/>
+        </HBox>
 
         </VBox>
 </AnchorPane>

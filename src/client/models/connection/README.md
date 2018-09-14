@@ -37,3 +37,6 @@ to send files & folders to the storage device.
 
 This class is responsible for handling a UDP connection, which is used to receive
 broadcast messages from the server that indicates an update is in order for the browser.
+
+    Note: This class implements the Runnable interface so it 
+    does not hinder the progress of the over all application
