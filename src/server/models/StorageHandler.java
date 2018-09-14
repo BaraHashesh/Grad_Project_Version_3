@@ -120,10 +120,11 @@ public class StorageHandler {
 
     /**
      * Method used to check if a file/folder exists
+     *
      * @param path The path for the file
      * @return If the file/folder exists or not
      */
-    boolean checkIfFileExists(String path){
+    boolean checkIfFileExists(String path) {
         /*
         Check if path is empty (Root path)
          */

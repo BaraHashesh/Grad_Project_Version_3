@@ -21,14 +21,18 @@ import shared.ObjectParser;
 public class ChooseBaseIPController implements Runnable {
 
     private static ChooseBaseIPController instance;
+
     @FXML
     public TextField IP;
+    @FXML
     public Button search, cancel;
+
     private Stage stage;
+    private String baseIP;
+
     private boolean searched = false;
     private ServerRowInfo[] serverRowInfo;
     private DiscoverySender broadCastSender;
-    private String baseIP;
 
     /**
      * Get method for instance
@@ -59,9 +63,9 @@ public class ChooseBaseIPController implements Runnable {
 
                 instance.stage.setResizable(false);
 
-                instance.stage.setOnCloseRequest(e-> System.exit(1));
+                instance.stage.setOnCloseRequest(e -> System.exit(1));
 
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -122,13 +126,30 @@ public class ChooseBaseIPController implements Runnable {
             this.searched = true;
             Platform.runLater(this);
         } else {
-            ChooseServerController chooseServerController = ChooseServerController.getInstance();
-            chooseServerController.setObservableList(this.serverRowInfo);
-            chooseServerController.setIP(this.baseIP);
-            chooseServerController.getStage().show();
 
-            ChooseBaseIPController.getInstance().getStage().close();
-            LoaderController.getInstance().getStage().close();
+            /*
+            Check if any server (storage device) was found
+             */
+            if (this.serverRowInfo.length > 0) {
+                ChooseServerController chooseServerController = ChooseServerController.getInstance();
+
+                chooseServerController.setObservableList(this.serverRowInfo);
+                chooseServerController.setIP(this.baseIP);
+
+                chooseServerController.getStage().show();
+
+                ChooseBaseIPController.getInstance().getStage().close();
+                LoaderController.getInstance().getStage().close();
+
+            } else {
+                this.searched = false; // reinitialize the search flag
+
+                ChooseBaseIPController.getInstance().getStage().show();
+                LoaderController.getInstance().getStage().close();
+
+                AlertHandler.getInstance().start("NO DEVICES",
+                        "No storage device was found on the network", Alert.AlertType.INFORMATION);
+            }
         }
 
     }

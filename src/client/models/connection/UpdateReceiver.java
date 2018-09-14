@@ -53,7 +53,7 @@ public class UpdateReceiver implements Runnable {
                 /*
                 check for browsers needing update
                  */
-                for(BrowserController browser: browsers){
+                for (BrowserController browser : browsers) {
                     /*
                     Check if if browser needs update
                      */

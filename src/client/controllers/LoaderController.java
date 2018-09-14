@@ -56,7 +56,7 @@ public class LoaderController {
 
                 instance.stage.setResizable(false);
 
-                instance.stage.setOnCloseRequest(e->System.exit(1));
+                instance.stage.setOnCloseRequest(e -> System.exit(1));
 
             } catch (Exception e) {
                 e.printStackTrace();

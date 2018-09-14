@@ -42,5 +42,5 @@
                    styleClass="label"/>
         </HBox>
 
-        </VBox>
+    </VBox>
 </AnchorPane>

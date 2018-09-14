@@ -33,7 +33,7 @@ public class ChooseServerController implements Initializable, Runnable {
     @FXML
     public TableView<ServerRowInfo> serverInfoTable;
     @FXML
-    public Button select, cancel, refresh;
+    public Button select, refresh;
 
     private ObservableList<ServerRowInfo> observableList = FXCollections.observableArrayList();
     private Stage stage;
@@ -120,13 +120,6 @@ public class ChooseServerController implements Initializable, Runnable {
             AlertHandler.getInstance().start("Invalid action",
                     "Please select a server", Alert.AlertType.WARNING);
         }
-    }
-
-    /**
-     * EventHandler used to handle click events on the cancel button
-     */
-    public void onCancelButtonClicked() {
-        System.exit(1);
     }
 
     /**

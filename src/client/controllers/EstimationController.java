@@ -31,7 +31,7 @@ public class EstimationController implements Runnable {
 
     public static EstimationController getInstance(long totalFileSize, Socket clientSocket) {
 
-        EstimationController controller = null;
+        EstimationController instance = null;
 
         try {
             FXMLLoader loader = new FXMLLoader(EstimationController.class
@@ -40,38 +40,38 @@ public class EstimationController implements Runnable {
             AnchorPane parent = loader.load();
 
             // Get the controller of the loaded scene
-            controller = loader.getController();
+            instance = loader.getController();
 
-            controller.totalFileSize =totalFileSize;
-            controller.clientSocket = clientSocket;
+            instance.totalFileSize = totalFileSize;
+            instance.clientSocket = clientSocket;
 
-            controller.scene = new Scene(parent, parent.getPrefWidth(), 178);
+            instance.scene = new Scene(parent, parent.getPrefWidth(), 178);
 
-            EstimationController finalController = controller;
+            EstimationController finalInstance = instance;
 
             Platform.runLater(() -> {
-                finalController.stage = new Stage();
-                finalController.stage.setScene(finalController.scene);
+                finalInstance.stage = new Stage();
+                finalInstance.stage.setScene(finalInstance.scene);
 
-                finalController.stage.setTitle("File Transfer Estimator");
+                finalInstance.stage.setTitle("File Transfer Estimator");
 
-                finalController.stage.setResizable(false);
+                finalInstance.stage.setResizable(false);
 
 
-                finalController.stage.setOnCloseRequest(e -> {
+                finalInstance.stage.setOnCloseRequest(e -> {
                     try {
-                        finalController.clientSocket.close();
+                        finalInstance.clientSocket.close();
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
                 });
             });
 
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return controller;
+        return instance;
     }
 
     /**

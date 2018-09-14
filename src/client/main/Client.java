@@ -15,6 +15,7 @@ public class Client extends Application {
         System.setProperty("javax.net.ssl.trustStore", "/KEYSTORE");
         System.setProperty("javax.net.ssl.trustStorePassword", "password");
 
+        // start thread responsible for receiving updates from the storage devices
         new UpdateReceiver().start();
 
         Application.launch();
@@ -22,7 +23,6 @@ public class Client extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        ChooseBaseIPController chooseBaseIPController = ChooseBaseIPController.getInstance();
-        chooseBaseIPController.getStage().show();
+        ChooseBaseIPController.getInstance().getStage().show();
     }
 }

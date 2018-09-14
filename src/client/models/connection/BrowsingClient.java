@@ -106,7 +106,9 @@ public class BrowsingClient {
             dataInputStream.close();
             dataOutputStream.close();
 
-            // check if operation is possible
+            /*
+             check if operation is possible
+              */
             if (response.isErrorMessage()) {
 
                 AlertHandler.getInstance().start("Server Error",
