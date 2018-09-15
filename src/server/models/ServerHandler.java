@@ -120,7 +120,7 @@ public class ServerHandler implements Runnable {
                     dataOutputStream.writeUTF(JsonParser.getInstance().toJson(serverResponse));
                     dataOutputStream.flush();
 
-                    StorageHandler.getInstance().uploadFile(dataOutputStream, path);
+                    StorageHandler.getInstance().sendFiles(dataOutputStream, path);
 
                     Message streamEndMessage = new Message();
                     streamEndMessage.createStreamEndMessage("");
@@ -149,7 +149,7 @@ public class ServerHandler implements Runnable {
                     dataOutputStream.writeUTF(JsonParser.getInstance().toJson(serverResponse));
                     dataOutputStream.flush();
 
-                    StorageHandler.getInstance().downloadFile(dataInputStream, path);
+                    StorageHandler.getInstance().receiveFiles(dataInputStream, path);
 
                     new UpdateSender().start();
                 } else {

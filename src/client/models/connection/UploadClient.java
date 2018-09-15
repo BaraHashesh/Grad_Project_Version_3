@@ -84,8 +84,6 @@ public class UploadClient implements Runnable {
                         response.getMessageInfo(), Alert.AlertType.ERROR);
 
             } else {
-                String parent = this.file.getParent();
-
                 FileTransfer fileTransfer = new FileTransfer();
 
                 EstimationUpdater updater = new EstimationUpdater(fileTransfer,
@@ -94,7 +92,7 @@ public class UploadClient implements Runnable {
 
                 updater.start();
 
-                fileTransfer.sendFiles(dataOutputStream, this.file, parent);
+                fileTransfer.send(dataOutputStream, this.file);
 
                 Message streamEndMessage = new Message();
                 streamEndMessage.createStreamEndMessage("");

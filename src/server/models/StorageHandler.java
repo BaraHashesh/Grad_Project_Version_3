@@ -70,19 +70,15 @@ public class StorageHandler {
 
 
     /**
-     * Method used to the declare main requirements to upload a file/folder
+     * Method used to send files from the server to the client
      *
      * @param dataOutputStream Is the output stream
      * @param path             Is the path of the file/folder to be uploaded
      */
-    void uploadFile(DataOutputStream dataOutputStream, String path) {
+    void sendFiles(DataOutputStream dataOutputStream, String path) {
         File mainFile = new File(path);
 
-        String parent = mainFile.getParent();
-
-        FileTransfer fileTransfer = new FileTransfer();
-
-        fileTransfer.sendFiles(dataOutputStream, mainFile, parent);
+        new FileTransfer().send(dataOutputStream, mainFile);
     }
 
     /**
@@ -91,7 +87,7 @@ public class StorageHandler {
      * @param dataInputStream Is the input stream
      * @param path            Is the path to store the folder/file under
      */
-    void downloadFile(DataInputStream dataInputStream, String path) {
+    void receiveFiles(DataInputStream dataInputStream, String path) {
 
         /*
         Check if path is empty (Root path)
@@ -102,7 +98,7 @@ public class StorageHandler {
         path = path + "/";
 
         try {
-            new FileTransfer().receiveFiles(dataInputStream, path);
+            new FileTransfer().receive(dataInputStream, path);
         } catch (Exception e) {
             e.printStackTrace();
         }

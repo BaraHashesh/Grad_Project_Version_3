@@ -93,7 +93,7 @@ public class DownloadClient implements Runnable {
 
                 updater.start();
 
-                fileTransfer.receiveFiles(dataInputStream, locationToSave);
+                fileTransfer.receive(dataInputStream, locationToSave);
 
                 updater.finalUpdate();
             }

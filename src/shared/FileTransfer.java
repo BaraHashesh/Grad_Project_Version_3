@@ -19,9 +19,8 @@ public class FileTransfer {
      *
      * @param dataOutputStream Is output stream
      * @param file             Is the main file/folder to be uploaded
-     * @param mainPath         Is the parents path of the main file/folder(to establish relationship of files)
      */
-    public void sendFiles(DataOutputStream dataOutputStream, File file, String mainPath) {
+    public void send(DataOutputStream dataOutputStream, File file) {
         try {
             /*
             check if pipe was broken
@@ -29,9 +28,17 @@ public class FileTransfer {
             if (!this.pipe)
                 return;
 
+            /*
+            check if this is the first file to be sent
+             */
+            if(this.firstFile == null)
+                this.firstFile = file;
+
             BasicFileData basicFileData = new BasicFileData(file);
 
-            basicFileData.setPath(basicFileData.getPath().substring(mainPath.length()));
+            basicFileData.setPath(
+                    basicFileData.getPath().substring(this.firstFile.getParent().length())
+            );
 
             /*
             Check if work is currently done on a windows machine
@@ -62,7 +69,7 @@ public class FileTransfer {
 
                 for (File subFile :
                         list) {
-                    sendFiles(dataOutputStream, subFile, mainPath);
+                    send(dataOutputStream, subFile);
                 }
 
             } else {
@@ -100,7 +107,7 @@ public class FileTransfer {
      * @param dataInputStream Is the input stream
      * @param path            Is the location to save data under
      */
-    public void receiveFiles(DataInputStream dataInputStream, String path) {
+    public void receive(DataInputStream dataInputStream, String path) {
         FileOutputStream output = null;
         try {
             /*
