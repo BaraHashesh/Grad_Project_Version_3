@@ -93,6 +93,8 @@ public class BrowserController implements Initializable {
                 if (result != null) {
                     instance.setObservableList(result);
                 }
+
+                instance.pathLabel.setText("");
             });
 
             /*

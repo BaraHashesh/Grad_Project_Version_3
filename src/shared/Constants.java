@@ -6,8 +6,14 @@ import java.util.regex.Pattern;
  * Constants is used to store some constant values
  */
 public class Constants {
+    /*
+    File related constants
+     */
     public static final String BACKWARD_DASH = "/";
     public static final String FILE_NAME = "TEMP_FILE_";
+    static final String FORWARD_DASH = "\\";
+    static final String DOUBLE_FORWARD_DASH = "\\\\";
+    static final int BUFFER_SIZE = 1024 * 64;
     /*
     Message related Constants
      */
@@ -32,12 +38,6 @@ public class Constants {
     public final static Pattern IPV4_REGEX = Pattern.compile(
             "^(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])$"
     );
-    /*
-    File related constants
-     */
-    static final String FORWARD_DASH = "\\";
-    static final String DOUBLE_FORWARD_DASH = "\\\\";
-    static final int BUFFER_SIZE = 1024 * 64;
     /*
     Socket ports related constants
      */
