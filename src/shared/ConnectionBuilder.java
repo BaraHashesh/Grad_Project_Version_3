@@ -38,10 +38,6 @@ public class ConnectionBuilder {
      * @throws IOException Unable to connect to server
      */
     public SSLSocket buildClientSocket(String IP) throws IOException {
-
-        System.setProperty("javax.net.ssl.trustStore", "/yourKEYSTORE");
-        System.setProperty("javax.net.ssl.trustStorePassword", "password");
-
         SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
         SSLSocket sslsocket = (SSLSocket) factory.createSocket(IP, Constants.TCP_CONNECTION_PORT);
 
