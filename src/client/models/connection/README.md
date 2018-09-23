@@ -8,9 +8,6 @@ responsible for managing a TCP or UDP connection.
 This class is responsible for handling a UDP connection, which is used
 in broadcast mode in order to discover nearby storage devices.
 
-    Note: This class implements the Runnable interface so it 
-    does not hinder the progress of the over all application
-
 ## 2. BrowsingClient
 
 This class is responsible for handling a TCP connection, which is used
@@ -20,23 +17,8 @@ to perform delete actions, as well as getting files meta data to be displayed to
 
 This class is responsible for handling a TCP connection, which is used
 to fetch files & folders from the storage device.
-
-    Note: This class implements the Runnable interface so it 
-    does not hinder the progress of the over all application
     
 ## 4. Upload Client
 
 This class is responsible for handling a TCP connection, which is used
 to send files & folders to the storage device.
-
-    Note: This class implements the Runnable interface so it 
-    does not hinder the progress of the over all application
-    
-    
-## 5. UpdateReceiver
-
-This class is responsible for handling a UDP connection, which is used to receive
-broadcast messages from the server that indicates an update is in order for the browser.
-
-    Note: This class implements the Runnable interface so it 
-    does not hinder the progress of the over all application
