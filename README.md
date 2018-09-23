@@ -23,13 +23,13 @@ several new features are planned to be added soon, which are:
 
 3. Encryption
 
-	 	Have been implemented using java SSLSocktes
+	 	Have been implemented using java WebSockets SSL options
 	 
 4. Try to change the structure of the system as such it supports multiple storage devices 
 at any given time (previous structure supports one device) 
 
-		Foundations have been created only server side semaphore 
-		remains to be implemented
+		Server side semaphore have been implemented,
+        only integrating them in the project is required.
 
 5. Create a functioning mobile version of the project (android) 
 
@@ -38,5 +38,3 @@ at any given time (previous structure supports one device)
 6. Create pop-ups to appear in case of errors
 
 		Have been implemented using the JavaFx Alert module
-
-

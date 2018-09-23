@@ -61,6 +61,8 @@ class DownloadWebSocket extends WebSocketClient {
         check if error message
          */
         else if (responseMessage.isErrorMessage()) {
+            close();
+
             AlertHandler.getInstance().start("Download Error", "Unable to find file/folder", Alert.AlertType.WARNING);
         }
         /*
@@ -145,18 +147,6 @@ public class DownloadClient {
         requestMessage.createDownloadMessage(fileToDownload);
 
         this.downloadWebSocket.setFileLocation(locationToSaveUnder);
-
-        this.downloadWebSocket.send(JsonParser.getInstance().toJson(requestMessage));
-    }
-
-    /**
-     * Method used to delete a file/folder
-     *
-     * @param fileToDelete The path of the file/folder to delete
-     */
-    public void delete(String fileToDelete) {
-        Message requestMessage = new Message();
-        requestMessage.createDeleteMessage(fileToDelete);
 
         this.downloadWebSocket.send(JsonParser.getInstance().toJson(requestMessage));
     }

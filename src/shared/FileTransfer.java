@@ -16,11 +16,8 @@ import java.nio.ByteBuffer;
 public class FileTransfer {
     private File firstFile;
     private BasicFileData currentBasicFileData;
-
     private FileOutputStream currentFileOutputStream;
-
     private boolean isConnectionAvailable = true;
-
     private long fileSizeStatus = 0;
     private long currentFileSize = 0;
 
@@ -97,6 +94,8 @@ public class FileTransfer {
                     size -= bytesRead;
 
                     this.fileSizeStatus += bytesRead;
+
+                    //// TODO: 9/23/18 Find a solution to the connection break down when moving large data at low speeds
                 }
 
                 fileData.close();
