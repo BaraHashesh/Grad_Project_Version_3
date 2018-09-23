@@ -1,6 +1,12 @@
 package shared;
 
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManagerFactory;
 import java.io.File;
+import java.io.InputStream;
+import java.security.KeyStore;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -47,6 +53,8 @@ public class Methods {
                         deleteFile(childFile);
                     }
                 }
+
+                file.delete();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -143,5 +151,32 @@ public class Methods {
 
                 TimeUnit.MILLISECONDS.toSeconds(milliSecond) -
                         TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(milliSecond)));
+    }
+
+    /**
+     * Method used to build the SSLSocketFactory
+     * @return An SSLSocketFactory
+     * @throws Exception Unable to create factory for any given reason
+     */
+    public SSLSocketFactory buildFactory() throws Exception {
+        String STORETYPE = Constants.KEYSTORE_TYPE;
+        InputStream KEYSTORE = Methods.class.getResourceAsStream("/KEYSTORE");
+
+        String STORE_PASSWORD = Constants.KEYSTORE_PASSWORD;
+        String KEY_PASSWORD = Constants.KEYSTORE_PASSWORD;
+
+        KeyStore ks = KeyStore.getInstance( STORETYPE );
+        ks.load( KEYSTORE, STORE_PASSWORD.toCharArray() );
+
+        KeyManagerFactory kmf = KeyManagerFactory.getInstance( "SunX509" );
+        kmf.init( ks, KEY_PASSWORD.toCharArray() );
+        TrustManagerFactory tmf = TrustManagerFactory.getInstance( "SunX509" );
+        tmf.init( ks );
+
+        SSLContext sslContext = null;
+        sslContext = SSLContext.getInstance( "TLS" );
+        sslContext.init( kmf.getKeyManagers(), tmf.getTrustManagers(), null );
+
+        return sslContext.getSocketFactory();
     }
 }

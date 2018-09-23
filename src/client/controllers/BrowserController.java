@@ -68,7 +68,7 @@ public class BrowserController implements Initializable {
              */
             instance.stage = new Stage();
             instance.serverIP = IP;
-            instance.browsingClient = new BrowsingClient(IP);
+            instance.browsingClient = new BrowsingClient(instance);
 
             /*
             create the stage for the browser
@@ -80,37 +80,11 @@ public class BrowserController implements Initializable {
             getInstances().add(instance); // add the new browser instance to the list of instances
 
             /*
-            create a Lambda method to initialize the stage when shown
-             */
-            instance.stage.setOnShown(e -> {
-
-                FileRowData[] result = new BrowsingClient(instance.serverIP)
-                        .browserRequest("");
-
-                /*
-                Check if browse was successful
-                */
-                if (result != null) {
-                    instance.setObservableList(result);
-                }
-
-                instance.pathLabel.setText("");
-            });
-
-            /*
             create a Lambda method to handle the operation of closing the stage
              */
-            instance.stage.setOnCloseRequest(e -> {
+            instance.stage.setOnCloseRequest(e -> instance.close());
 
-                getInstances().remove(instance);
-
-                /*
-                check if one stage is open or not
-                 */
-                if (getInstances().size() == 0
-                        && !ChooseServerController.getInstance().isOpen())
-                    System.exit(1);
-            });
+            instance.onRefreshButtonClicked();
 
             return instance;
 
@@ -179,22 +153,15 @@ public class BrowserController implements Initializable {
      */
     private void onRowDoubleClick() {
         FileRowData fileRowData = this.fileTable.getSelectionModel().getSelectedItem();
-
         /*
         Check if a file was selected and if it is a directory
          */
         if (fileRowData.isDirectory()) {
-            FileRowData[] result = this.browsingClient.browserRequest(fileRowData.getPath());
+            this.browsingClient.browse(fileRowData.getPath());
 
-            /*
-            Check if the browsing operation was successful
-             */
-            if (result != null) {
-                this.pathList.add(fileRowData.getParent());
+            this.pathList.add(fileRowData.getParent());
 
-                this.setObservableList(result);
-                this.pathLabel.setText(fileRowData.getPath());
-            }
+            this.pathLabel.setText(fileRowData.getPath());
         }
     }
 
@@ -209,9 +176,7 @@ public class BrowserController implements Initializable {
             // get previous path and remove if from the path list
             String path = this.pathList.remove(this.pathList.size() - 1);
 
-            FileRowData[] result = this.browsingClient.browserRequest(path);
-
-            this.setObservableList(result);
+            this.browsingClient.browse(path);
 
             this.pathLabel.setText(path);
         }
@@ -229,7 +194,7 @@ public class BrowserController implements Initializable {
         if (file == null) {
             showAlert();
         } else {
-            this.browsingClient.deleteRequest(file.getPath());
+            this.browsingClient.delete(file.getPath());
         }
     }
 
@@ -250,14 +215,15 @@ public class BrowserController implements Initializable {
 
             chooser.setInitialDirectory(new File("."));
 
-            File directoryChooser = chooser.showDialog(null);
+            File directoryChosen = chooser.showDialog(null);
 
             /*
             Check if user selected a location
              */
-            if (directoryChooser != null)
-                new DownloadClient(serverIP).start(file.getPath(),
-                        directoryChooser.getAbsolutePath() + Constants.BACKWARD_DASH);
+            if (directoryChosen != null)
+                new DownloadClient(serverIP).download(
+                        directoryChosen.getAbsolutePath()+Constants.BACKWARD_DASH, file.getPath()
+                );
         }
     }
 
@@ -277,13 +243,13 @@ public class BrowserController implements Initializable {
         chooser.setTitle("File to Upload");
         chooser.setInitialDirectory(new File("."));
 
-        File FileChooser = chooser.showOpenDialog(null);
+        File fileChosen = chooser.showOpenDialog(null);
 
          /*
          Check if user selected a file
           */
-        if (FileChooser != null)
-            new UploadClient(serverIP).start(FileChooser, pathLabel.getText());
+        if (fileChosen != null)
+            new UploadClient(serverIP).upload(fileChosen, this.pathLabel.getText());
     }
 
     /**
@@ -294,13 +260,13 @@ public class BrowserController implements Initializable {
         chooser.setTitle("Folder to Upload");
         chooser.setInitialDirectory(new File("."));
 
-        File FileChooser = chooser.showDialog(null);
+        File folderChosen = chooser.showDialog(null);
 
          /*
          Check if user selected a folder
           */
-        if (FileChooser != null)
-            new UploadClient(serverIP).start(FileChooser, pathLabel.getText());
+        if (folderChosen != null)
+            new UploadClient(serverIP).upload(folderChosen, this.pathLabel.getText());
     }
 
     /**
@@ -327,30 +293,40 @@ public class BrowserController implements Initializable {
      * EventHandler used to handle click events on the refresh button
      */
     public void onRefreshButtonClicked() {
+        this.browsingClient.browse(this.pathLabel.getText());
+    }
 
-        FileRowData[] result = this.browsingClient.browserRequest(this.pathLabel.getText());
-
-        /*
-        Check if browse was successful
-        */
-        if (result != null) {
-            this.setObservableList(result);
-        }
-
+    /**
+     * Method used to update the client Observable if necessary
+     *
+     * @param pathToUpdate Is the path that had changes be done upon
+     */
+    public void updateObservableList(String pathToUpdate) {
+        Platform.runLater(() -> {
+            /*
+            Check if the folder which was update is of importance to the current folder
+             */
+            if(this.pathLabel.getText().contains(pathToUpdate)) {
+                this.browsingClient.browse(this.pathLabel.getText());
+            }
+        });
     }
 
     /**
      * Method used to update the client Observable
-     * list from an outside thread
+     * with new entries from an outside thread
      */
-    public void updateObservableList() {
+    public void updateObservableList(FileRowData[] files, boolean isSuccessful) {
         Platform.runLater(() -> {
-
-            FileRowData[] result = this.browsingClient
-                    .browserRequest(this.pathLabel.getText());
-
-
-            setObservableList(result);
+            /*
+            check if operation was successful
+             */
+            if(isSuccessful) {
+                setObservableList(files);
+            } else{
+                this.pathList.remove(this.pathList.size() - 1);
+                this.pathLabel.setText(this.pathList.get(this.pathList.size() - 1));
+            }
         });
     }
 
@@ -361,5 +337,25 @@ public class BrowserController implements Initializable {
      */
     public String getServerIP() {
         return this.serverIP;
+    }
+
+    /**
+     * method used to close the current browser
+     */
+    public void close(){
+
+        Platform.runLater(() -> {
+            this.stage.close();
+
+            getInstances().remove(this);
+
+            /*
+            check if one stage is open or not
+            */
+            if (getInstances().size() == 0
+                    && !ChooseServerController.getInstance().isOpen())
+                System.exit(1);
+        });
+
     }
 }

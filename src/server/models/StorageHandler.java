@@ -1,8 +1,7 @@
 package server.models;
 
-import shared.FileTransfer;
-import shared.Methods;
-import shared.ObjectParser;
+import org.java_websocket.WebSocket;
+import shared.*;
 import shared.models.BasicFileData;
 
 import java.io.DataInputStream;
@@ -22,10 +21,17 @@ public class StorageHandler {
     /**
      * Get method for instance
      *
-     * @return An instance of StorageHandler object
+     * @return An instance of {@link StorageHandler} object
      */
     public static StorageHandler getInstance() {
         return instance;
+    }
+
+    /**
+     * Empty Constructor for {@link StorageHandler}
+     */
+    private StorageHandler(){
+
     }
 
 
@@ -35,7 +41,7 @@ public class StorageHandler {
      * @param folderURL Path to the folder (given root is an empty string i.e. "")
      * @return List of the child files for the folder
      */
-    BasicFileData[] browseFolder(String folderURL) {
+    public BasicFileData[] browseFolder(String folderURL) {
 
         /*
         Check if folder is out of scope
@@ -64,44 +70,20 @@ public class StorageHandler {
      *
      * @param path is the path of the file within the USB
      */
-    void deleteFile(String path) {
+    public void deleteFile(String path) {
         Methods.getInstance().deleteFile(new File(path));
     }
-
 
     /**
      * Method used to send files from the server to the client
      *
-     * @param dataOutputStream Is the output stream
-     * @param path             Is the path of the file/folder to be uploaded
+     * @param webSocket Is the webSocket of the connection
+     * @param path      Is the path of the file/folder to be uploaded
      */
-    void sendFiles(DataOutputStream dataOutputStream, String path) {
+    public void sendFiles(WebSocket webSocket, String path) {
         File mainFile = new File(path);
 
-        new FileTransfer().send(dataOutputStream, mainFile);
-    }
-
-    /**
-     * Method used to receive a file/folder from client
-     *
-     * @param dataInputStream Is the input stream
-     * @param path            Is the path to store the folder/file under
-     */
-    void receiveFiles(DataInputStream dataInputStream, String path) {
-
-        /*
-        Check if path is empty (Root path)
-         */
-        if (path.compareTo("") == 0)
-            path = ROOT;
-
-        path = path + "/";
-
-        try {
-            new FileTransfer().receive(dataInputStream, path);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        new FileTransfer().send(webSocket, mainFile);
     }
 
     /**
@@ -110,7 +92,7 @@ public class StorageHandler {
      * @param path Is the path to the file/folder
      * @return The size of the file/folder in bytes
      */
-    long calculateSize(String path) {
+    public long calculateSize(String path) {
         return Methods.getInstance().calculateSize(new File(path));
     }
 
@@ -120,7 +102,7 @@ public class StorageHandler {
      * @param path The path for the file
      * @return If the file/folder exists or not
      */
-    boolean checkIfFileExists(String path) {
+    public boolean checkIfFileExists(String path) {
         /*
         Check if path is empty (Root path)
          */
@@ -130,5 +112,32 @@ public class StorageHandler {
         File file = new File(path);
 
         return file.exists();
+    }
+
+    /**
+     * Method used to obtain the path for the parent of the file/folder
+     * @param filePath Is the path for the file/folder in question
+     * @return The path of the parent for the file/folder in question
+     */
+    public String getParentPath(String filePath) {
+        return new File(filePath).getParent();
+    }
+
+    /**
+     * Method used to modify the path of the file for hierarchy reasons
+     * @param path Is the path for the file
+     * @return The modified bath
+     */
+    public String getFileHierarchy(String path) {
+        /*
+        Check if path is empty (Root path)
+         */
+        if (path.compareTo("") == 0){
+            path = ROOT;
+        }
+
+        path += Constants.BACKWARD_DASH;
+
+        return path;
     }
 }

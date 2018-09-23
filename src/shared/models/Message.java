@@ -98,6 +98,15 @@ public class Message {
     }
 
     /**
+     * Method used for checking if current message is an update message
+     *
+     * @return a boolean that indicates if the message is an update message or not
+     */
+    public boolean isUpdateMessage() {
+        return this.messageType == Constants.UPDATE_MESSAGE;
+    }
+
+    /**
      * Method used to create a download message
      *
      * @param info Some extra info for the message (usually file path)
@@ -177,6 +186,15 @@ public class Message {
         this.messageInfo = info;
     }
 
+    /**
+     * method used to create an update message
+     *
+     * @param info Some extra info for the message (usually path to update)
+     */
+    public void createUpdateMessage(String info) {
+        this.messageType = Constants.UPDATE_MESSAGE;
+        this.messageInfo = info;
+    }
 
     @Override
     public String toString() {

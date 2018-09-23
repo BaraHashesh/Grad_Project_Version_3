@@ -7,11 +7,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import org.java_websocket.client.WebSocketClient;
 import shared.Constants;
 import shared.Methods;
-
-import java.io.IOException;
-import java.net.Socket;
 
 /**
  * Controller for the Estimation.fxml file
@@ -27,9 +25,9 @@ public class EstimationController implements Runnable {
     private Stage stage;
     private Scene scene;
 
-    private Socket clientSocket;
+    private WebSocketClient clientSocket;
 
-    public static EstimationController getInstance(long totalFileSize, Socket clientSocket) {
+    public static EstimationController getInstance(long totalFileSize, WebSocketClient clientSocket) {
 
         EstimationController instance = null;
 
@@ -61,7 +59,7 @@ public class EstimationController implements Runnable {
                 finalInstance.stage.setOnCloseRequest(e -> {
                     try {
                         finalInstance.clientSocket.close();
-                    } catch (IOException e1) {
+                    } catch (Exception e1) {
                         e1.printStackTrace();
                     }
                 });

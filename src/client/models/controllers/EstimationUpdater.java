@@ -1,10 +1,9 @@
 package client.models.controllers;
 
 import client.controllers.EstimationController;
+import org.java_websocket.client.WebSocketClient;
 import shared.Constants;
 import shared.FileTransfer;
-
-import java.net.Socket;
 
 /**
  * EstimationUpdater class is used to update the EstimationView FXML file
@@ -25,7 +24,7 @@ public class EstimationUpdater implements Runnable {
      * @param clientSocket  Is the stream socket
      */
     public EstimationUpdater(FileTransfer fileTransfer, long totalFileSize,
-                             Socket clientSocket) {
+                             WebSocketClient clientSocket) {
 
         this.totalFileSize = totalFileSize;
         this.fileTransfer = fileTransfer;
@@ -58,10 +57,10 @@ public class EstimationUpdater implements Runnable {
         /*
         While loop to continue updating until entire file/folder is transformed
          */
-        while (this.totalFileSize > this.fileTransfer.getTransferredFileSize()) {
+        while (this.totalFileSize > this.fileTransfer.getFileSizeStatus()) {
             try {
                 Thread.sleep((long) (Constants.UPDATE_RATE * 1000));
-                this.estimationViewController.update(this.fileTransfer.getTransferredFileSize());
+                this.estimationViewController.update(this.fileTransfer.getFileSizeStatus());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -3,115 +3,126 @@ package client.models.connection;
 import client.models.controllers.AlertHandler;
 import client.models.controllers.EstimationUpdater;
 import javafx.scene.control.Alert;
-import shared.ConnectionBuilder;
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.handshake.ServerHandshake;
+import shared.Constants;
 import shared.FileTransfer;
 import shared.JsonParser;
 import shared.Methods;
 import shared.models.Message;
 
-import javax.net.ssl.SSLSocket;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
+import java.net.URI;
+import java.util.concurrent.TimeUnit;
 
 /**
- * UploadClient class is used to upload files to storage device on a separate thread
+ * Class responsible for creating the web socket responsible for handling upload operations
  */
-public class UploadClient implements Runnable {
-    private File file;
-    private String locationToSave;
-    private String IP;
-    private Thread thread;
+class UploadWebSocket extends WebSocketClient {
+
+    private File fileToUpload;
 
     /**
-     * Constructor for the UploadClient object for a specific storage device
-     *
-     * @param hostIP Is the IP of the storage device
+     * Constructor for the {@link UploadWebSocket}
+     * @param serverUri Is the server URI
      */
-    public UploadClient(String hostIP) {
-        this.IP = hostIP;
+    UploadWebSocket(URI serverUri) {
+        super(serverUri);
     }
 
-    /**
-     * Initialize method for the variables
-     * also start thread operations
-     *
-     * @param file           Is file to be uploaded
-     * @param locationToSave Is the location to save file under within the storage device
-     */
-    public void start(File file, String locationToSave) {
-        this.file = file;
-        this.locationToSave = locationToSave;
+    @Override
+    public void onOpen(ServerHandshake serverHandshake) {
+
+    }
+
+    @Override
+    public void onMessage(String s) {
+        Message responseMessage = JsonParser.getInstance().fromJson(s, Message.class);
 
         /*
-        Check if the thread is not running
+        Check if message is a success message
          */
-        if (thread == null) {
-            thread = new Thread(this);
-            thread.start();
+        if(responseMessage.isSuccessMessage()){
+            FileTransfer fileTransfer = new FileTransfer();
+
+            EstimationUpdater estimationUpdater = new EstimationUpdater(
+                    fileTransfer, Methods.getInstance().calculateSize(this.fileToUpload), this
+            );
+
+            estimationUpdater.start();
+
+            fileTransfer.send(this, this.fileToUpload);
+
+            estimationUpdater.finalUpdate();
+
+            responseMessage.createStreamEndMessage("");
+
+            send(JsonParser.getInstance().toJson(responseMessage));
+        }
+        /*
+        Check if error message
+         */
+        else if(responseMessage.isErrorMessage()) {
+            AlertHandler.getInstance().start("Upload Error", "Unable to upload folder/file", Alert.AlertType.ERROR);
         }
     }
 
-    /**
-     * Upload operations are done here
-     */
     @Override
-    public void run() {
-        Message request, response;
+    public void onClose(int i, String s, boolean b) {
+
+    }
+
+    @Override
+    public void onError(Exception e) {
+
+    }
+
+    /**
+     * set method for fileToUpload
+     * @param fileToUpload Is the file/folder to upload
+     */
+    void setFileToUpload(File fileToUpload) {
+        this.fileToUpload = fileToUpload;
+    }
+}
+
+/**
+ * Class responsible for handling upload operations
+ */
+public class UploadClient {
+    private UploadWebSocket uploadWebSocket;
+
+    /**
+     * Constructor for the {@link UploadClient}
+     * @param serverIP Is the server IP
+     */
+    public UploadClient(String serverIP) {
         try {
-            SSLSocket clientSocket = ConnectionBuilder.getInstance().buildClientSocket(this.IP);
+            this.uploadWebSocket = new UploadWebSocket(
+                    new URI( "wss://" + serverIP + ":" + Constants.TCP_PORT)
+            );
 
-            DataOutputStream dataOutputStream = ConnectionBuilder.getInstance()
-                    .buildOutputStream(clientSocket);
-
-            DataInputStream dataInputStream = ConnectionBuilder.getInstance()
-                    .buildInputStream(clientSocket);
-
-            request = new Message();
-            request.createUploadMessage(locationToSave);
-
-            dataOutputStream.writeUTF(JsonParser.getInstance().toJson(request));
-            dataOutputStream.flush();
-
-            response = JsonParser.getInstance().fromJson(dataInputStream.readUTF(), Message.class);
-
-            /*
-            Check if operation was possible
-             */
-            if (response.isErrorMessage()) {
-
-                AlertHandler.getInstance().start("Server Error",
-                        response.getMessageInfo(), Alert.AlertType.ERROR);
-
-            } else {
-                FileTransfer fileTransfer = new FileTransfer();
-
-                EstimationUpdater updater = new EstimationUpdater(fileTransfer,
-                        Methods.getInstance().calculateSize(this.file),
-                        clientSocket);
-
-                updater.start();
-
-                fileTransfer.send(dataOutputStream, this.file);
-
-                Message streamEndMessage = new Message();
-                streamEndMessage.createStreamEndMessage("");
-
-                dataOutputStream.writeUTF(JsonParser.getInstance().toJson(streamEndMessage));
-                dataOutputStream.flush();
-
-                updater.finalUpdate();
-            }
-
-            clientSocket.close();
-            dataInputStream.close();
-            dataOutputStream.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-
-            AlertHandler.getInstance().start("Server Error",
-                    "Connection to server was lost", Alert.AlertType.ERROR);
+            this.uploadWebSocket.setSocket(Methods.getInstance().buildFactory().createSocket());
+            this.uploadWebSocket.connectBlocking(2000, TimeUnit.MILLISECONDS);
         }
+        catch (Exception e) {
+            e.printStackTrace();
+            AlertHandler.getInstance().start("Upload Error", "Unable to connect to server", Alert.AlertType.ERROR);
+        }
+
+    }
+
+    /**
+     * Method used to start upload operation
+     * @param fileToUpload Is the file/folder to upload
+     * @param locationToSave Is where to save the file/folder on the storage device
+     */
+    public void upload(File fileToUpload, String locationToSave){
+        this.uploadWebSocket.setFileToUpload(fileToUpload);
+
+        Message requestMessage = new Message();
+        requestMessage.createUploadMessage(locationToSave);
+
+        this.uploadWebSocket.send(JsonParser.getInstance().toJson(requestMessage));
     }
 }

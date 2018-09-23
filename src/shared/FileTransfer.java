@@ -1,31 +1,37 @@
 package shared;
 
+import org.java_websocket.WebSocket;
 import shared.models.BasicFileData;
 import shared.models.Message;
 
 import java.io.*;
-
+import java.nio.ByteBuffer;
 
 /**
- * FileTransfer class is used to transfer and receive files
+ * Class used by web sockets to send and receive data
  */
 public class FileTransfer {
-    private long transferredFileSize = 0;
     private File firstFile;
-    private boolean pipe = true;
+    private BasicFileData currentBasicFileData;
+
+    private FileOutputStream currentFileOutputStream;
+
+    private boolean isConnectionAvailable = true;
+
+    private long fileSizeStatus = 0;
+    private long currentFileSize = 0;
 
     /**
-     * method used to recursively upload files/folders
-     *
-     * @param dataOutputStream Is output stream
-     * @param file             Is the main file/folder to be uploaded
+     * Method used by web sockets to send files/folders
+     * @param webSocket Is the connection web socket
+     * @param file Is the file to be send/received
      */
-    public void send(DataOutputStream dataOutputStream, File file) {
+    public void send(WebSocket webSocket, File file) {
         try {
             /*
-            check if pipe was broken
+            check if connection was disconnected
              */
-            if (!this.pipe)
+            if (!this.isConnectionAvailable)
                 return;
 
             /*
@@ -57,7 +63,7 @@ public class FileTransfer {
             Message fileInfoMessage = new Message();
             fileInfoMessage.createFileInfoMessage(JsonParser.getInstance().toJson(basicFileData));
 
-            dataOutputStream.writeUTF(JsonParser.getInstance().toJson(fileInfoMessage));
+            webSocket.send(JsonParser.getInstance().toJson(fileInfoMessage));
 
             /*
             Check if file is a directory
@@ -67,9 +73,8 @@ public class FileTransfer {
 
                 assert list != null;
 
-                for (File subFile :
-                        list) {
-                    send(dataOutputStream, subFile);
+                for (File subFile : list) {
+                    send(webSocket, subFile);
                 }
 
             } else {
@@ -83,129 +88,85 @@ public class FileTransfer {
                 while (size != 0) {
                     int bytesRead = fileData.read(buffer, 0, buffer.length);
 
-                    dataOutputStream.write(buffer, 0, bytesRead);
+                    webSocket.send(ByteBuffer.wrap(buffer, 0, bytesRead));
 
                     size -= bytesRead;
 
-                    this.transferredFileSize += bytesRead;
+                    this.fileSizeStatus += bytesRead;
                 }
 
                 fileData.close();
             }
-
-            dataOutputStream.flush();
-
         } catch (Exception e) {
-            this.pipe = false; //Pipe was broken
+            this.isConnectionAvailable = false; //connection was disconnected
             e.printStackTrace();
         }
     }
 
     /**
-     * Method used to download a file/folder
-     *
-     * @param dataInputStream Is the input stream
-     * @param path            Is the location to save data under
+     * Method used to receive file meta data
+     * @param fileInfo Is the meta data of the file as a JSON string
+     * @param path Is the path for file to be saved at
      */
-    public void receive(DataInputStream dataInputStream, String path) {
-        FileOutputStream output = null;
+    public void receive(String fileInfo, String path)  {
         try {
+            this.currentBasicFileData = JsonParser.getInstance().fromJson(fileInfo, BasicFileData.class);
+
+            File currentFile = new File(path + this.currentBasicFileData.getPath());
+
             /*
-            while loop to read data from the stream
+            Check if current file is first file
              */
-            while (true) {
-
-                String temp = dataInputStream.readUTF();
-
-                Message fileInfoMessage = JsonParser.getInstance().fromJson(temp, Message.class);
-
-                /*
-                Check if stream is over
-                 */
-                if (fileInfoMessage.isStreamEndMessage())
-                    break;
-
-                BasicFileData basicFileData = JsonParser.getInstance()
-                        .fromJson(fileInfoMessage.getMessageInfo(), BasicFileData.class);
-
-                /*
-                Check if basicFileData is null
-                 */
-                if (basicFileData == null)
-                    throw new Exception("No Meta Data");
-
-                /*
-                Check if file is a directory
-                 */
-                if (basicFileData.isDirectory()) {
-                    File file = new File(path + basicFileData.getPath());
-
-                    /*
-                    Check if the file is the first one to be received
-                     */
-                    if (this.firstFile == null)
-                        this.firstFile = file;
-
-                    //noinspection ResultOfMethodCallIgnored
-                    file.mkdirs();
-                } else {
-                    File file = new File(path + basicFileData.getPath());
-
-                    output = new FileOutputStream(file);
-
-                    long size = basicFileData.getSize();
-                    byte[] buffer = new byte[Constants.BUFFER_SIZE];
-
-                    //check if file is the first to be received
-                    if (this.firstFile == null)
-                        this.firstFile = new File(path + basicFileData.getPath());
-
-                    /*
-                    While loop to read a given file from the byte stream
-                     */
-                    while (size > 0) {
-                        int bytesRead;
-                        /*
-                        Check if file size to be read is bigger or smaller than the reading buffer
-                         */
-                        if (size > Constants.BUFFER_SIZE)
-                            bytesRead = dataInputStream.read(buffer, 0, Constants.BUFFER_SIZE);
-                        else
-                            bytesRead = dataInputStream.read(buffer, 0, (int) size);
-
-                        /*
-                        Check if read operation was successful
-                         */
-                        if (bytesRead != -1) {
-                            this.transferredFileSize += bytesRead;
-                            size -= bytesRead;
-                            output.write(buffer, 0, bytesRead);
-                        } else
-                            break;
-
-                    }
-                    output.close();
-                }
-            }
-        } catch (Exception e) {
-            try {
-                assert output != null; //Check if output (FileOutputStream) is set
-                output.close();
-            } catch (Exception e1) {
-                e1.printStackTrace();
+            if(this.firstFile == null) {
+                this.firstFile = currentFile;
             }
 
-            Methods.getInstance().deleteFile(this.firstFile);
+            /*
+            check if file is a directory
+             */
+            if(currentBasicFileData.isDirectory())
+                currentFile.mkdirs();
+            else
+                this.currentFileOutputStream = new FileOutputStream(currentFile);
+
+            this.currentFileSize = 0;
+        }
+        catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
+    public void receive(byte[] fileData) {
+        try {
+            this.currentFileOutputStream.write(fileData);
+            this.fileSizeStatus += fileData.length;
+            this.currentFileSize += fileData.length;
+
+            /*
+            Check if all data was written to current file
+             */
+            if(this.currentFileSize == this.currentBasicFileData.getSize())
+                this.currentFileOutputStream.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
     /**
-     * get method for transferredFileSize
+     * get method for getFileSizeStatus
      *
      * @return the number of bytes that have been written/read so far
      */
-    public long getTransferredFileSize() {
-        return transferredFileSize;
+    public long getFileSizeStatus() {
+        return fileSizeStatus;
+    }
+
+    /**
+     * Method used to delete files in case of error
+     */
+    public void deleteFile(){
+        Methods.getInstance().deleteFile(this.firstFile);
     }
 }
