@@ -222,7 +222,7 @@ public class BrowserController implements Initializable {
              */
             if (directoryChosen != null)
                 new DownloadClient(serverIP).download(
-                        directoryChosen.getAbsolutePath()+Constants.BACKWARD_DASH, file.getPath()
+                        directoryChosen.getAbsolutePath() + Constants.BACKWARD_DASH, file.getPath()
                 );
         }
     }
@@ -306,7 +306,7 @@ public class BrowserController implements Initializable {
             /*
             Check if the folder which was update is of importance to the current folder
              */
-            if(this.pathLabel.getText().contains(pathToUpdate)) {
+            if (this.pathLabel.getText().contains(pathToUpdate)) {
                 this.browsingClient.browse(this.pathLabel.getText());
             }
         });
@@ -321,9 +321,9 @@ public class BrowserController implements Initializable {
             /*
             check if operation was successful
              */
-            if(isSuccessful) {
+            if (isSuccessful) {
                 setObservableList(files);
-            } else{
+            } else {
                 this.pathList.remove(this.pathList.size() - 1);
                 this.pathLabel.setText(this.pathList.get(this.pathList.size() - 1));
             }
@@ -342,7 +342,7 @@ public class BrowserController implements Initializable {
     /**
      * method used to close the current browser
      */
-    public void close(){
+    public void close() {
 
         Platform.runLater(() -> {
             this.stage.close();

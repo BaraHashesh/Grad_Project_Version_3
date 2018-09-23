@@ -8,9 +8,8 @@ import org.java_websocket.server.WebSocketServer;
 import server.models.DiscoveryReceiver;
 import server.models.StorageHandler;
 import shared.Constants;
-import shared.JsonParser;
 import shared.FileTransfer;
-import shared.Methods;
+import shared.JsonParser;
 import shared.models.Message;
 
 import javax.net.ssl.KeyManagerFactory;
@@ -21,15 +20,16 @@ import java.nio.ByteBuffer;
 import java.security.KeyStore;
 import java.util.HashMap;
 
-class ServerHandler extends WebSocketServer{
+class ServerHandler extends WebSocketServer {
 
-    private HashMap<WebSocket, FileTransfer> fileTransferHashMap= new HashMap<>(10);
+    private HashMap<WebSocket, FileTransfer> fileTransferHashMap = new HashMap<>(10);
     private HashMap<WebSocket, String> fileLocationHashMap = new HashMap<>(10);
     private HashMap<WebSocket, Boolean> fileTransferStatusHashMap = new HashMap<>(10);
 
-    public ServerHandler( int port ) {
-        super( new InetSocketAddress( port ) );
+    public ServerHandler(int port) {
+        super(new InetSocketAddress(port));
     }
+
 
     @Override
     public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {
@@ -41,7 +41,7 @@ class ServerHandler extends WebSocketServer{
         /*
         check if transfer operation for receiving files was completed
          */
-        if(!this.fileTransferStatusHashMap.getOrDefault(webSocket, true))
+        if (!this.fileTransferStatusHashMap.getOrDefault(webSocket, true))
             this.fileTransferHashMap.get(webSocket).deleteFile();
 
         this.fileTransferHashMap.remove(webSocket);
@@ -132,7 +132,7 @@ class ServerHandler extends WebSocketServer{
                 /*
                 Check if end stream message
                  */
-                else if(requestMessage.isStreamEndMessage()) {
+                else if (requestMessage.isStreamEndMessage()) {
                     responseMessage.createUpdateMessage(this.fileLocationHashMap.get(webSocket));
 
                     this.fileTransferStatusHashMap.remove(webSocket);
@@ -202,8 +202,7 @@ public class Server {
             serverHandler.setWebSocketFactory(new DefaultSSLWebSocketServerFactory(sslContext));
 
             serverHandler.start();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

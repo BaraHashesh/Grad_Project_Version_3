@@ -155,6 +155,7 @@ public class Methods {
 
     /**
      * Method used to build the SSLSocketFactory
+     *
      * @return An SSLSocketFactory
      * @throws Exception Unable to create factory for any given reason
      */
@@ -165,17 +166,17 @@ public class Methods {
         String STORE_PASSWORD = Constants.KEYSTORE_PASSWORD;
         String KEY_PASSWORD = Constants.KEYSTORE_PASSWORD;
 
-        KeyStore ks = KeyStore.getInstance( STORETYPE );
-        ks.load( KEYSTORE, STORE_PASSWORD.toCharArray() );
+        KeyStore ks = KeyStore.getInstance(STORETYPE);
+        ks.load(KEYSTORE, STORE_PASSWORD.toCharArray());
 
-        KeyManagerFactory kmf = KeyManagerFactory.getInstance( "SunX509" );
-        kmf.init( ks, KEY_PASSWORD.toCharArray() );
-        TrustManagerFactory tmf = TrustManagerFactory.getInstance( "SunX509" );
-        tmf.init( ks );
+        KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
+        kmf.init(ks, KEY_PASSWORD.toCharArray());
+        TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
+        tmf.init(ks);
 
         SSLContext sslContext = null;
-        sslContext = SSLContext.getInstance( "TLS" );
-        sslContext.init( kmf.getKeyManagers(), tmf.getTrustManagers(), null );
+        sslContext = SSLContext.getInstance("TLS");
+        sslContext.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
 
         return sslContext.getSocketFactory();
     }

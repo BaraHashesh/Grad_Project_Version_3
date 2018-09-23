@@ -1,11 +1,12 @@
 package server.models;
 
 import org.java_websocket.WebSocket;
-import shared.*;
+import shared.Constants;
+import shared.FileTransfer;
+import shared.Methods;
+import shared.ObjectParser;
 import shared.models.BasicFileData;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 
 /**
@@ -19,6 +20,13 @@ public class StorageHandler {
     private static StorageHandler instance = new StorageHandler();
 
     /**
+     * Empty Constructor for {@link StorageHandler}
+     */
+    private StorageHandler() {
+
+    }
+
+    /**
      * Get method for instance
      *
      * @return An instance of {@link StorageHandler} object
@@ -26,14 +34,6 @@ public class StorageHandler {
     public static StorageHandler getInstance() {
         return instance;
     }
-
-    /**
-     * Empty Constructor for {@link StorageHandler}
-     */
-    private StorageHandler(){
-
-    }
-
 
     /**
      * Method used to get the list of child files for a given folder in the storage device
@@ -116,6 +116,7 @@ public class StorageHandler {
 
     /**
      * Method used to obtain the path for the parent of the file/folder
+     *
      * @param filePath Is the path for the file/folder in question
      * @return The path of the parent for the file/folder in question
      */
@@ -125,6 +126,7 @@ public class StorageHandler {
 
     /**
      * Method used to modify the path of the file for hierarchy reasons
+     *
      * @param path Is the path for the file
      * @return The modified bath
      */
@@ -132,7 +134,7 @@ public class StorageHandler {
         /*
         Check if path is empty (Root path)
          */
-        if (path.compareTo("") == 0){
+        if (path.compareTo("") == 0) {
             path = ROOT;
         }
 

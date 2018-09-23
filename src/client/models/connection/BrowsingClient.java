@@ -25,7 +25,7 @@ class BrowserWebSocket extends WebSocketClient {
         super(serverUri);
     }
 
-    BrowserWebSocket(URI serverUri, BrowserController browserController){
+    BrowserWebSocket(URI serverUri, BrowserController browserController) {
         this(serverUri);
         this.browserController = browserController;
     }
@@ -49,14 +49,14 @@ class BrowserWebSocket extends WebSocketClient {
         /*
         Check if replay message is an update message
          */
-        if(replyMessage.isUpdateMessage()){
+        if (replyMessage.isUpdateMessage()) {
             this.browserController.updateObservableList(replyMessage.getMessageInfo());
         }
 
         /*
         Check if replay message is an error message
          */
-        else if(replyMessage.isErrorMessage()){
+        else if (replyMessage.isErrorMessage()) {
             AlertHandler.getInstance().start("Error", "File Not Found/Unavailable", Alert.AlertType.ERROR);
             this.browserController.updateObservableList(null, false);
         }
@@ -82,18 +82,18 @@ public class BrowsingClient {
 
     /**
      * Constructor for the BrowsingClient
+     *
      * @param browserController is the browsing instance to be linked with the web socket
      */
-    public BrowsingClient(BrowserController browserController){
+    public BrowsingClient(BrowserController browserController) {
 
         try {
-            browserWebSocket = new BrowserWebSocket( new URI( "wss://" +
+            browserWebSocket = new BrowserWebSocket(new URI("wss://" +
                     browserController.getServerIP() + ":" + Constants.TCP_PORT), browserController);
 
             browserWebSocket.setSocket(Methods.getInstance().buildFactory().createSocket());
             browserWebSocket.connectBlocking(2000, TimeUnit.MILLISECONDS);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
 
             AlertHandler.getInstance().start("Connection Failure", "Unable to connect to server", Alert.AlertType.ERROR);
@@ -102,6 +102,7 @@ public class BrowsingClient {
 
     /**
      * Method used to send a browsing request to the server
+     *
      * @param filePath Is the path to the directory to browse
      */
     public void browse(String filePath) {
@@ -114,6 +115,7 @@ public class BrowsingClient {
 
     /**
      * Method used to send a delete request to the server
+     *
      * @param filePath Is the path of the file to be deleted
      */
     public void delete(String filePath) {

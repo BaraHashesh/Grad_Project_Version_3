@@ -24,6 +24,7 @@ class UploadWebSocket extends WebSocketClient {
 
     /**
      * Constructor for the {@link UploadWebSocket}
+     *
      * @param serverUri Is the server URI
      */
     UploadWebSocket(URI serverUri) {
@@ -42,7 +43,7 @@ class UploadWebSocket extends WebSocketClient {
         /*
         Check if message is a success message
          */
-        if(responseMessage.isSuccessMessage()){
+        if (responseMessage.isSuccessMessage()) {
             FileTransfer fileTransfer = new FileTransfer();
 
             EstimationUpdater estimationUpdater = new EstimationUpdater(
@@ -62,7 +63,7 @@ class UploadWebSocket extends WebSocketClient {
         /*
         Check if error message
          */
-        else if(responseMessage.isErrorMessage()) {
+        else if (responseMessage.isErrorMessage()) {
             AlertHandler.getInstance().start("Upload Error", "Unable to upload folder/file", Alert.AlertType.ERROR);
         }
     }
@@ -79,6 +80,7 @@ class UploadWebSocket extends WebSocketClient {
 
     /**
      * set method for fileToUpload
+     *
      * @param fileToUpload Is the file/folder to upload
      */
     void setFileToUpload(File fileToUpload) {
@@ -94,18 +96,18 @@ public class UploadClient {
 
     /**
      * Constructor for the {@link UploadClient}
+     *
      * @param serverIP Is the server IP
      */
     public UploadClient(String serverIP) {
         try {
             this.uploadWebSocket = new UploadWebSocket(
-                    new URI( "wss://" + serverIP + ":" + Constants.TCP_PORT)
+                    new URI("wss://" + serverIP + ":" + Constants.TCP_PORT)
             );
 
             this.uploadWebSocket.setSocket(Methods.getInstance().buildFactory().createSocket());
             this.uploadWebSocket.connectBlocking(2000, TimeUnit.MILLISECONDS);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             AlertHandler.getInstance().start("Upload Error", "Unable to connect to server", Alert.AlertType.ERROR);
         }
@@ -114,10 +116,11 @@ public class UploadClient {
 
     /**
      * Method used to start upload operation
-     * @param fileToUpload Is the file/folder to upload
+     *
+     * @param fileToUpload   Is the file/folder to upload
      * @param locationToSave Is where to save the file/folder on the storage device
      */
-    public void upload(File fileToUpload, String locationToSave){
+    public void upload(File fileToUpload, String locationToSave) {
         this.uploadWebSocket.setFileToUpload(fileToUpload);
 
         Message requestMessage = new Message();

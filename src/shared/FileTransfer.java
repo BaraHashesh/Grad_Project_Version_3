@@ -4,7 +4,10 @@ import org.java_websocket.WebSocket;
 import shared.models.BasicFileData;
 import shared.models.Message;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
 
 /**
@@ -23,8 +26,9 @@ public class FileTransfer {
 
     /**
      * Method used by web sockets to send files/folders
+     *
      * @param webSocket Is the connection web socket
-     * @param file Is the file to be send/received
+     * @param file      Is the file to be send/received
      */
     public void send(WebSocket webSocket, File file) {
         try {
@@ -37,7 +41,7 @@ public class FileTransfer {
             /*
             check if this is the first file to be sent
              */
-            if(this.firstFile == null)
+            if (this.firstFile == null)
                 this.firstFile = file;
 
             BasicFileData basicFileData = new BasicFileData(file);
@@ -105,10 +109,11 @@ public class FileTransfer {
 
     /**
      * Method used to receive file meta data
+     *
      * @param fileInfo Is the meta data of the file as a JSON string
-     * @param path Is the path for file to be saved at
+     * @param path     Is the path for file to be saved at
      */
-    public void receive(String fileInfo, String path)  {
+    public void receive(String fileInfo, String path) {
         try {
             this.currentBasicFileData = JsonParser.getInstance().fromJson(fileInfo, BasicFileData.class);
 
@@ -117,21 +122,20 @@ public class FileTransfer {
             /*
             Check if current file is first file
              */
-            if(this.firstFile == null) {
+            if (this.firstFile == null) {
                 this.firstFile = currentFile;
             }
 
             /*
             check if file is a directory
              */
-            if(currentBasicFileData.isDirectory())
+            if (currentBasicFileData.isDirectory())
                 currentFile.mkdirs();
             else
                 this.currentFileOutputStream = new FileOutputStream(currentFile);
 
             this.currentFileSize = 0;
-        }
-        catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -145,10 +149,9 @@ public class FileTransfer {
             /*
             Check if all data was written to current file
              */
-            if(this.currentFileSize == this.currentBasicFileData.getSize())
+            if (this.currentFileSize == this.currentBasicFileData.getSize())
                 this.currentFileOutputStream.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -166,7 +169,7 @@ public class FileTransfer {
     /**
      * Method used to delete files in case of error
      */
-    public void deleteFile(){
+    public void deleteFile() {
         Methods.getInstance().deleteFile(this.firstFile);
     }
 }
