@@ -14,6 +14,7 @@ import java.nio.ByteBuffer;
  * Class used by web sockets to send and receive data
  */
 public class FileTransfer {
+    private static final Object lock = new Object();
     private File firstFile;
     private BasicFileData currentBasicFileData;
     private FileOutputStream currentFileOutputStream;
@@ -95,7 +96,18 @@ public class FileTransfer {
 
                     this.fileSizeStatus += bytesRead;
 
-                    //// TODO: 9/23/18 Find a solution to the connection break down when moving large data at low speeds
+                    /*
+                    flush web socket
+                     */
+                    while (true) {
+                        synchronized (lock) {
+                            /*
+                            check if web socket has buffered data
+                             */
+                            if (!webSocket.hasBufferedData())
+                                break;
+                        }
+                    }
                 }
 
                 fileData.close();

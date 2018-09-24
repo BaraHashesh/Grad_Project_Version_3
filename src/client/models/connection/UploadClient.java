@@ -52,13 +52,15 @@ class UploadWebSocket extends WebSocketClient {
 
             estimationUpdater.start();
 
-            fileTransfer.send(this, this.fileToUpload);
+            new Thread(()->{
+                fileTransfer.send(this, this.fileToUpload);
 
-            estimationUpdater.finalUpdate();
+                estimationUpdater.finalUpdate();
 
-            responseMessage.createStreamEndMessage("");
+                responseMessage.createStreamEndMessage("");
 
-            send(JsonParser.getInstance().toJson(responseMessage));
+                send(JsonParser.getInstance().toJson(responseMessage));
+            }).start();
         }
         /*
         Check if error message
