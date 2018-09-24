@@ -26,7 +26,7 @@ class ServerHandler extends WebSocketServer {
     private HashMap<WebSocket, String> fileLocationHashMap = new HashMap<>(10);
     private HashMap<WebSocket, Boolean> fileTransferStatusHashMap = new HashMap<>(10);
 
-    public ServerHandler(int port) {
+    ServerHandler(int port) {
         super(new InetSocketAddress(port));
     }
 
@@ -83,12 +83,14 @@ class ServerHandler extends WebSocketServer {
                 Check if delete message
                  */
                 else if (requestMessage.isDeleteMessage()) {
-                    responseMessage.createUpdateMessage(StorageHandler.getInstance()
-                            .getParentPath(requestMessage.getMessageInfo()));
+                    new Thread(()->{
+                        responseMessage.createUpdateMessage(StorageHandler.getInstance()
+                                .getParentPath(requestMessage.getMessageInfo()));
 
-                    StorageHandler.getInstance().deleteFile(requestMessage.getMessageInfo());
+                        StorageHandler.getInstance().deleteFile(requestMessage.getMessageInfo());
 
-                    this.broadcast(JsonParser.getInstance().toJson(responseMessage));
+                        this.broadcast(JsonParser.getInstance().toJson(responseMessage));
+                    }).start();
                 }
                 /*
                 Check if download message
@@ -100,13 +102,15 @@ class ServerHandler extends WebSocketServer {
 
                     webSocket.send(JsonParser.getInstance().toJson(responseMessage));
 
-                    StorageHandler.getInstance().sendFiles(webSocket, requestMessage.getMessageInfo());
+                    new Thread(()-> {
+                        StorageHandler.getInstance().sendFiles(webSocket, requestMessage.getMessageInfo());
 
-                    responseMessage.createStreamEndMessage("");
+                        responseMessage.createStreamEndMessage("");
 
-                    webSocket.send(JsonParser.getInstance().toJson(responseMessage));
+                        webSocket.send(JsonParser.getInstance().toJson(responseMessage));
 
-                    webSocket.close();
+                        webSocket.close();
+                    }).start();
                 }
                 /*
                 Check if upload message
