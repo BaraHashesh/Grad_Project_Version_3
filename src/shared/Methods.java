@@ -169,9 +169,9 @@ public class Methods {
         KeyStore ks = KeyStore.getInstance(STORETYPE);
         ks.load(KEYSTORE, STORE_PASSWORD.toCharArray());
 
-        KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
+        KeyManagerFactory kmf = KeyManagerFactory.getInstance(Constants.KEY_MANAGER_FACTORY_ALGORITHM);
         kmf.init(ks, KEY_PASSWORD.toCharArray());
-        TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
+        TrustManagerFactory tmf = TrustManagerFactory.getInstance(Constants.TRUSTED_MANAGER_FACTORY_ALGORITHM);
         tmf.init(ks);
 
         SSLContext sslContext = null;

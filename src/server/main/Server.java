@@ -4,6 +4,7 @@ package server.main;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.DefaultSSLWebSocketServerFactory;
+import org.java_websocket.server.DefaultWebSocketServerFactory;
 import org.java_websocket.server.WebSocketServer;
 import server.models.DiscoveryReceiver;
 import server.models.StorageHandler;
@@ -157,6 +158,8 @@ class ServerHandler extends WebSocketServer {
         this.fileTransferHashMap.get(conn).receive(message.array());
     }
 
+
+
     @Override
     public void onError(WebSocket webSocket, Exception e) {
         e.printStackTrace();
@@ -194,9 +197,9 @@ public class Server {
 
             ks.load(Server.class.getResourceAsStream("/KEYSTORE"), STORE_PASSWORD.toCharArray());
 
-            KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
+            KeyManagerFactory kmf = KeyManagerFactory.getInstance(Constants.KEY_MANAGER_FACTORY_ALGORITHM);
             kmf.init(ks, KEY_PASSWORD.toCharArray());
-            TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
+            TrustManagerFactory tmf = TrustManagerFactory.getInstance(Constants.TRUSTED_MANAGER_FACTORY_ALGORITHM);
             tmf.init(ks);
 
             SSLContext sslContext = null;

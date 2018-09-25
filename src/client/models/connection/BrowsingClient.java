@@ -11,6 +11,7 @@ import shared.JsonParser;
 import shared.Methods;
 import shared.models.Message;
 
+import java.net.Socket;
 import java.net.URI;
 import java.util.concurrent.TimeUnit;
 
@@ -92,6 +93,7 @@ public class BrowsingClient {
                     browserController.getServerIP() + ":" + Constants.TCP_PORT), browserController);
 
             browserWebSocket.setSocket(Methods.getInstance().buildFactory().createSocket());
+
             browserWebSocket.connectBlocking(2000, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             e.printStackTrace();

@@ -47,4 +47,6 @@ public class Constants {
      */
     public static final String KEYSTORE_PASSWORD = "password";
     public static final String KEYSTORE_TYPE = "JKS";
+    public static final String KEY_MANAGER_FACTORY_ALGORITHM = "PKIX";
+    public static final String TRUSTED_MANAGER_FACTORY_ALGORITHM = "PKIX";
 }
