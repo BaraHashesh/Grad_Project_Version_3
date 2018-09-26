@@ -31,7 +31,7 @@ public class LoaderController {
          */
         if (instance == null) {
             try {
-                FXMLLoader loader = new FXMLLoader(ChooseServerController.class
+                FXMLLoader loader = new FXMLLoader(LoaderController.class
                         .getResource("/client/resources/fxml/LoaderView.fxml"));
 
                 AnchorPane parent = loader.load();
