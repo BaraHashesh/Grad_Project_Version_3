@@ -33,7 +33,7 @@ at any given time (previous structure supports one device)
 
 5. Create a functioning mobile version of the project (android) 
 
-		Work in progress
+		Work in progress (nearly completed)
 
 6. Create pop-ups to appear in case of errors
 

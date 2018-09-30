@@ -63,7 +63,7 @@ class ServerHandler extends WebSocketServer {
             /*
             Check if request is valid for required file/folder (file/folder exists)
              */
-            if (msg != null & !requestMessage.isFileInfoMessage()) {
+            if (msg != null & !requestMessage.isFileInfoMessage() && !requestMessage.isStreamEndMessage()) {
                 responseMessage.createErrorMessage(msg);
                 webSocket.send(JsonParser.getInstance().toJson(responseMessage));
             } else {
