@@ -15,6 +15,9 @@ import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Client responsible for the copy phase of the operation
+ */
 class RedirectClientReceive extends WebSocketClient {
 
     private RedirectClientSend redirectClientSend;
@@ -104,6 +107,10 @@ class RedirectClientReceive extends WebSocketClient {
     }
 }
 
+
+/**
+ * Client responsible for the paste phase of the operation
+ */
 class RedirectClientSend extends WebSocketClient {
 
     private RedirectClientReceive redirectClientReceive;
