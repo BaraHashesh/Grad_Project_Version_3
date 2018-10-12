@@ -2,6 +2,7 @@ package client.controllers;
 
 import client.models.connection.BrowsingClient;
 import client.models.connection.DownloadClient;
+import client.models.connection.RedirectClient;
 import client.models.connection.UploadClient;
 import client.models.controllers.AlertHandler;
 import client.models.models.FileRowData;
@@ -32,12 +33,16 @@ import java.util.ResourceBundle;
  */
 public class BrowserController implements Initializable {
 
+    private static String sourceIP;
+    private static String sourcePath;
+
     private static ArrayList<BrowserController> instances = new ArrayList<>();
     @FXML
     public Label pathLabel;
     @FXML
     public Button backButton, deleteButton, downloadButton,
-            uploadFileButton, uploadFolderButton, refreshButton;
+            uploadFileButton, uploadFolderButton, refreshButton,
+            copyButton, pasteButton;
     @FXML
     public TableView<FileRowData> fileTable;
     private ObservableList<FileRowData> observableList = FXCollections.observableArrayList();
@@ -356,6 +361,34 @@ public class BrowserController implements Initializable {
                     && !ChooseServerController.getInstance().isOpen())
                 System.exit(1);
         });
+    }
 
+    /**
+     * EventHandler used to handle click events on the copy button
+     */
+    public void onCopyButtonClicked() {
+        FileRowData file = this.fileTable.getSelectionModel().getSelectedItem();
+
+        /*
+        Check if there is a selected file
+         */
+        if (file == null) {
+            this.showAlert();
+        } else {
+            sourceIP = this.getServerIP();
+            sourcePath = file.getPath();
+        }
+    }
+
+    /**
+     * EventHandler used to handle click events on the paste button
+     */
+    public void onPasteButtonClicked() {
+
+        if(sourceIP != null)
+            new RedirectClient(sourceIP, this.getServerIP()).copyPaste(sourcePath, this.pathLabel.getText());
+        else
+            AlertHandler.getInstance().start("Paste/Error",
+                    "Choose a file to copy first", Alert.AlertType.INFORMATION);
     }
 }

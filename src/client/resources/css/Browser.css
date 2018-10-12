@@ -55,3 +55,10 @@
 .downloadButton:hover {
     -fx-background-color: rgb(0, 160, 0);
 }
+
+.copyPasteButtons {
+    -fx-background-color: rgb(180, 120, 100);
+    -fx-font-size: 18px;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+}

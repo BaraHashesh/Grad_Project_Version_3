@@ -21,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 class UploadWebSocket extends WebSocketClient {
 
     private File fileToUpload;
+    private EstimationUpdater estimationUpdater;
 
     /**
      * Constructor for the {@link UploadWebSocket}
@@ -46,16 +47,16 @@ class UploadWebSocket extends WebSocketClient {
         if (responseMessage.isSuccessMessage()) {
             FileTransfer fileTransfer = new FileTransfer();
 
-            EstimationUpdater estimationUpdater = new EstimationUpdater(
+            this.estimationUpdater = new EstimationUpdater(
                     fileTransfer, Methods.getInstance().calculateSize(this.fileToUpload), this
             );
 
-            estimationUpdater.start();
+            this.estimationUpdater.start();
 
             new Thread(()->{
                 fileTransfer.send(this, this.fileToUpload);
 
-                estimationUpdater.finalUpdate();
+                this.estimationUpdater.finalUpdate();
 
                 responseMessage.createStreamEndMessage("");
 
@@ -72,7 +73,7 @@ class UploadWebSocket extends WebSocketClient {
 
     @Override
     public void onClose(int i, String s, boolean b) {
-
+        this.estimationUpdater.finalUpdate();
     }
 
     @Override

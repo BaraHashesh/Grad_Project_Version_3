@@ -91,8 +91,10 @@ class DownloadWebSocket extends WebSocketClient {
         /*
         Check if download was completed
          */
-        if (!this.status)
+        if (!this.status) {
             this.fileTransfer.deleteFile();
+            this.estimationUpdater.finalUpdate();
+        }
     }
 
     @Override

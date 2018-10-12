@@ -178,6 +178,15 @@ public class FileTransfer {
     }
 
     /**
+     * set method for getFileSizeStatus
+     *
+     * @param fileSizeStatus new status size of the file
+     */
+    public void setFileSizeStatus(long fileSizeStatus) {
+        this.fileSizeStatus = fileSizeStatus;
+    }
+
+    /**
      * Method used to delete files in case of error
      */
     public void deleteFile() {
