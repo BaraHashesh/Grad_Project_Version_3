@@ -100,7 +100,7 @@ public class EstimationController implements Runnable {
                 this.stage.hide();
             } else {
                 // speed in bytes per second
-                double speed = (this.progress - this.previousValue) / Constants.UPDATE_RATE;
+                double speed = (this.progress - this.previousValue) / Constants.getInstance().UPDATE_RATE;
 
                 this.previousValue = this.progress; // update previousValue
 

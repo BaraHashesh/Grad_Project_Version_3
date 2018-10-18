@@ -58,11 +58,14 @@ public class FileRowData extends BasicFileData {
     private String getExtension() {
         String extension = "";
 
-        int i = getPath().lastIndexOf('.');
-        int p = getPath().lastIndexOf(Constants.getInstance().BACKWARD_DASH);
+        String path = getPath()
+                .replaceAll(Constants.getInstance().DOUBLE_FORWARD_DASH, Constants.getInstance().BACKWARD_DASH);
+
+        int i = path.lastIndexOf('.');
+        int p = path.lastIndexOf(Constants.getInstance().BACKWARD_DASH);
 
         if (i > p && i > 0) {
-            extension = getPath().substring(i + 1);
+            extension = path.substring(i + 1);
         }
 
         return extension;
@@ -197,9 +200,12 @@ public class FileRowData extends BasicFileData {
      * @return The name of the file
      */
     public String getName() {
-        int i = getPath().lastIndexOf(Constants.getInstance().BACKWARD_DASH);
+        String path = getPath()
+                .replaceAll(Constants.getInstance().DOUBLE_FORWARD_DASH, Constants.getInstance().BACKWARD_DASH);
 
-        return getPath().substring(i + 1);
+        int i = path.lastIndexOf(Constants.getInstance().BACKWARD_DASH);
+
+        return path.substring(i + 1);
     }
 
     /**
@@ -208,8 +214,11 @@ public class FileRowData extends BasicFileData {
      * @return The path for the parent of the file
      */
     public String getParent() {
-        int i = getPath().lastIndexOf(Constants.getInstance().BACKWARD_DASH);
+        String path = getPath()
+                .replaceAll(Constants.getInstance().DOUBLE_FORWARD_DASH, Constants.getInstance().BACKWARD_DASH);
 
-        return getPath().substring(0, i);
+        int i = path.lastIndexOf(Constants.getInstance().BACKWARD_DASH);
+
+        return path.substring(0, i);
     }
 }

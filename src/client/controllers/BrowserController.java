@@ -227,7 +227,8 @@ public class BrowserController implements Initializable {
              */
             if (directoryChosen != null)
                 new DownloadClient(serverIP).download(
-                        directoryChosen.getAbsolutePath() + Constants.BACKWARD_DASH, file.getPath()
+                        directoryChosen.getAbsolutePath() +
+                                Constants.getInstance().BACKWARD_DASH, file.getPath()
                 );
         }
     }

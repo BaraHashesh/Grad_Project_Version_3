@@ -82,7 +82,7 @@ public class ChooseBaseIPController implements Runnable {
         /*
         Check if entered IP is a valid IP
          */
-        if (!Constants.IPV4_REGEX.matcher(this.baseIP).matches()) {
+        if (!Constants.getInstance().IPV4_REGEX.matcher(this.baseIP).matches()) {
             AlertHandler.getInstance().start("Invalid IP",
                     "Please Enter a valid IP (IPv4)", Alert.AlertType.ERROR);
 
