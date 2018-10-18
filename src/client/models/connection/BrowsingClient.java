@@ -90,7 +90,7 @@ public class BrowsingClient {
 
         try {
             browserWebSocket = new BrowserWebSocket(new URI("wss://" +
-                    browserController.getServerIP() + ":" + Constants.TCP_PORT), browserController);
+                    browserController.getServerIP() + ":" + Constants.getInstance().TCP_PORT), browserController);
 
             browserWebSocket.setSocket(Methods.getInstance().buildFactory().createSocket());
 

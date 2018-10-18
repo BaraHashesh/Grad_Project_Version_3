@@ -160,18 +160,19 @@ public class Methods {
      * @throws Exception Unable to create factory for any given reason
      */
     public SSLSocketFactory buildFactory() throws Exception {
-        String STORETYPE = Constants.KEYSTORE_TYPE;
+        String STORETYPE = Constants.getInstance().KEYSTORE_TYPE;
         InputStream KEYSTORE = Methods.class.getResourceAsStream("/KEYSTORE");
 
-        String STORE_PASSWORD = Constants.KEYSTORE_PASSWORD;
-        String KEY_PASSWORD = Constants.KEYSTORE_PASSWORD;
+        String STORE_PASSWORD = Constants.getInstance().KEYSTORE_PASSWORD;
+        String KEY_PASSWORD = Constants.getInstance().KEYSTORE_PASSWORD;
 
         KeyStore ks = KeyStore.getInstance(STORETYPE);
         ks.load(KEYSTORE, STORE_PASSWORD.toCharArray());
 
-        KeyManagerFactory kmf = KeyManagerFactory.getInstance(Constants.KEY_MANAGER_FACTORY_ALGORITHM);
+        KeyManagerFactory kmf = KeyManagerFactory.getInstance(Constants.getInstance().KEY_MANAGER_FACTORY_ALGORITHM);
         kmf.init(ks, KEY_PASSWORD.toCharArray());
-        TrustManagerFactory tmf = TrustManagerFactory.getInstance(Constants.TRUSTED_MANAGER_FACTORY_ALGORITHM);
+        TrustManagerFactory tmf = TrustManagerFactory
+                .getInstance(Constants.getInstance().TRUSTED_MANAGER_FACTORY_ALGORITHM);
         tmf.init(ks);
 
         SSLContext sslContext = null;

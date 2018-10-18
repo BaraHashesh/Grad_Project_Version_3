@@ -6,47 +6,58 @@ import java.util.regex.Pattern;
  * Constants is used to store some constant values
  */
 public class Constants {
-    /*
-    File related constants
+
+    public static Constants instance = new Constants();
+
+    /**
+     * Get method for instance
+     * @return an instance of the {@link Constants} class
      */
-    public static final String BACKWARD_DASH = "/";
-    public static final String FILE_NAME = "TEMP_FILE_";
-    public static final String FORWARD_DASH = "\\";
-    public static final String DOUBLE_FORWARD_DASH = "\\\\";
-    public static final int BUFFER_SIZE = 1024 * 64;
+    public static Constants getInstance() {
+        return instance;
+    }
+
+    /*
+        File related constants
+         */
+    public final String BACKWARD_DASH = "/";
+    public final String FILE_NAME = "TEMP_FILE_";
+    public final String FORWARD_DASH = "\\";
+    public final String DOUBLE_FORWARD_DASH = "\\\\";
+    public final int BUFFER_SIZE = 1024 * 64;
     /*
     Message related Constants
      */
-    public final static int DOWNLOAD_MESSAGE = 0;
-    public final static int UPLOAD_MESSAGE = 1;
-    public final static int DELETE_MESSAGE = 2;
-    public final static int BROWSE_MESSAGE = 3;
-    public final static int ERROR_MESSAGE = 4;
-    public final static int SUCCESS_MESSAGE = 5;
-    public final static int FILE_INFO_MESSAGE = 6;
-    public final static int STREAM_END_MESSAGE = 7;
-    public final static int UPDATE_MESSAGE = 8;
+    public final int DOWNLOAD_MESSAGE = 0;
+    public final int UPLOAD_MESSAGE = 1;
+    public final int DELETE_MESSAGE = 2;
+    public final int BROWSE_MESSAGE = 3;
+    public final int ERROR_MESSAGE = 4;
+    public final int SUCCESS_MESSAGE = 5;
+    public final int FILE_INFO_MESSAGE = 6;
+    public final int STREAM_END_MESSAGE = 7;
+    public final int UPDATE_MESSAGE = 8;
     /*
     Time related Constants
      */
-    public static final double UPDATE_RATE = 1;
-    public static final double WAIT_PERIOD = 2;
+    public final double UPDATE_RATE = 1;
+    public final double WAIT_PERIOD = 2;
     /*
     Regex expressions
      */
-    public final static Pattern IPV4_REGEX = Pattern.compile(
+    public final Pattern IPV4_REGEX = Pattern.compile(
             "^(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])$"
     );
     /*
     Socket ports related constants
      */
-    public static final int TCP_PORT = 8_888;
-    public static final int UDP_DISCOVERY_PORT = 9_999;
+    public final int TCP_PORT = 8_888;
+    public final int UDP_DISCOVERY_PORT = 9_999;
     /*
     Key Store constants
      */
-    public static final String KEYSTORE_PASSWORD = "password";
-    public static final String KEYSTORE_TYPE = "JKS";
-    public static final String KEY_MANAGER_FACTORY_ALGORITHM = "PKIX";
-    public static final String TRUSTED_MANAGER_FACTORY_ALGORITHM = "PKIX";
+    public final String KEYSTORE_PASSWORD = "password";
+    public final String KEYSTORE_TYPE = "JKS";
+    public final String KEY_MANAGER_FACTORY_ALGORITHM = "PKIX";
+    public final String TRUSTED_MANAGER_FACTORY_ALGORITHM = "PKIX";
 }

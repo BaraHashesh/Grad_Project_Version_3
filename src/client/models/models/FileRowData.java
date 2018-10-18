@@ -59,7 +59,7 @@ public class FileRowData extends BasicFileData {
         String extension = "";
 
         int i = getPath().lastIndexOf('.');
-        int p = getPath().lastIndexOf(Constants.BACKWARD_DASH);
+        int p = getPath().lastIndexOf(Constants.getInstance().BACKWARD_DASH);
 
         if (i > p && i > 0) {
             extension = getPath().substring(i + 1);
@@ -96,7 +96,7 @@ public class FileRowData extends BasicFileData {
             /*
             Construct an icon for the file
              */
-            File file = File.createTempFile(Constants.FILE_NAME, "." + extension);
+            File file = File.createTempFile(Constants.getInstance().FILE_NAME, "." + extension);
 
             /*
             Get the system icon
@@ -163,7 +163,7 @@ public class FileRowData extends BasicFileData {
 
         else {
             try {
-                File file = File.createTempFile(Constants.FILE_NAME, "." + extension);
+                File file = File.createTempFile(Constants.getInstance().FILE_NAME, "." + extension);
 
                 String type = FileSystemView.getFileSystemView().getSystemTypeDescription(file);
 
@@ -197,7 +197,7 @@ public class FileRowData extends BasicFileData {
      * @return The name of the file
      */
     public String getName() {
-        int i = getPath().lastIndexOf(Constants.BACKWARD_DASH);
+        int i = getPath().lastIndexOf(Constants.getInstance().BACKWARD_DASH);
 
         return getPath().substring(i + 1);
     }
@@ -208,7 +208,7 @@ public class FileRowData extends BasicFileData {
      * @return The path for the parent of the file
      */
     public String getParent() {
-        int i = getPath().lastIndexOf(Constants.BACKWARD_DASH);
+        int i = getPath().lastIndexOf(Constants.getInstance().BACKWARD_DASH);
 
         return getPath().substring(0, i);
     }

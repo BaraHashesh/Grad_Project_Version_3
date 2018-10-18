@@ -51,9 +51,9 @@ public class FileTransfer {
             /*
             Check if work is currently done on a windows machine
              */
-            if (basicFileData.getPath().contains(Constants.FORWARD_DASH))
+            if (basicFileData.getPath().contains(Constants.getInstance().FORWARD_DASH))
                 basicFileData.setPath(basicFileData.getPath()
-                        .replaceAll(Constants.DOUBLE_FORWARD_DASH, Constants.BACKWARD_DASH));
+                        .replaceAll(Constants.getInstance().DOUBLE_FORWARD_DASH, Constants.getInstance().BACKWARD_DASH));
 
             /*
             Remove dash from the beginning (first character) of the path if it exists
@@ -81,7 +81,7 @@ public class FileTransfer {
 
             } else {
                 FileInputStream fileData = new FileInputStream(file);
-                byte[] buffer = new byte[Constants.BUFFER_SIZE];
+                byte[] buffer = new byte[Constants.getInstance().BUFFER_SIZE];
                 long size = file.length();
 
                 /*

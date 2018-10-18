@@ -105,7 +105,7 @@ public class UploadClient {
     public UploadClient(String serverIP) {
         try {
             this.uploadWebSocket = new UploadWebSocket(
-                    new URI("wss://" + serverIP + ":" + Constants.TCP_PORT)
+                    new URI("wss://" + serverIP + ":" + Constants.getInstance().TCP_PORT)
             );
 
             this.uploadWebSocket.setSocket(Methods.getInstance().buildFactory().createSocket());

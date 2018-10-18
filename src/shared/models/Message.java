@@ -30,7 +30,7 @@ public class Message {
      * @return A boolean that indicates if the message is a download message or not
      */
     public boolean isDownloadMessage() {
-        return this.messageType == Constants.DOWNLOAD_MESSAGE;
+        return this.messageType == Constants.getInstance().DOWNLOAD_MESSAGE;
     }
 
     /**
@@ -39,7 +39,7 @@ public class Message {
      * @return a boolean that indicates if the message is an upload message or not
      */
     public boolean isUploadMessage() {
-        return this.messageType == Constants.UPLOAD_MESSAGE;
+        return this.messageType == Constants.getInstance().UPLOAD_MESSAGE;
     }
 
     /**
@@ -48,7 +48,7 @@ public class Message {
      * @return a boolean that indicates if the message is a delete message or not
      */
     public boolean isDeleteMessage() {
-        return this.messageType == Constants.DELETE_MESSAGE;
+        return this.messageType == Constants.getInstance().DELETE_MESSAGE;
     }
 
     /**
@@ -57,7 +57,7 @@ public class Message {
      * @return a boolean that indicates if the message is a download browse or not
      */
     public boolean isBrowseMessage() {
-        return this.messageType == Constants.BROWSE_MESSAGE;
+        return this.messageType == Constants.getInstance().BROWSE_MESSAGE;
     }
 
     /**
@@ -66,7 +66,7 @@ public class Message {
      * @return a boolean that indicates if the message is an error message or not
      */
     public boolean isErrorMessage() {
-        return this.messageType == Constants.ERROR_MESSAGE;
+        return this.messageType == Constants.getInstance().ERROR_MESSAGE;
     }
 
     /**
@@ -75,7 +75,7 @@ public class Message {
      * @return a boolean that indicates if the message is a success message or not
      */
     public boolean isSuccessMessage() {
-        return this.messageType == Constants.SUCCESS_MESSAGE;
+        return this.messageType == Constants.getInstance().SUCCESS_MESSAGE;
     }
 
     /**
@@ -85,7 +85,7 @@ public class Message {
      */
     @SuppressWarnings("unused")
     public boolean isFileInfoMessage() {
-        return this.messageType == Constants.FILE_INFO_MESSAGE;
+        return this.messageType == Constants.getInstance().FILE_INFO_MESSAGE;
     }
 
     /**
@@ -94,7 +94,7 @@ public class Message {
      * @return a boolean that indicates if the message is a stream end message or not
      */
     public boolean isStreamEndMessage() {
-        return this.messageType == Constants.STREAM_END_MESSAGE;
+        return this.messageType == Constants.getInstance().STREAM_END_MESSAGE;
     }
 
     /**
@@ -103,7 +103,7 @@ public class Message {
      * @return a boolean that indicates if the message is an update message or not
      */
     public boolean isUpdateMessage() {
-        return this.messageType == Constants.UPDATE_MESSAGE;
+        return this.messageType == Constants.getInstance().UPDATE_MESSAGE;
     }
 
     /**
@@ -112,7 +112,7 @@ public class Message {
      * @param info Some extra info for the message (usually file path)
      */
     public void createDownloadMessage(String info) {
-        this.messageType = Constants.DOWNLOAD_MESSAGE;
+        this.messageType = Constants.getInstance().DOWNLOAD_MESSAGE;
         this.messageInfo = info;
     }
 
@@ -122,7 +122,7 @@ public class Message {
      * @param info Some extra info for the message (usually where to save file)
      */
     public void createUploadMessage(String info) {
-        this.messageType = Constants.UPLOAD_MESSAGE;
+        this.messageType = Constants.getInstance().UPLOAD_MESSAGE;
         this.messageInfo = info;
     }
 
@@ -132,7 +132,7 @@ public class Message {
      * @param info Some extra info for the message (usually file path)
      */
     public void createDeleteMessage(String info) {
-        this.messageType = Constants.DELETE_MESSAGE;
+        this.messageType = Constants.getInstance().DELETE_MESSAGE;
         this.messageInfo = info;
     }
 
@@ -142,7 +142,7 @@ public class Message {
      * @param info Some extra info for the message (usually file path)
      */
     public void createBrowseMessage(String info) {
-        this.messageType = Constants.BROWSE_MESSAGE;
+        this.messageType = Constants.getInstance().BROWSE_MESSAGE;
         this.messageInfo = info;
     }
 
@@ -152,7 +152,7 @@ public class Message {
      * @param info Some extra info for the message (usually empty)
      */
     public void createSuccessMessage(String info) {
-        this.messageType = Constants.SUCCESS_MESSAGE;
+        this.messageType = Constants.getInstance().SUCCESS_MESSAGE;
         this.messageInfo = info;
     }
 
@@ -162,7 +162,7 @@ public class Message {
      * @param info Some extra info for the message (usually empty)
      */
     public void createErrorMessage(String info) {
-        this.messageType = Constants.ERROR_MESSAGE;
+        this.messageType = Constants.getInstance().ERROR_MESSAGE;
         this.messageInfo = info;
     }
 
@@ -172,7 +172,7 @@ public class Message {
      * @param info Some extra info for the message (usually a BasicFileData object)
      */
     public void createFileInfoMessage(String info) {
-        this.messageType = Constants.FILE_INFO_MESSAGE;
+        this.messageType = Constants.getInstance().FILE_INFO_MESSAGE;
         this.messageInfo = info;
     }
 
@@ -182,7 +182,7 @@ public class Message {
      * @param info Some extra info for the message (usually empty)
      */
     public void createStreamEndMessage(String info) {
-        this.messageType = Constants.STREAM_END_MESSAGE;
+        this.messageType = Constants.getInstance().STREAM_END_MESSAGE;
         this.messageInfo = info;
     }
 
@@ -192,7 +192,7 @@ public class Message {
      * @param info Some extra info for the message (usually path to update)
      */
     public void createUpdateMessage(String info) {
-        this.messageType = Constants.UPDATE_MESSAGE;
+        this.messageType = Constants.getInstance().UPDATE_MESSAGE;
         this.messageInfo = info;
     }
 

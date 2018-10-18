@@ -138,7 +138,7 @@ public class StorageHandler {
             path = ROOT;
         }
 
-        path += Constants.BACKWARD_DASH;
+        path += Constants.getInstance().BACKWARD_DASH;
 
         return path;
     }

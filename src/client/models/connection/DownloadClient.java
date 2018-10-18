@@ -126,7 +126,7 @@ public class DownloadClient {
     public DownloadClient(String serverIP) {
         try {
             this.downloadWebSocket = new DownloadWebSocket(
-                    new URI("wss://" + serverIP + ":" + Constants.TCP_PORT)
+                    new URI("wss://" + serverIP + ":" + Constants.getInstance().TCP_PORT)
             );
 
             downloadWebSocket.setSocket(Methods.getInstance().buildFactory().createSocket());

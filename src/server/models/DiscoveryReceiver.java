@@ -30,7 +30,7 @@ public class DiscoveryReceiver implements Runnable {
     @Override
     public void run() {
         try {
-            DatagramSocket socket = new DatagramSocket(Constants.UDP_DISCOVERY_PORT);
+            DatagramSocket socket = new DatagramSocket(Constants.getInstance().UDP_DISCOVERY_PORT);
 
             /*
             Infinite while loop to receive all discover messages

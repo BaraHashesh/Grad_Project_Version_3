@@ -183,23 +183,24 @@ public class Server {
         try {
             new DiscoveryReceiver().start();
 
-            ServerHandler serverHandler = new ServerHandler(Constants.TCP_PORT);
+            ServerHandler serverHandler = new ServerHandler(Constants.getInstance().TCP_PORT);
 
             /*
             load up the key store
             */
-            String STORETYPE = Constants.KEYSTORE_TYPE;
+            String STORETYPE = Constants.getInstance().KEYSTORE_TYPE;
 
-            String STORE_PASSWORD = Constants.KEYSTORE_PASSWORD;
-            String KEY_PASSWORD = Constants.KEYSTORE_PASSWORD;
+            String STORE_PASSWORD = Constants.getInstance().KEYSTORE_PASSWORD;
+            String KEY_PASSWORD = Constants.getInstance().KEYSTORE_PASSWORD;
 
             KeyStore ks = KeyStore.getInstance(STORETYPE);
 
             ks.load(Server.class.getResourceAsStream("/KEYSTORE"), STORE_PASSWORD.toCharArray());
 
-            KeyManagerFactory kmf = KeyManagerFactory.getInstance(Constants.KEY_MANAGER_FACTORY_ALGORITHM);
+            KeyManagerFactory kmf = KeyManagerFactory.getInstance(Constants.getInstance().KEY_MANAGER_FACTORY_ALGORITHM);
             kmf.init(ks, KEY_PASSWORD.toCharArray());
-            TrustManagerFactory tmf = TrustManagerFactory.getInstance(Constants.TRUSTED_MANAGER_FACTORY_ALGORITHM);
+            TrustManagerFactory tmf = TrustManagerFactory
+                    .getInstance(Constants.getInstance().TRUSTED_MANAGER_FACTORY_ALGORITHM);
             tmf.init(ks);
 
             SSLContext sslContext = null;

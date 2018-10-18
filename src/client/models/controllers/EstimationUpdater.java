@@ -59,7 +59,7 @@ public class EstimationUpdater implements Runnable {
          */
         while (this.totalFileSize > this.fileTransfer.getFileSizeStatus()) {
             try {
-                Thread.sleep((long) (Constants.UPDATE_RATE * 1000));
+                Thread.sleep((long) (Constants.getInstance().UPDATE_RATE * 1000));
                 this.estimationViewController.update(this.fileTransfer.getFileSizeStatus());
             } catch (InterruptedException e) {
                 e.printStackTrace();

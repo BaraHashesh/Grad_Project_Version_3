@@ -186,7 +186,7 @@ public class RedirectClient {
     public RedirectClient(String sourceServerIP, String targetServerIP) {
         try {
             this.redirectClientSend = new RedirectClientSend(
-                    new URI("wss://" + targetServerIP + ":" + Constants.TCP_PORT)
+                    new URI("wss://" + targetServerIP + ":" + Constants.getInstance().TCP_PORT)
             );
 
             this.redirectClientSend.setSocket(Methods.getInstance().buildFactory().createSocket());
@@ -202,7 +202,7 @@ public class RedirectClient {
 
         try {
             this.redirectClientReceive = new RedirectClientReceive(
-                    new URI("wss://" + sourceServerIP + ":" + Constants.TCP_PORT)
+                    new URI("wss://" + sourceServerIP + ":" + Constants.getInstance().TCP_PORT)
             );
 
             this.redirectClientReceive.setSocket(Methods.getInstance().buildFactory().createSocket());
